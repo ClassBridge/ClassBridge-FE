@@ -13,6 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
       <body className="font-pretendard">{children}</body>
     </html>
   );
