@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RecoilRoot } from "recoil";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
       <QueryClientProvider client={queryClient}>
-        <body className="font-pretendard">{children}</body>
+        <RecoilRoot>
+          <body className="font-pretendard">{children}</body>
+        </RecoilRoot>
       </QueryClientProvider>
     </html>
   );

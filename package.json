@@ -21,6 +21,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
+    "recoil": "^0.7.7",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
