@@ -1,30 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { MagnifyingGlass } from "@/asset/icons";
+import { MagnifyingGlass } from "@/assets/icons";
 
-export default function Header() {
+export default function Header({ auth = false }: { auth: boolean }) {
   return (
-    <header className="flex justify-center items-center gap-5 w-[1024px] h-20">
-      <Link href="/" className="">
-        <h1 className="flex justify-center items-center w-[150px] h-10 font-bold text-xl">
-          <span className="text-primary ">C</span>LASS{" "}
-          <span className="text-secondary">B</span>
-          RIDGE
-        </h1>
-      </Link>
-      <button onClick={() => {}} className="w-20 h-9">
-        카테고리
-      </button>
-      <button onClick={() => {}} className="w-20 h-9">
-        지역
-      </button>
-      <button className="w-[440px] ml-2 mr-[54px] py-[11px] pl-[14px] border border-black rounded-md">
-        <MagnifyingGlass />
-      </button>
-      <button className="w-[100px] h-10 bg-primary rounded-md text-white text-sm">
-        로그인
-      </button>
+    <header className="absolute top-0 inset-x-0 w-screen h-20">
+      <nav className="flex justify-center gap-5 w-screen max-w-screen-lg h-full mx-auto py-5">
+        <Link
+          href="/"
+          className="flex items-center justify-center w-[150px] h-10 font-bold text-xl uppercase"
+        >
+          <h1>
+            <span className="text-primary">{"c"}</span>
+            {"lass "}
+            <span className="text-secondary">{"b"}</span>
+            {"ridge"}
+          </h1>
+        </Link>
+        <button className="w-20 h-10" onClick={() => {}}>
+          {"카테고리"}
+        </button>
+        <button className="w-20 h-10" onClick={() => {}}>
+          {"지역"}
+        </button>
+        <button className="w-[440px] ml-5 mr-[34px] py-[11px] pl-3.5 rounded-md border border-black text-black">
+          <MagnifyingGlass size={18} />
+        </button>
+        <button
+          className="w-[100px] h-10 rounded-md text-white text-sm bg-primary"
+          onClick={() => {}}
+        >
+          {!auth ? "로그인" : "마이페이지"}
+        </button>
+      </nav>
     </header>
   );
 }
