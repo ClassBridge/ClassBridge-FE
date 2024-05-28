@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-// import LocalFont from "next/font/local";
 import Providers from "@/lib/providers";
 import "@/styles/globals.css";
 
@@ -7,10 +6,6 @@ export const metadata: Metadata = {
   title: "클래스브릿지",
   description: "클래스브릿지",
 };
-
-// const Pretendard = LocalFont({
-//   src: "../../public/fonts/PretendardVariable.ttf",
-// });
 
 export default function RootLayout({
   children,
