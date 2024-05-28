@@ -1,28 +1,19 @@
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className={cn()}>
-      <nav>
-        <ul className={cn()}>
-          <li className={cn()}>
-            <Link href="/">CLASS BRIDGE</Link>
-          </li>
-          <li className={cn()}>
-            <Link href="/">카테고리</Link>
-          </li>
-          <li className={cn()}>
-            <Link href="/">지역</Link>
-          </li>
-          SEARCH SECTION
-          <li className={cn()}>
-            <button className={cn()}>
-              <Link href="/">로그인</Link>
-            </button>
-          </li>
-        </ul>
-      </nav>
+    <header className="flex items-center w-256 box-border">
+      <Link href="/" className="text-xl">
+        <h1 className="pr-5 pl-5">
+          <span className="text-primary font-bold">C</span>LASS{" "}
+          <span className="text-secondary font-bold">B</span>
+          RIDGE
+        </h1>
+      </Link>
+      <button className="pr-5 pl-5">카테고리</button>
+      <button className="pr-5 pl-5">지역</button>
+      <button className="pr-7 pl-7">SEARCH BAR</button>
+      <button className="pr-5 pl-5">로그인</button>
     </header>
   );
 }
