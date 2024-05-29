@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Providers from "@/lib/providers";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-pretendard">{children}</body>
+      <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
+      <Providers>
+        <body className="min-h-screen font-pretendard bg-white antialiased">
+          {children}
+        </body>
+      </Providers>
     </html>
   );
 }
