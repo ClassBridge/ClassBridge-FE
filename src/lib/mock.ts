@@ -7,5 +7,6 @@ export const mockClassCardContent: ClassCardContent = {
   place: "서울시 브릿지구",
   price: 30000,
   rating: 4.8,
+  reviewCnt: 5,
   duration: 60,
 };
