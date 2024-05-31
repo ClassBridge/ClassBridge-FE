@@ -5,7 +5,7 @@ import { MagnifyingGlass } from "@/assets/icons";
 
 export default function Header({ auth = false }: { auth?: boolean }) {
   return (
-    <header className="absolute top-0 inset-x-0 w-screen h-20">
+    <header className="fixed top-0 inset-x-0 z-20 w-screen h-20 bg-white/80 backdrop-blur">
       <nav className="flex justify-center gap-5 w-screen max-w-screen-lg h-full mx-auto py-5">
         <Link
           href="/"
