@@ -28,7 +28,7 @@ export default function ClassList() {
           <SortSelect setSort={setSort} />
         </div>
       </div>
-      <section className="grid grid-cols-3 gap-x-5 gap-y-7">
+      <section className="grid grid-cols-3 gap-x-5 gap-y-7 mb-10">
         {Array.from({ length: 18 }).map((_, i) => (
           <ClassCard key={i} size="large" content={mockClassCardContent} />
         ))}
