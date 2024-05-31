@@ -9,7 +9,7 @@ const config = {
   ],
   prefix: "",
   theme: {
-    fontFamily: { pretendard: ["Pretendard", ...fontFamily.sans] },
+    borderRadius: { DEFAULT: "6px", full: "9999px" },
     colors: {
       primary: {
         DEFAULT: "#3D66B4",
@@ -22,6 +22,7 @@ const config = {
       black: { DEFAULT: "#0F172A", blur: "rgba(15, 23, 42, 0.2)" },
       white: { DEFAULT: "#FFFFFF", blur: "rgba(255, 255, 255, 0.5)" },
     },
+    fontFamily: { pretendard: ["Pretendard", ...fontFamily.sans] },
     container: {
       center: true,
       padding: "2rem",
