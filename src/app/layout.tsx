@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Providers from "@/lib/providers";
 import Header from "@/components/common/Header";
+import LogInModal from "@/components/modal/LogInModal";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
           <main className="relative top-20 flex flex-col items-center w-screen max-w-5xl h-full mx-auto">
             {children}
           </main>
+          <LogInModal />
         </body>
       </Providers>
     </html>
