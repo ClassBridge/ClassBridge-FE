@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { openModal } from "@/lib/utils";
 import { MagnifyingGlass } from "@/assets/icons";
 
 export default function Header({ auth = false }: { auth?: boolean }) {
+  const { push } = useRouter();
+
   return (
-    <header className="fixed top-0 inset-x-0 z-20 w-screen h-20 bg-white/80 backdrop-blur">
+    <header className="fixed top-0 inset-x-0 z-10 w-screen h-20 bg-white/80 backdrop-blur">
       <nav className="flex justify-center gap-5 w-screen max-w-screen-lg h-full mx-auto py-5">
         <Link
           href="/"
@@ -29,7 +33,9 @@ export default function Header({ auth = false }: { auth?: boolean }) {
         </button>
         <button
           className="w-[100px] h-10 rounded text-white text-sm bg-primary"
-          onClick={() => {}}
+          onClick={() => {
+            !auth ? openModal("login-modal") : push("/my");
+          }}
         >
           {!auth ? "로그인" : "마이페이지"}
         </button>
