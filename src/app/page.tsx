@@ -1,3 +1,11 @@
+import Recommendation from "@/components/home/Recommendation";
+import ClassList from "@/components/home/ClassList";
+
 export default function HomePage() {
-  return <main className="font-bold text-primary">Home</main>;
+  return (
+    <>
+      <Recommendation />
+      <ClassList />
+    </>
+  );
 }

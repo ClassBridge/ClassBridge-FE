@@ -1,6 +1,20 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
+
+export function openModal(id: string) {
+  const modal = document.getElementById(`${id}-modal`);
+  modal?.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
+export const closeModal = () => {
+  const modals = document.querySelectorAll(".modal");
+  modals.forEach((modal) => modal.classList.add("hidden"));
+  const inputs = document.querySelectorAll(".modal .modal-input");
+  inputs.forEach((input) => ((input as HTMLInputElement).value = ""));
+  document.body.style.overflow = "";
+};
