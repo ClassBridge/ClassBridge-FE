@@ -20,7 +20,7 @@ import { closeModal } from "@/lib/utils";
 
 type LogInFormData = z.infer<typeof logInFormSchema>;
 
-const loginFormField: { name: "email" | "password"; label: string }[] = [
+const logInFormField: { name: "email" | "password"; label: string }[] = [
   { name: "email", label: "이메일" },
   { name: "password", label: "비밀번호" },
 ];
@@ -39,7 +39,7 @@ export default function LogInForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {loginFormField.map((item) => (
+        {logInFormField.map((item) => (
           <FormField
             key={item.name}
             control={form.control}
