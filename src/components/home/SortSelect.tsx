@@ -21,6 +21,7 @@ export default function SortSelect({ setSort }: Props) {
   return (
     <Select
       required
+      name="sort-class"
       defaultValue="like-descending"
       onValueChange={handleSortChange}
     >
