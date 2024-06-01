@@ -19,7 +19,7 @@ const config = {
       secondary: { DEFAULT: "#E29578", light: "#FFDDD2" },
       point: { like: "#F2545B", star: "#FFC700" },
       gray: { DEFAULT: "#94A3B8", light: "#CBD5E1" },
-      black: { DEFAULT: "#0F172A", blur: "rgba(15, 23, 42, 0.2)" },
+      black: { DEFAULT: "#0F172A", blur: "rgba(15, 23, 42, 0.5)" },
       white: { DEFAULT: "#FFFFFF", blur: "rgba(255, 255, 255, 0.5)" },
     },
     fontFamily: { pretendard: ["Pretendard", ...fontFamily.sans] },

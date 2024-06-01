@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Providers from "@/lib/providers";
 import Header from "@/components/common/Header";
 import LogInModal from "@/components/modal/LogInModal";
+import SearchModal from "@/components/modal/SearchModal";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({
             {children}
           </main>
           <LogInModal />
+          <SearchModal />
         </body>
       </Providers>
     </html>
