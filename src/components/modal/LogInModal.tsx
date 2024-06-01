@@ -1,7 +1,7 @@
 import Image from "next/image";
-import LogInForm from "../form/LogInForm";
 import Backdrop from "./Backdrop";
-import GoogleIcon from "@/assets/google.png";
+import LogInForm from "../form/LogInForm";
+import GoogleIcon from "@/assets/logo/google.png";
 
 export default function LogInModal() {
   return (
@@ -18,7 +18,13 @@ export default function LogInModal() {
           <span className="flex-1 border-t border-black" />
         </div>
         <button className="flex items-center px-6 py-[9px] rounded border border-black font-medium text-base text-black bg-white">
-          <Image src={GoogleIcon} alt="Google" width={20} height={20} />
+          <Image
+            src={GoogleIcon}
+            alt="Google"
+            width={20}
+            height={20}
+            priority
+          />
           <span className="flex-1">{"Google로 시작하기"}</span>
         </button>
       </div>
