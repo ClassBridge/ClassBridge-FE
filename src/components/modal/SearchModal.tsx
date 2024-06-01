@@ -24,7 +24,7 @@ export default function SearchModal() {
           <Image src={SearchIcon} alt="Search" width={20} height={20} />
           <input
             type="text"
-            // name="search"
+            name="search"
             placeholder="검색어를 입력하세요"
             className="flex-1 mx-3 outline-0 placeholder:text-gray"
             value={searchTerm}
