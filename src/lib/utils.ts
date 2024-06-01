@@ -14,5 +14,7 @@ export function openModal(id: string) {
 export const closeModal = () => {
   const modals = document.querySelectorAll(".modal");
   modals.forEach((modal) => modal.classList.add("hidden"));
+  const inputs = document.querySelectorAll(".modal .modal-input");
+  inputs.forEach((input) => ((input as HTMLInputElement).value = ""));
   document.body.style.overflow = "";
 };

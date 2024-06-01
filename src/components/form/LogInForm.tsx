@@ -53,7 +53,7 @@ export default function LogInForm() {
                     autoComplete={
                       field.name === "email" ? "email" : "current-password"
                     }
-                    className="rounded border-gray-light placeholder:text-gray"
+                    className="rounded border-gray-light placeholder:text-gray modal-input"
                     {...field}
                   />
                 </FormControl>

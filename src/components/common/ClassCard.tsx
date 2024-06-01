@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import LikeButton from "./LikeButton";
 import { cn } from "@/lib/utils";
 import { type Category, CATEGORY } from "@/constants/category";
 
@@ -37,6 +38,7 @@ export default function ClassCard({ size, content }: Props) {
               size === "small" ? "h-[146px]" : "h-[168px]"
             )}
           >
+            <LikeButton />
             {content.imgSrc ? (
               <Image
                 src={content.imgSrc}
