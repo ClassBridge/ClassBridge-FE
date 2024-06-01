@@ -2,15 +2,11 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { openModal } from "@/lib/utils";
 import { MagnifyingGlass } from "@/assets/icons";
 
 export default function Header({ auth = false }: { auth?: boolean }) {
   const { push } = useRouter();
-
-  const openLogInModal = () => {
-    const modal = document.getElementById("login-modal");
-    modal?.classList.remove("hidden");
-  };
 
   return (
     <header className="fixed top-0 inset-x-0 z-10 w-screen h-20 bg-white/80 backdrop-blur">
@@ -37,13 +33,9 @@ export default function Header({ auth = false }: { auth?: boolean }) {
         </button>
         <button
           className="w-[100px] h-10 rounded text-white text-sm bg-primary"
-          onClick={
-            !auth
-              ? openLogInModal
-              : () => {
-                  push("/my");
-                }
-          }
+          onClick={() => {
+            !auth ? openModal("login-modal") : push("/my");
+          }}
         >
           {!auth ? "로그인" : "마이페이지"}
         </button>
