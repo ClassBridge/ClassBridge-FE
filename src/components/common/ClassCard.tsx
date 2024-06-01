@@ -33,8 +33,7 @@ export default function ClassCard({ size, content }: Props) {
           <div
             className={cn(
               "relative w-full rounded-t group-hover:h-full group-hover:bg-primary-blur transition-all duration-500",
-              !content.imgSrc &&
-                "flex items-center justify-center bg-black-blur",
+              !content.imgSrc && "flex items-center justify-center bg-black/20",
               size === "small" ? "h-[146px]" : "h-[168px]"
             )}
           >
