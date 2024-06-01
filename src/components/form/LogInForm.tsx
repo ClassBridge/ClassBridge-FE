@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { logInFormSchema } from "@/lib/formSchema";
+
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -14,6 +14,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
+import { logInFormSchema } from "@/lib/formSchema";
+import { closeModal } from "@/lib/utils";
 
 type LogInFormData = z.infer<typeof logInFormSchema>;
 
@@ -29,9 +32,9 @@ export default function LogInForm() {
     resolver: zodResolver(logInFormSchema),
   });
 
-  function onSubmit(data: LogInFormData) {
+  const onSubmit = (data: LogInFormData) => {
     console.log(data);
-  }
+  };
 
   return (
     <Form {...form}>
@@ -59,14 +62,17 @@ export default function LogInForm() {
         <div className="flex flex-col gap-5 pt-5">
           <button
             type="submit"
-            className="py-2.5 rounded font-medium text-sm text-white bg-primary"
+            className="py-2.5 rounded font-medium text-base text-white bg-primary"
           >
             {"로그인"}
           </button>
           <button
             type="button"
-            className="py-[9px] rounded border border-primary font-medium text-sm text-primary bg-white"
-            onClick={() => push("/account/signup")}
+            className="py-[9px] rounded border border-primary font-medium text-base text-primary bg-white"
+            onClick={() => {
+              closeModal();
+              push("/account/signup");
+            }}
           >
             {"회원가입"}
           </button>
