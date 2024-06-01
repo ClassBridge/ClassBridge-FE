@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { openModal } from "@/lib/utils";
-import { MagnifyingGlass } from "@/assets/icons";
+import SearchIcon from "@/assets/icons/search.svg";
 
 export default function Header({ auth = false }: { auth?: boolean }) {
   const { push } = useRouter();
@@ -29,7 +30,7 @@ export default function Header({ auth = false }: { auth?: boolean }) {
           {"지역"}
         </button>
         <button className="w-[440px] ml-5 mr-[34px] py-[11px] pl-3.5 rounded border border-black text-black">
-          <MagnifyingGlass size={18} />
+          <Image src={SearchIcon} alt="Search" width={18} height={18} />
         </button>
         <button
           className="w-[100px] h-10 rounded text-white text-sm bg-primary"
