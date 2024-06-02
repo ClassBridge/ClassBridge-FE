@@ -10,6 +10,9 @@ const MESSAGE = {
     special: "특수문자를 1개 이상 포함해야 합니다.",
   },
   passwordMismatch: "비밀번호가 일치하지 않습니다.",
+  invalidImage: "유효한 이미지 파일이 아닙니다.",
+  invalidPhone: "유효한 연락처 형식이 아닙니다.",
+  invalidDate: "유효한 날짜 형식이 아닙니다.",
 };
 
 export const logInFormSchema = z.object({
@@ -55,3 +58,22 @@ export const signUpFormSchema = z
     message: MESSAGE.passwordMismatch,
     path: ["rePassword"],
   });
+
+export const signUpInfoFormSchema = z.object({
+  username: z.string({ required_error: MESSAGE.required }),
+  phone: z
+    .string({ required_error: MESSAGE.required })
+    .regex(/^\d{10,11}$/, { message: MESSAGE.invalidPhone }),
+  picture: z
+    .instanceof(File)
+    .refine((file) => file.type.startsWith("image/"), {
+      message: MESSAGE.invalidImage,
+    })
+    .optional(),
+  gender: z.enum(["male", "female"]).optional(),
+  birthdate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, { message: MESSAGE.invalidDate })
+    .optional(),
+  interest: z.array(z.string()).optional(),
+});

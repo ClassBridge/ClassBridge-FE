@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -14,53 +15,58 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { signUpFormSchema } from "@/lib/formSchema";
+import { signUpInfoFormSchema } from "@/lib/formSchema";
 
-type SignUpFormData = z.infer<typeof signUpFormSchema>;
+type SignUpInfoFormData = z.infer<typeof signUpInfoFormSchema>;
 
-const signUpFormField: {
-  name: "email" | "password" | "rePassword";
+const signUpInfoFormField: {
+  name: "username" | "phone" | "picture" | "gender" | "birthdate" | "interest";
   label: string;
+  required?: boolean;
 }[] = [
-  { name: "email", label: "이메일" },
-  { name: "password", label: "비밀번호" },
-  { name: "rePassword", label: "비밀번호 재입력" },
+  { name: "username", label: "유저이름", required: true },
+  { name: "phone", label: "연락처", required: true },
+  { name: "picture", label: "프로필 사진" },
+  { name: "gender", label: "성별" },
+  { name: "birthdate", label: "생년월일" },
+  { name: "interest", label: "관심사" },
 ];
 
 interface Props {
-  toInfoPage: () => void;
+  toSuccessPage: () => void;
 }
 
-export default function SignUpForm({ toInfoPage }: Props) {
-  const form = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpFormSchema),
+export default function SignUpInfoForm({ toSuccessPage }: Props) {
+  const form = useForm<SignUpInfoFormData>({
+    resolver: zodResolver(signUpInfoFormSchema),
   });
 
-  const onSubmit = (data: SignUpFormData) => {
+  const onSubmit = (data: SignUpInfoFormData) => {
     console.log(data);
-    toInfoPage();
+    toSuccessPage();
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {signUpFormField.map((item) => (
+        {signUpInfoFormField.map((item) => (
           <FormField
             key={item.name}
             control={form.control}
             name={item.name}
             render={({ field }) => (
               <FormItem className="text-black">
-                <FormLabel>{item.label}</FormLabel>
+                <FormLabel>
+                  {item.label}
+                  {item.required && "(필수)"}
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder={item.label}
-                    autoComplete={
-                      field.name === "email" ? "email" : "current-password"
-                    }
                     className="rounded border-gray-light placeholder:text-gray modal-input"
                     {...field}
                   />
+                  {item.name === "username" && <Button>{"중복확인"}</Button>}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,7 +78,7 @@ export default function SignUpForm({ toInfoPage }: Props) {
             type="submit"
             className="py-2.5 rounded font-medium text-base text-white bg-primary"
           >
-            {"계속하기"}
+            {"완료하기"}
           </button>
         </div>
       </form>
