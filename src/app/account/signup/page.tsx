@@ -36,27 +36,33 @@ const PageContent = () => {
         <h2 className="self-center font-bold text-2xl text-black">
           {"회원가입"}
         </h2>
-        <SignUpForm toInfoPage={toInfoPage} />
+        <div className="w-96">
+          <SignUpForm toInfoPage={toInfoPage} />
+        </div>
         <SocialLogIn />
       </>
     );
   };
 
   const InfoPage = () => {
-    return <SignUpInfoForm toSuccessPage={toSuccessPage} />;
+    return (
+      <div className="w-[464px]">
+        <SignUpInfoForm toSuccessPage={toSuccessPage} />
+      </div>
+    );
   };
 
   const SuccessPage = () => {
     const username = "브릿지";
 
     return (
-      <>
-        <h2 className="self-center font-medium text-2xl text-black">
+      <div className="w-[520px]">
+        <h2 className="self-center text-center leading-loose font-medium text-2xl text-black">
           {"회원가입이 완료되었습니다."}
           <br />
           {`${username} 님, 클래스브릿지에 오신 것을 환영합니다!`}
         </h2>
-        <div className="mt-20">
+        <div className="flex gap-10 mt-20">
           <Button
             text="마이페이지로 이동하기"
             primary
@@ -71,7 +77,7 @@ const PageContent = () => {
             onClick={() => replace("/account/tutor")}
           />
         </div>
-      </>
+      </div>
     );
   };
 
@@ -109,7 +115,7 @@ const PageContent = () => {
 
 export default function SignUpPage() {
   return (
-    <section className="fixed bottom-2/4 right-2/4 translate-x-2/4 translate-y-2/4 flex flex-col justify-center gap-5 w-[384px] h-fit">
+    <section className="fixed bottom-2/4 right-2/4 translate-x-2/4 translate-y-2/4 flex flex-col justify-center gap-5 h-fit">
       <Suspense fallback={<Loading />}>
         <PageContent />
       </Suspense>
