@@ -22,7 +22,11 @@ export default function Button({
         primary
           ? "text-white bg-primary"
           : "border border-primary text-primary bg-white",
-        type === "sm" ? "" : type === "md" ? "" : "h-[60px] font-bold text-lg",
+        type === "sm"
+          ? "font-medium text-sm min-w-max py-2 px-4"
+          : type === "md"
+            ? ""
+            : "h-[60px] font-bold text-lg",
         className
       )}
       onClick={onClick}

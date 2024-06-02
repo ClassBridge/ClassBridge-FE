@@ -4,7 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -19,6 +18,9 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { signUpInfoFormSchema } from "@/lib/formSchema";
 import { useRef, useState } from "react";
 import Image from "next/image";
+import Button from "../common/Button";
+import ProfilePicture from "../common/ProfilePicture";
+import { cn } from "@/lib/utils";
 
 type SignUpInfoFormData = z.infer<typeof signUpInfoFormSchema>;
 
@@ -35,17 +37,37 @@ const signUpInfoFormField: {
   { value: "interest", label: "관심사" },
 ];
 
-const genders = [
+type Gender = "male" | "female";
+
+const genders: { value: Gender; label: string }[] = [
   { value: "male", label: "남성" },
   { value: "female", label: "여성" },
 ];
 
-const interests = [
-  { value: "cooking", label: "쿠킹" },
-  { value: "handmade", label: "핸드메이드" },
-  { value: "fitness", label: "피트니스" },
+type Interest =
+  | "baking"
+  | "cooking"
+  | "candle"
+  | "yoga"
+  | "drawing"
+  | "gardening";
+
+const interests: { value: Interest; label: string }[] = [
+  { value: "baking", label: "베이킹" },
+  { value: "cooking", label: "요리" },
+  { value: "candle", label: "피트니스" },
+  { value: "yoga", label: "요가" },
   { value: "drawing", label: "드로잉" },
   { value: "gardening", label: "가드닝" },
+  { value: "yoga", label: "요가" },
+  { value: "drawing", label: "드로잉" },
+  { value: "gardening", label: "가드닝" },
+  { value: "drawing", label: "드로잉" },
+  { value: "gardening", label: "가드닝" },
+  { value: "yoga", label: "요가" },
+  { value: "drawing", label: "드로잉" },
+  { value: "gardening", label: "가드닝" },
+  { value: "candle", label: "피트니스" },
 ];
 
 interface Props {
@@ -54,7 +76,9 @@ interface Props {
 
 export default function SignUpInfoForm({ toSuccessPage }: Props) {
   const [isValidUsername, setIsValidUsername] = useState<boolean>(false);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [selectedGender, setSelectedGender] = useState<Gender>();
+  const [selectedInterest, setSelectedInterest] = useState<Interest[]>([]);
+  const [preview, setPreview] = useState<string>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<SignUpInfoFormData>({
@@ -86,75 +110,166 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {signUpInfoFormField.map((item) => (
+        <FormField
+          key={signUpInfoFormField[0].value}
+          control={form.control}
+          name={signUpInfoFormField[0].value}
+          render={({ field }) => (
+            <FormItem className="text-black">
+              <FormLabel>{`${signUpInfoFormField[0].label} (필수)`}</FormLabel>
+              <FormControl>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder={signUpInfoFormField[0].label}
+                    className="rounded border-gray-light placeholder:text-gray modal-input"
+                    value={field.value as string}
+                  />
+                  <Button text="중복확인" primary type="sm" />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          key={signUpInfoFormField[1].value}
+          control={form.control}
+          name={signUpInfoFormField[1].value}
+          render={({ field }) => (
+            <FormItem className="text-black">
+              <FormLabel>{`${signUpInfoFormField[1].label} (필수)`}</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={signUpInfoFormField[1].label}
+                  className="rounded border-gray-light placeholder:text-gray modal-input"
+                  value={field.value as string}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          key={signUpInfoFormField[2].value}
+          control={form.control}
+          name={signUpInfoFormField[2].value}
+          render={({ field }) => (
+            <FormItem className="text-black">
+              <FormLabel>{signUpInfoFormField[2].label}</FormLabel>
+              <div className="flex gap-10">
+                <ProfilePicture src={preview} fallback="CB" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+                <Button
+                  text="사진 업로드"
+                  primary
+                  type="sm"
+                  onClick={handleButtonClick}
+                />
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex gap-4">
           <FormField
-            key={item.value}
+            key={signUpInfoFormField[3].value}
             control={form.control}
-            name={item.value}
+            name={signUpInfoFormField[3].value}
             render={({ field }) => (
               <FormItem className="text-black">
-                <FormLabel>
-                  {item.label}
-                  {item.required && "(필수)"}
-                </FormLabel>
-                {item.value === "picture" ? (
-                  <>
-                    {preview && (
-                      <Image
-                        src={preview}
-                        alt="Preview"
-                        width={40}
-                        height={40}
-                        className="rounded-full mr-10"
-                      />
-                    )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                    />
-                    <button onClick={handleButtonClick}>{"사진 업로드"}</button>
-                  </>
-                ) : item.value === "gender" ? (
-                  <ToggleGroup variant="outline" type="single">
-                    {genders.map((gender) => (
-                      <ToggleGroupItem key={gender.value} value={gender.value}>
-                        {gender.label}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                ) : item.value === "interest" ? (
-                  <ToggleGroup variant="outline" type="multiple">
-                    {interests.map((interest) => (
-                      <ToggleGroupItem
-                        key={interest.value}
-                        value={interest.value}
-                      >
-                        {interest.label}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                ) : (
-                  <FormControl>
-                    <>
-                      <Input
-                        placeholder={item.label}
-                        className="rounded border-gray-light placeholder:text-gray modal-input"
-                        value={field.value as string}
-                      />
-                      {item.value === "username" && (
-                        <Button>{"중복확인"}</Button>
+                <FormLabel>{signUpInfoFormField[3].label}</FormLabel>
+                <div className="flex w-40 h-10 rounded border border-gray-light font-medium text-sm">
+                  {genders.map((gender, i) => (
+                    <button
+                      key={gender.value}
+                      value={gender.value}
+                      className={cn(
+                        "w-20 h-full transition duration-300",
+                        i === 0
+                          ? "rounded-l border-r border-gray-light"
+                          : "rounded-r",
+                        selectedGender === gender.value && "bg-primary-blur"
                       )}
-                    </>
-                  </FormControl>
-                )}
+                      onClick={() => setSelectedGender(gender.value)}
+                    >
+                      {gender.label}
+                    </button>
+                  ))}
+                  <input type="hidden" name="gender" value={selectedGender} />
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
-        ))}
+          <FormField
+            key={signUpInfoFormField[4].value}
+            control={form.control}
+            name={signUpInfoFormField[4].value}
+            render={({ field }) => (
+              <FormItem className="w-full text-black">
+                <FormLabel>{signUpInfoFormField[4].label}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={signUpInfoFormField[4].label}
+                    className="rounded border-gray-light placeholder:text-gray modal-input"
+                    value={field.value as string}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          key={signUpInfoFormField[5].value}
+          control={form.control}
+          name={signUpInfoFormField[5].value}
+          render={({ field }) => (
+            <FormItem className="text-black">
+              <FormLabel>{signUpInfoFormField[5].label}</FormLabel>
+              <div className="grid grid-cols-5 gap-2 font-medium text-sm">
+                {interests.map((interest) => (
+                  <button
+                    key={interest.value}
+                    value={interest.value}
+                    className={cn(
+                      "h-14 rounded border border-gray-light transition duration-300",
+                      selectedInterest.includes(interest.value) &&
+                        "bg-primary-blur"
+                    )}
+                    onClick={() => {
+                      if (selectedInterest.includes(interest.value)) {
+                        const newInterests = selectedInterest.filter(
+                          (e) => e !== interest.value
+                        );
+                        setSelectedInterest(newInterests);
+                      } else {
+                        setSelectedInterest(
+                          selectedInterest.concat(interest.value)
+                        );
+                      }
+                    }}
+                  >
+                    {interest.label}
+                  </button>
+                ))}
+                <input type="hidden" name="interest" value={selectedInterest} />
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="flex flex-col gap-5 pt-5">
           <button
             type="submit"
