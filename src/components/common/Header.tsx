@@ -19,7 +19,7 @@ export default function Header({ auth = false }: { auth?: boolean }) {
           <h1>
             <span className="text-primary">{"c"}</span>
             {"lass "}
-            <span className="text-secondary">{"b"}</span>
+            <span className="text-point">{"b"}</span>
             {"ridge"}
           </h1>
         </Link>
