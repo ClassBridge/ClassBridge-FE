@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,31 +14,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { logInFormSchema } from "@/lib/formSchema";
-import { closeModal } from "@/lib/utils";
+import { signUpFormSchema } from "@/lib/formSchema";
 
-type LogInFormData = z.infer<typeof logInFormSchema>;
+type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
-const logInFormField: { name: "email" | "password"; label: string }[] = [
+const signUpFormField: {
+  name: "email" | "password" | "rePassword";
+  label: string;
+}[] = [
   { name: "email", label: "이메일" },
   { name: "password", label: "비밀번호" },
+  { name: "rePassword", label: "비밀번호 재입력" },
 ];
 
-export default function LogInForm() {
-  const { push } = useRouter();
+interface Props {
+  toInfoPage: () => void;
+}
 
-  const form = useForm<LogInFormData>({
-    resolver: zodResolver(logInFormSchema),
+export default function SignUpForm({ toInfoPage }: Props) {
+  const form = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpFormSchema),
   });
 
-  const onSubmit = (data: LogInFormData) => {
+  const onSubmit = (data: SignUpFormData) => {
     console.log(data);
+    toInfoPage();
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {logInFormField.map((item) => (
+        {signUpFormField.map((item) => (
           <FormField
             key={item.name}
             control={form.control}
@@ -67,17 +72,7 @@ export default function LogInForm() {
             type="submit"
             className="py-2.5 rounded font-medium text-base text-white bg-primary"
           >
-            {"로그인"}
-          </button>
-          <button
-            type="button"
-            className="py-[9px] rounded border border-primary font-medium text-base text-primary bg-white"
-            onClick={() => {
-              closeModal();
-              push("/account/signup");
-            }}
-          >
-            {"회원가입"}
+            {"계속하기"}
           </button>
         </div>
       </form>
