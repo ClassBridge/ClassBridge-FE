@@ -17,6 +17,7 @@ export default function Button({
 }: Props) {
   return (
     <button
+      type="button"
       className={cn(
         "flex items-center justify-center rounded",
         primary
