@@ -132,7 +132,7 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
       profilePictureUrl: preview,
     };
     console.log(formData);
-
+    // TODO  send data to the page.tsx (setState)
     toSuccessPage();
   };
 
@@ -256,7 +256,7 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
                         i === 0
                           ? "rounded-l border-r border-gray-light"
                           : "rounded-r",
-                        selectedGender === gender.value && "bg-primary-blur"
+                        selectedGender === gender.value && "bg-primary-blur",
                       )}
                       onClick={() => setSelectedGender(gender.value)}
                     >
@@ -312,17 +312,17 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
                     className={cn(
                       "h-14 rounded border border-gray-light transition duration-300",
                       selectedInterest.includes(interest.value) &&
-                        "bg-primary-blur"
+                        "bg-primary-blur",
                     )}
                     onClick={() => {
                       if (selectedInterest.includes(interest.value)) {
                         const newInterests = selectedInterest.filter(
-                          (e) => e !== interest.value
+                          (e) => e !== interest.value,
                         );
                         setSelectedInterest(newInterests);
                       } else {
                         setSelectedInterest(
-                          selectedInterest.concat(interest.value)
+                          selectedInterest.concat(interest.value),
                         );
                       }
                     }}

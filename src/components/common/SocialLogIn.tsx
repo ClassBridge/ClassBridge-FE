@@ -16,3 +16,4 @@ export default function SocialLogIn() {
     </>
   );
 }
+// TODO send Google login request to the server

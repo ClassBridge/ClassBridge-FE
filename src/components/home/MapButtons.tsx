@@ -9,7 +9,7 @@ export default function MapButtons() {
   const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
   const [isGeolocation, setIsGeolocation] = useState<boolean>(false);
   const setGeolocation = useSetRecoilState(geolocationState);
-  const [alert, setAlert] = useState<string>();
+  const [alert, setAlert] = useState<string>(); // TODO create custom alert, manage with recoil state
 
   const handleToggleMap = useCallback(() => {
     const map = document.getElementById("map");

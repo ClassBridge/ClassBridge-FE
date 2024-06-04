@@ -10,7 +10,7 @@ import type { Sort } from "@/constants/sort";
 
 export default function ClassList() {
   const [sort, setSort] = useState<Sort>("like-descending");
-
+  // TODO handle search & setState markers
   return (
     <>
       <Maps />

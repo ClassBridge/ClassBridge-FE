@@ -37,7 +37,7 @@ export default function SignUpForm({ toInfoPage }: Props) {
   });
 
   const onSubmit = (data: SignUpFormData) => {
-    console.log(data);
+    console.log(data); // TODO send data to the page.tsx (setState)
     toInfoPage();
   };
 

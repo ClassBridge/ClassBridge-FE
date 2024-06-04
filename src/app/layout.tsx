@@ -7,7 +7,7 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "클래스브릿지",
-  description: "클래스브릿지",
+  description: "클래스브릿지", // TODO more description and metadata
 };
 
 export default function RootLayout({

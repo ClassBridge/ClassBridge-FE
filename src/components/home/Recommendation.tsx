@@ -15,9 +15,13 @@ export default function Recommendation() {
     mockClassCardContent,
     mockClassCardContent,
     mockClassCardContent,
-  ];
+  ]; // TODO add <Link> around each CarouselItem
   return (
-    <AutoplayCarousel opts={{ loop: true }} delay={5000} className="max-w-3xl my-4">
+    <AutoplayCarousel
+      opts={{ loop: true }}
+      delay={5000}
+      className="max-w-3xl my-4"
+    >
       <CarouselContent>
         {recommendations.map((content) => (
           <CarouselItem key={content.title} className="basis-1/3">

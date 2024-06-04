@@ -12,7 +12,7 @@ const pageType = ["auth", "info", "success"] as const;
 type PageType = (typeof pageType)[number];
 
 const PageContent = () => {
-  const { replace } = useRouter();
+  const { replace } = useRouter(); // TODO use useState to save user input data and send to the server at the end
 
   const searchParams = useSearchParams();
   let initialPage: PageType = (searchParams.get("page") as PageType) || "auth";

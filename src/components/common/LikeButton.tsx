@@ -7,7 +7,7 @@ import HeartSolidIcon from "@/assets/icons/heartSolid.svg";
 
 export default function LikeButton() {
   const [isLiked, setIsLiked] = useState<boolean>(false);
-
+  // TODO get classId from ClassCard, auth info from React custom hook; get isLiked value from the server, send value changes to the server
   return (
     <div
       onClick={(e) => {

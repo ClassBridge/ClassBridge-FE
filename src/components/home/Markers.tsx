@@ -17,6 +17,7 @@ export type Marker = {
   address: string;
 };
 
+// TODO create marker recoil state, setState on ClassList with id, title, address, setState location and use value here
 const markers: Marker[] = [
   {
     id: "fadjfhslhd",
