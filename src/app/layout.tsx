@@ -4,6 +4,7 @@ import Header from "@/components/common/Header";
 import LogInModal from "@/components/modal/LogInModal";
 import SearchModal from "@/components/modal/SearchModal";
 import "@/styles/globals.css";
+import Alert from "@/components/common/Alert";
 
 export const metadata: Metadata = {
   title: "클래스브릿지",
@@ -26,6 +27,7 @@ export default function RootLayout({
           </main>
           <LogInModal />
           <SearchModal />
+          <Alert />
         </body>
       </Providers>
     </html>
