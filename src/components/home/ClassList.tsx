@@ -1,29 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SortSelect from "./SortSelect";
 import ClassCard from "@/components/common/ClassCard";
+import Maps from "./Maps";
+import MapButtons from "./MapButtons";
 import { mockClassCardContent } from "@/lib/mock";
 import type { Sort } from "@/constants/sort";
 
 export default function ClassList() {
   const [sort, setSort] = useState<Sort>("like-descending");
 
-  useEffect(() => {
-    console.log(sort);
-  }, [sort]);
-
   return (
     <>
+      <Maps />
       <div className="flex items-center justify-between w-[940px] py-5">
-        <div className="flex gap-5">
-          <button className="w-40 h-10 rounded font-bold text-base text-white bg-primary">
-            {"지도로 보기"}
-          </button>
-          <button className="w-40 h-10 rounded font-bold text-base text-white bg-primary">
-            {"내 주변 클래스"}
-          </button>
-        </div>
+        <MapButtons />
         <div>
           <SortSelect setSort={setSort} />
         </div>
