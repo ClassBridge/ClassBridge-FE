@@ -3,13 +3,14 @@
 import { useCallback, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { geolocationState } from "@/state/geolocation";
+import { alertState } from "@/state/alert";
 import { cn } from "@/lib/utils";
 
 export default function MapButtons() {
   const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
   const [isGeolocation, setIsGeolocation] = useState<boolean>(false);
   const setGeolocation = useSetRecoilState(geolocationState);
-  const [alert, setAlert] = useState<string>(); // TODO create custom alert, manage with recoil state
+  const setAlert = useSetRecoilState(alertState);
 
   const handleToggleMap = useCallback(() => {
     const map = document.getElementById("map");
@@ -34,8 +35,8 @@ export default function MapButtons() {
       (err) => {
         const alertMessage =
           err.code === 1
-            ? "위치 정보 사용 동의 시 이용 가능한 서비스입니다."
-            : "위치 정보를 불러오는데 실패했습니다. 다시 시도해 주세요.";
+            ? "위치 정보 사용 동의가 필요한 서비스입니다."
+            : "위치 정보를 불러오는데 실패했습니다.<br />새로고침 후 다시 시도해 주세요.";
         setAlert(alertMessage);
         error = true;
       },
@@ -49,7 +50,7 @@ export default function MapButtons() {
     if (!isMapOpen) {
       handleToggleMap();
     }
-  }, [handleToggleMap, isMapOpen, setGeolocation]);
+  }, [handleToggleMap, isMapOpen, setAlert, setGeolocation]);
 
   return (
     <div className="flex gap-5">
