@@ -4,6 +4,9 @@ import { useRef, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
+
+import { alertState } from "@/state/alert";
 import { cn, formatDate, formatPhoneNumber } from "@/lib/utils";
 import { signUpInfoFormSchema } from "@/lib/formSchema";
 
@@ -87,6 +90,8 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
   const [preview, setPreview] = useState<string>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const setAlert = useSetRecoilState(alertState);
+
   const form = useForm<SignUpInfoFormData>({
     resolver: zodResolver(signUpInfoFormSchema),
   });
@@ -118,11 +123,12 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
 
   const onSubmit = (data: SignUpInfoFormData) => {
     if (!isUsernameChecked) {
-      return alert("유저이름 중복확인을 완료해 주세요.");
-      // TODO use custom alert component
+      return setAlert("유저이름 중복확인을 완료해 주세요.");
     }
     if (!isValidUsername) {
-      return;
+      return setAlert(
+        "이미 있는 유저이름입니다.<br />사용 가능한 이름을 입력해 주세요.",
+      );
     }
 
     const formData = {
