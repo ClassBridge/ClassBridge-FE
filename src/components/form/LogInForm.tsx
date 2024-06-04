@@ -50,6 +50,7 @@ export default function LogInForm() {
                 <FormControl>
                   <Input
                     placeholder={item.label}
+                    type={field.name === "email" ? "email" : "password"}
                     autoComplete={
                       field.name === "email" ? "email" : "current-password"
                     }

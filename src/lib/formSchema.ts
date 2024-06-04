@@ -64,7 +64,12 @@ export const signUpInfoFormSchema = z.object({
   phoneNumber: z
     .string({ required_error: MESSAGE.required })
     .regex(/^\d{3}-\d{4}-\d{4}$/, { message: MESSAGE.invalidPhone }),
-  profilePictureUrl: z.string().optional(),
+  profilePicture: z
+    .instanceof(File)
+    .refine((file) => file.type.startsWith("image/"), {
+      message: MESSAGE.invalidImage,
+    })
+    .optional(),
   gender: z.enum(["male", "female"]).optional(),
   birthDate: z
     .string()
@@ -89,7 +94,7 @@ export const signUpInfoFormSchema = z.object({
       },
       {
         message: MESSAGE.invalidDate,
-      }
+      },
     )
     .optional(),
   interests: z.array(z.string()).optional(),
