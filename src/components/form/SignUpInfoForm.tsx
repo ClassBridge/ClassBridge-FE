@@ -28,7 +28,7 @@ const signUpInfoFormField: {
   value:
     | "username"
     | "phoneNumber"
-    | "profilePictureUrl"
+    | "profilePicture"
     | "gender"
     | "birthDate"
     | "interests";
@@ -37,7 +37,7 @@ const signUpInfoFormField: {
 }[] = [
   { value: "username", label: "유저이름", required: true },
   { value: "phoneNumber", label: "연락처", required: true },
-  { value: "profilePictureUrl", label: "프로필 사진" },
+  { value: "profilePicture", label: "프로필 사진" },
   { value: "gender", label: "성별" },
   { value: "birthDate", label: "생년월일" },
   { value: "interests", label: "관심사" },
@@ -88,6 +88,7 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
   const [selectedInterest, setSelectedInterest] = useState<Interest[]>([]);
 
   const [preview, setPreview] = useState<string>();
+  const [image, setImage] = useState<File>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const setAlert = useSetRecoilState(alertState);
@@ -113,6 +114,7 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
@@ -135,7 +137,7 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
       ...data,
       gender: selectedGender,
       interests: selectedInterest,
-      profilePictureUrl: preview,
+      profilePicture: image,
     };
     console.log(formData);
     // TODO  send data to the page.tsx (setState)
@@ -270,7 +272,11 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
                     </button>
                   ))}
                   <FormControl>
-                    <Input {...field} className="hidden" />
+                    <Input
+                      {...field}
+                      value={field.value as string}
+                      className="hidden"
+                    />
                   </FormControl>
                 </div>
                 <FormMessage />
@@ -337,7 +343,11 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
                   </button>
                 ))}
                 <FormControl>
-                  <Input {...field} className="hidden" />
+                  <Input
+                    {...field}
+                    value={field.value as string[]}
+                    className="hidden"
+                  />
                 </FormControl>
               </div>
               <FormMessage />
