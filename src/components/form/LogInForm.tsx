@@ -33,7 +33,7 @@ export default function LogInForm() {
   });
 
   const onSubmit = (data: LogInFormData) => {
-    console.log(data);
+    console.log(data); // TODO send data to server
   };
 
   return (

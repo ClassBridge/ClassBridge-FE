@@ -8,7 +8,7 @@ import SearchIcon from "@/assets/icons/search.svg";
 
 export default function Header({ auth = false }: { auth?: boolean }) {
   const { push } = useRouter();
-
+  // TODO get auth info
   return (
     <header className="fixed top-0 inset-x-0 z-10 w-screen h-20 text-black bg-white/80 backdrop-blur">
       <nav className="flex justify-center gap-5 w-screen max-w-screen-lg h-full mx-auto py-5">
