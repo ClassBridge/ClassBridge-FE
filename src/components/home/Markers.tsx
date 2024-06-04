@@ -6,6 +6,7 @@ import {
   Pin,
   InfoWindow,
   useAdvancedMarkerRef,
+  useMap,
 } from "@vis.gl/react-google-maps";
 import COLORS from "@/constants/colors";
 
@@ -32,13 +33,19 @@ const markers: Marker[] = [
 ];
 
 const Marker = ({ marker }: { marker: Marker }) => {
+  const map = useMap();
   const [markerRef, markerAnchor] = useAdvancedMarkerRef();
 
   const [infoWindowShown, setInfoWindowShown] = useState(false);
 
   const handleMarkerClick = useCallback(
-    () => setInfoWindowShown((isShown) => !isShown),
-    [],
+    (ev: google.maps.MapMouseEvent) => {
+      setInfoWindowShown((isShown) => !isShown);
+      if (!map) return;
+      if (!ev.latLng) return;
+      map.panTo(ev.latLng);
+    },
+    [map],
   );
 
   const handleClose = useCallback(() => setInfoWindowShown(false), []);
@@ -47,6 +54,7 @@ const Marker = ({ marker }: { marker: Marker }) => {
     <AdvancedMarker
       position={marker.location}
       ref={markerRef}
+      clickable={true}
       onClick={handleMarkerClick}
     >
       <Pin
