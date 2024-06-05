@@ -26,7 +26,7 @@ export default function ClassPictureCarousel({ images }: Props) {
     >
       <CarouselContent>
         {images.map((image) => (
-          <CarouselItem key={image.id}>
+          <CarouselItem key={image.id} className="flex justify-center">
             <div className="relative w-[620px] h-[360px]">
               <Image
                 src={image.url}
