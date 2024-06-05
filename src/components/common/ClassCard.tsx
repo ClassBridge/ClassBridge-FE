@@ -38,7 +38,7 @@ export default function ClassCard({ size, content }: Props) {
               size === "small" ? "h-[146px]" : "h-[168px]",
             )}
           >
-            <LikeButton />
+            <LikeButton size={26} card />
             {content.imgSrc ? (
               <Image
                 src={content.imgSrc}
