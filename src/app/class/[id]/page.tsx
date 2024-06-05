@@ -1,3 +1,4 @@
+import ClassContent from "@/components/classDetail/ClassContent";
 import ClassPictureCarousel, {
   type ClassImage,
 } from "@/components/classDetail/ClassPictureCarousel";
@@ -40,6 +41,7 @@ export default function ClassDetailPage() {
     <>
       <ClassPictureCarousel images={mockImages} />
       <ClassSummary data={mockData} />
+      <ClassContent />
     </>
   );
 }
