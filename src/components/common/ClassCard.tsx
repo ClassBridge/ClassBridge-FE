@@ -23,19 +23,19 @@ interface Props {
 
 export default function ClassCard({ size, content }: Props) {
   return (
-    <Link href={"/"}>
+    <Link href={"/class/1"}>
       <div className="group relative w-fit h-fit text-black">
         <div
           className={cn(
             "flex flex-col rounded border border-gray-light bg-white transition-all duration-500",
-            size === "small" ? "w-60 h-[280px]" : "w-[300px] h-80"
+            size === "small" ? "w-60 h-[280px]" : "w-[300px] h-80",
           )}
         >
           <div
             className={cn(
               "relative w-full rounded-t group-hover:h-full group-hover:bg-primary-blur transition-all duration-500",
               !content.imgSrc && "flex items-center justify-center bg-black/20",
-              size === "small" ? "h-[146px]" : "h-[168px]"
+              size === "small" ? "h-[146px]" : "h-[168px]",
             )}
           >
             <LikeButton />
@@ -57,7 +57,7 @@ export default function ClassCard({ size, content }: Props) {
         <div
           className={cn(
             "absolute bottom-0 flex flex-col justify-between py-4 px-[18px] group-hover:h-24 group-hover:py-6 transition-all duration-500",
-            size === "small" ? "w-60 h-[134px]" : "w-[300px] h-[152px]"
+            size === "small" ? "w-60 h-[134px]" : "w-[300px] h-[152px]",
           )}
         >
           <h3 className="font-medium text-base truncate">{content.title}</h3>
