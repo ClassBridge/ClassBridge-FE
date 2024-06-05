@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function SearchModal() {
   const [searchTerm, setSearchTerm] = useState<string>("");
-
+  // TODO use recoil state for searchTerm
   useEffect(() => {
     console.log(searchTerm);
   }, [searchTerm]);
