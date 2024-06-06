@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 export default function ClassDetailTab() {
   const handleTabChange = (id: Tab) => {
     const section = document.getElementById(`section-${id}`) as HTMLElement;
-    section.scrollIntoView({ behavior: "smooth", block: "center" });
+    const top = section.offsetTop - 80;
+    window.scrollTo({ behavior: "smooth", top });
   };
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function ClassDetailTab() {
           const top = rect.top;
           const bottom = rect.bottom;
 
-          if (top >= 0 && bottom <= clientHeight) {
+          if (top >= 160 && bottom <= clientHeight) {
             newTab = document.getElementById(
               `tab-${TABS[i].id}`,
             ) as HTMLElement;
@@ -51,12 +52,13 @@ export default function ClassDetailTab() {
       newTab.classList.replace("text-gray", "text-black");
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <nav className="sticky top-20 w-full border-b border-gray bg-white">
+    <nav className="sticky top-20 z-10 w-full border-b border-gray bg-white">
       <ul className="flex justify-center gap-24">
         {TABS.map((tab, i) => (
           <li
