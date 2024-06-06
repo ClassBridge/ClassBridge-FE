@@ -17,7 +17,7 @@ interface Props {
   images: ClassImage[];
 }
 
-export default function ClassPictureCarousel({ images }: Props) {
+export default function ClassDetailCarousel({ images }: Props) {
   return (
     <AutoplayCarousel
       opts={{ loop: true }}

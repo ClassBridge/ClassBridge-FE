@@ -43,7 +43,11 @@ const Group = ({
   );
 };
 
-export default function ClassSummary({ data }: { data: ClassSummaryData }) {
+export default function ClassDetailSummary({
+  data,
+}: {
+  data: ClassSummaryData;
+}) {
   const rowTop = [
     {
       icon: <Image src={StarSolidIcon} alt="Rating" width={24} height={24} />,

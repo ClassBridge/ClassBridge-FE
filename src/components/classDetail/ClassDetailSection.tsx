@@ -4,7 +4,7 @@ interface Props {
   tab: { id: Tab; name: string };
 }
 
-export default function ClassContentSection({ tab }: Props) {
+export default function ClassDetailSection({ tab }: Props) {
   return (
     <section
       id={`section-${tab.id}`}

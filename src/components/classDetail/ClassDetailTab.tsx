@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { type Tab, TABS } from "@/constants/classDetailTabs";
 import { cn } from "@/lib/utils";
 
-export default function ClassContentTab() {
+export default function ClassDetailTab() {
   const handleTabChange = (id: Tab) => {
     const section = document.getElementById(`section-${id}`) as HTMLElement;
     section.scrollIntoView({ behavior: "smooth", block: "center" });
