@@ -1,12 +1,11 @@
 import ReviewCard from "../common/ReviewCard";
+import { mockReviewData } from "@/lib/mock";
 
 export default function ClassReviews() {
-  const data = [{ id: 1, name: "ddd" }];
-
   return (
-    <div>
-      {data.map((review) => (
-        <ReviewCard key={review.id} data={data} />
+    <div className="space-y-2.5">
+      {mockReviewData.map((review) => (
+        <ReviewCard key={review.id} data={review} />
       ))}
     </div>
   );

@@ -15,12 +15,12 @@ export default function StarRating({
 }: Props) {
   return (
     <div className="relative">
-      <div className="flex gap-1">
+      <div className="flex gap-0.5">
         {[1, 2, 3, 4, 5].map((i) => (
           <Star key={i} stroke="#FFC700" strokeWidth={1.5} size={size} />
         ))}
       </div>
-      <div className="absolute top-0 flex gap-1">
+      <div className="absolute top-0 flex gap-0.5">
         {initialValue && (
           <>
             {Array.from({ length: Math.trunc(initialValue) }).map((_, i) => (
