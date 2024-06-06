@@ -1,4 +1,5 @@
 import ClassReviews from "./ClassReviews";
+import ClassFaqs from "./ClassFaqs";
 import TagChip from "../common/TagChip";
 import { type Tab } from "@/constants/classDetailTabs";
 
@@ -26,17 +27,18 @@ export default function ClassDetailSection({ tab, data }: Props) {
       {tab.id === "review" ? (
         <ClassReviews />
       ) : (
-        <div className="pl-3 pr-6">
+        <div className="w-full pl-3">
           {data.tag &&
             data.tag.map((tag) => <TagChip key={tag.tagId} tag={tag} />)}
           {data.title && (
             <div className="font-bold text-base text-black">{data.title}</div>
           )}
           {data.content && (
-            <p className="mt-5 whitespace-pre-wrap font-normal text-base text-black">
+            <p className="mt-5 pr-6 whitespace-pre-wrap font-normal text-base text-black">
               {data.content}
             </p>
           )}
+          {data.faq && <ClassFaqs data={data.faq} />}
         </div>
       )}
     </section>
