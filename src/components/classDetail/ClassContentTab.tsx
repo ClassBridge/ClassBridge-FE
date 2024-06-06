@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { type Tab, tabs } from "./ClassContent";
+import { type Tab, TABS } from "@/constants/classDetailTabs";
 import { cn } from "@/lib/utils";
 
 export default function ClassContentTab() {
   const handleTabChange = (id: Tab) => {
     const section = document.getElementById(`section-${id}`) as HTMLElement;
-    section.scrollIntoView();
+    section.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   useEffect(() => {
@@ -23,9 +23,9 @@ export default function ClassContentTab() {
       if (scrollTop > 730) {
         const clientHeight = document.documentElement.clientHeight;
 
-        for (let i = 0; i < tabs.length; i++) {
+        for (let i = 0; i < TABS.length; i++) {
           const section = document.getElementById(
-            `section-${tabs[i].id}`,
+            `section-${TABS[i].id}`,
           ) as HTMLElement;
 
           const rect = section.getBoundingClientRect();
@@ -34,13 +34,13 @@ export default function ClassContentTab() {
 
           if (top >= 0 && bottom <= clientHeight) {
             newTab = document.getElementById(
-              `tab-${tabs[i].id}`,
+              `tab-${TABS[i].id}`,
             ) as HTMLElement;
             break;
           }
         }
       } else {
-        newTab = document.getElementById(`tab-${tabs[0].id}`) as HTMLElement;
+        newTab = document.getElementById(`tab-${TABS[0].id}`) as HTMLElement;
       }
 
       if (currentTab === newTab) {
@@ -56,9 +56,9 @@ export default function ClassContentTab() {
   }, []);
 
   return (
-    <nav className="sticky top-20 w-full border-b border-gray">
+    <nav className="sticky top-20 w-full border-b border-gray bg-white">
       <ul className="flex justify-center gap-24">
-        {tabs.map((tab, i) => (
+        {TABS.map((tab, i) => (
           <li
             key={tab.id}
             id={`tab-${tab.id}`}
