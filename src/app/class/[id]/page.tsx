@@ -5,6 +5,7 @@ import ClassDetailCarousel from "@/components/classDetail/carousel/Carousel";
 import ClassDetailSummary from "@/components/classDetail/summary/Summary";
 import ClassDetailTab from "@/components/classDetail/nav/Tab";
 import ClassDetailSection from "@/components/classDetail/section/Section";
+import ClassDetailBottomActionBar from "@/components/classDetail/reservation/BottomActionBar";
 import ShareModal from "@/components/classDetail/share/Modal";
 
 import { TABS } from "@/constants/classDetailTabs";
@@ -38,6 +39,7 @@ export default function ClassDetailPage({ params }: Props) {
           data={mockClassSectionData[i]}
         />
       ))}
+      <ClassDetailBottomActionBar price={40000} />
       <ShareModal />
     </>
   );
