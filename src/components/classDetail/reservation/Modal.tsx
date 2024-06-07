@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Backdrop from "@/components/modal/Backdrop";
 import { Calendar } from "@/components/ui/calendar";
+import { Minus, Plus } from "lucide-react";
 import { cn, formatDateToLocaleString } from "@/lib/utils";
 
 export interface LessonData {
@@ -18,14 +19,23 @@ interface Props {
   price: number;
 }
 
+const MIN_PARTICIPANT = 1;
+
 export default function ReservationModal({ data, price }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [availableTime, setAvailableTime] = useState<Date[]>();
-  const [selectedTime, setSelectedTime] = useState<Date>();
-  const [selectedPerson, setSelectedPerson] = useState<number>(1);
+  const [availableTime, setAvailableTime] = useState<Date[] | null>(null);
+  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
+  const [availablePerson, setAvailablePerson] =
+    useState<number>(MIN_PARTICIPANT);
+  const [selectedPerson, setSelectedPerson] = useState<number>(MIN_PARTICIPANT);
+  const [selectedLesson, setSelectedLesson] = useState<number | null>(null);
 
   useEffect(() => {
     if (!selectedDate) {
+      setAvailableTime(null);
+      setSelectedTime(null);
+      setSelectedPerson(MIN_PARTICIPANT);
+      setSelectedLesson(null);
       return;
     }
     const filteredData = data.filter(
@@ -33,11 +43,33 @@ export default function ReservationModal({ data, price }: Props) {
     );
 
     if (filteredData.length < 1) {
+      setAvailableTime(null);
+      setSelectedTime(null);
       return;
     }
     const filteredTime = filteredData.map((data) => data.time);
     setAvailableTime(filteredTime);
   }, [data, selectedDate]);
+
+  useEffect(() => {
+    if (!selectedTime) {
+      setSelectedLesson(null);
+      setAvailablePerson(MIN_PARTICIPANT);
+      setSelectedPerson(MIN_PARTICIPANT);
+      return;
+    }
+    const selectedLesson = data.filter(
+      (data) => data.time.getTime() === selectedTime.getTime(),
+    );
+
+    setSelectedLesson(selectedLesson[0].id);
+    setAvailablePerson(
+      selectedLesson[0].maxParticipant - selectedLesson[0].currentParticipant,
+    );
+    setSelectedPerson(MIN_PARTICIPANT);
+  }, [data, selectedTime]);
+
+  const handleSubmit = () => {};
 
   return (
     <div id="reservation-modal" className="hidden modal">
@@ -93,18 +125,43 @@ export default function ReservationModal({ data, price }: Props) {
           <div className="flex justify-between py-3 px-5 rounded border border-gray-light">
             <span className="font-medium text-base text-black">{"인원"}</span>
             {selectedDate && selectedTime ? (
-              <div></div>
+              <div className="flex flex-col items-end gap-3">
+                <div className="flex items-center gap-4">
+                  <button
+                    className="p-1 rounded bg-primary disabled:bg-gray"
+                    disabled={selectedPerson === MIN_PARTICIPANT}
+                    onClick={() => setSelectedPerson((prev) => prev - 1)}
+                  >
+                    <Minus size={16} stroke="white" strokeWidth={2.5} />
+                  </button>
+                  <span className="font-medium text-base text-black">
+                    {selectedPerson}
+                  </span>
+                  <button
+                    className="p-1 rounded bg-primary disabled:bg-gray"
+                    disabled={selectedPerson === availablePerson}
+                    onClick={() => setSelectedPerson((prev) => prev + 1)}
+                  >
+                    <Plus size={16} stroke="white" strokeWidth={2.5} />
+                  </button>
+                </div>
+                <span className="font-normal text-sm text-black">{`1인 ${price.toLocaleString()}원`}</span>
+              </div>
             ) : (
               <span className="font-normal text-base text-black-blur">
                 {"날짜와 시간을 선택해 주세요."}
               </span>
             )}
           </div>
-          <div className="flex justify-between pt-2 pb-5 border-b border-gray-light">
+          <div className="flex justify-between pt-3 pb-4 px-2 border-b border-gray-light">
             <span>{"예약 금액"}</span>
             <span>{`${(price * selectedPerson).toLocaleString()}원`}</span>
           </div>
-          <button className="self-end w-28 h-10 mt-2 rounded font-bold text-base text-white bg-primary">
+          <button
+            className="self-end w-28 h-10 rounded font-bold text-base text-white bg-primary disabled:bg-gray"
+            disabled={!selectedLesson}
+            onClick={handleSubmit}
+          >
             {"예약하기"}
           </button>
         </div>

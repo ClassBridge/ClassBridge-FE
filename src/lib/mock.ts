@@ -134,13 +134,13 @@ export const mockLessonData: LessonData[] = [
     date: new Date(2024, 5, 7),
     time: new Date(2024, 5, 7, 11, 30),
     maxParticipant: 5,
-    currentParticipant: 2,
+    currentParticipant: 1,
   },
   {
     id: 2,
     date: new Date(2024, 5, 7),
     time: new Date(2024, 5, 7, 16, 50),
     maxParticipant: 5,
-    currentParticipant: 2,
+    currentParticipant: 4,
   },
 ];
