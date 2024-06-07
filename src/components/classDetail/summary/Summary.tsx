@@ -1,6 +1,6 @@
 import Image from "next/image";
-import LikeButton from "../common/LikeButton";
-import { Item } from "./ClassDetailSummaryItem";
+import LikeButton from "@/components/common/LikeButton";
+import { Item } from "@/components/classDetail/summary/SummaryItem";
 import { cn } from "@/lib/utils";
 import StarSolidIcon from "@/assets/icons/starSolid.svg";
 import ShareIcon from "@/assets/icons/share.svg";

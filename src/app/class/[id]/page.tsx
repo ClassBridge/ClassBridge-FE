@@ -1,9 +1,9 @@
 "use client";
 
-import ClassDetailCarousel from "@/components/classDetail/ClassDetailCarousel";
-import ClassDetailSummary from "@/components/classDetail/ClassDetailSummary";
-import ClassDetailTab from "@/components/classDetail/ClassDetailTab";
-import ClassDetailSection from "@/components/classDetail/ClassDetailSection";
+import ClassDetailCarousel from "@/components/classDetail/carousel/Carousel";
+import ClassDetailSummary from "@/components/classDetail/summary/Summary";
+import ClassDetailTab from "@/components/classDetail/tab/Tab";
+import ClassDetailSection from "@/components/classDetail/section/Section";
 import { TABS } from "@/constants/classDetailTabs";
 import {
   mockClassImages,
