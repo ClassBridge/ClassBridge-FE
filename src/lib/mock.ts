@@ -1,8 +1,9 @@
 import type { ClassCardContent } from "@/components/common/ClassCard";
-import type { ClassImage } from "@/components/classDetail/ClassDetailCarousel";
-import type { ClassSummaryData } from "@/components/classDetail/ClassDetailSummary";
-import { ClassSectionData } from "@/components/classDetail/ClassDetailSection";
-import { ReviewData } from "@/components/common/ReviewCard";
+import type { ClassImage } from "@/components/classDetail/carousel/Carousel";
+import type { ClassSummaryData } from "@/components/classDetail/summary/Summary";
+import type { ClassSectionData } from "@/components/classDetail/section/Section";
+import type { ReviewData } from "@/components/common/ReviewCard";
+import type { LessonData } from "@/components/classDetail/reservation/Modal";
 
 export const mockClassCardContent: ClassCardContent = {
   title: "초보도 가능한 즐거운 쿠킹 클래스",
@@ -124,5 +125,22 @@ export const mockReviewData: ReviewData[] = [
       "https://source.unsplash.com/1000x600/?bicycle",
       "https://source.unsplash.com/400x600/?bike",
     ],
+  },
+];
+
+export const mockLessonData: LessonData[] = [
+  {
+    id: 1,
+    date: new Date(2024, 5, 7),
+    time: new Date(2024, 5, 7, 11, 30),
+    maxParticipant: 5,
+    currentParticipant: 2,
+  },
+  {
+    id: 2,
+    date: new Date(2024, 5, 7),
+    time: new Date(2024, 5, 7, 16, 50),
+    maxParticipant: 5,
+    currentParticipant: 2,
   },
 ];
