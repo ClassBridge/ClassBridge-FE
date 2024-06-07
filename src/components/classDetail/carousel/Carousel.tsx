@@ -22,7 +22,7 @@ export default function ClassDetailCarousel({ images }: Props) {
     <AutoplayCarousel
       opts={{ loop: true }}
       delay={5000}
-      className="max-w-2xl my-4"
+      className="max-w-2xl mb-3"
     >
       <CarouselContent>
         {images.map((image) => (
