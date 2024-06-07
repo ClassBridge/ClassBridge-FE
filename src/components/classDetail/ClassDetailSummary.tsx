@@ -1,5 +1,6 @@
 import Image from "next/image";
 import LikeButton from "../common/LikeButton";
+import { Item } from "./ClassDetailSummaryItem";
 import { cn } from "@/lib/utils";
 import StarSolidIcon from "@/assets/icons/starSolid.svg";
 import ShareIcon from "@/assets/icons/share.svg";
@@ -28,33 +29,27 @@ export interface ClassSummaryData {
   personnel: number;
 }
 
-const Group = ({
-  icon,
-  text,
-}: {
-  icon?: React.ReactNode;
-  text: string | number;
-}) => {
-  return (
-    <div className="flex gap-2">
-      {icon && icon}
-      {text}
-    </div>
-  );
-};
-
 export default function ClassDetailSummary({
   data,
 }: {
   data: ClassSummaryData;
 }) {
-  const rowTop = [
+  const toReviewTab = () => {
+    const tab = document.getElementById("tab-review");
+    tab?.click();
+  };
+
+  const openShareModal = () => {};
+
+  const rowTop: Item[] = [
     {
       icon: <Image src={StarSolidIcon} alt="Rating" width={24} height={24} />,
       text: data.rateAvg,
+      onClick: toReviewTab,
     },
     {
       text: `리뷰(${data.reviewCnt})`,
+      onClick: toReviewTab,
     },
     {
       icon: <LikeButton size={24} />,
@@ -63,10 +58,11 @@ export default function ClassDetailSummary({
     {
       icon: <Image src={ShareIcon} alt="Share" width={24} height={24} />,
       text: "공유",
+      onClick: openShareModal,
     },
   ];
 
-  const rowBottom = [
+  const rowBottom: Item[] = [
     {
       icon: <Image src={ClockIcon} alt="Duration" width={24} height={24} />,
       text:
@@ -108,12 +104,17 @@ export default function ClassDetailSummary({
       </div>
       <div className="flex items-center justify-end gap-5 w-full">
         {rowTop.map((item) => (
-          <Group key={item.text} icon={item.icon} text={item.text} />
+          <Item
+            key={item.text}
+            icon={item.icon}
+            text={item.text}
+            onClick={item.onClick}
+          />
         ))}
       </div>
       <div className="flex items-center gap-5 w-full">
         {rowBottom.map((item) => (
-          <Group key={item.text} icon={item.icon} text={item.text} />
+          <Item key={item.text} icon={item.icon} text={item.text} />
         ))}
       </div>
     </header>
