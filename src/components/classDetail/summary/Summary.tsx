@@ -39,30 +39,12 @@ export default function ClassDetailSummary({
     tab?.click();
   };
 
-  const openShareModal = () => {};
+  const openShareModal = () => {
+    const modal = document.getElementById("share-modal");
+    modal?.classList.remove("hidden");
+  };
 
-  const rowTop: Item[] = [
-    {
-      icon: <Image src={StarSolidIcon} alt="Rating" width={24} height={24} />,
-      text: data.rateAvg,
-      onClick: toReviewTab,
-    },
-    {
-      text: `리뷰(${data.reviewCnt})`,
-      onClick: toReviewTab,
-    },
-    {
-      icon: <LikeButton size={24} />,
-      text: data.likeCnt,
-    },
-    {
-      icon: <Image src={ShareIcon} alt="Share" width={24} height={24} />,
-      text: "공유",
-      onClick: openShareModal,
-    },
-  ];
-
-  const rowBottom: Item[] = [
+  const infoList: Item[] = [
     {
       icon: <Image src={ClockIcon} alt="Duration" width={24} height={24} />,
       text:
@@ -85,8 +67,29 @@ export default function ClassDetailSummary({
     },
   ];
 
+  const featureList: Item[] = [
+    {
+      icon: <Image src={StarSolidIcon} alt="Rating" width={24} height={24} />,
+      text: data.rateAvg,
+      onClick: toReviewTab,
+    },
+    {
+      text: `리뷰(${data.reviewCnt})`,
+      onClick: toReviewTab,
+    },
+    {
+      icon: <LikeButton size={24} />,
+      text: data.likeCnt,
+    },
+    {
+      icon: <Image src={ShareIcon} alt="Share" width={24} height={24} />,
+      text: "공유",
+      onClick: openShareModal,
+    },
+  ];
+
   return (
-    <header className="flex flex-col gap-6 w-[640px] py-4">
+    <header className="flex flex-col gap-5 w-[640px] py-4">
       <div className="relative flex items-center justify-center w-full h-10">
         <div
           className={cn(
@@ -102,19 +105,19 @@ export default function ClassDetailSummary({
         </div>
         <h2 className="font-bold text-2xl text-black">{data.title}</h2>
       </div>
-      <div className="flex items-center justify-end gap-5 w-full">
-        {rowTop.map((item) => (
+      <div className="flex justify-center gap-5 w-full">
+        {infoList.map((item) => (
+          <Item key={item.text} icon={item.icon} text={item.text} />
+        ))}
+      </div>
+      <div className="flex justify-end gap-5 w-full mt-2">
+        {featureList.map((item) => (
           <Item
             key={item.text}
             icon={item.icon}
             text={item.text}
             onClick={item.onClick}
           />
-        ))}
-      </div>
-      <div className="flex items-center gap-5 w-full">
-        {rowBottom.map((item) => (
-          <Item key={item.text} icon={item.icon} text={item.text} />
         ))}
       </div>
     </header>
