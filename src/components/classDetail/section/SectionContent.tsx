@@ -28,7 +28,7 @@ export default function SectionContent({ id, data }: Props) {
     );
   } else if (id === "inquiry") {
     return (
-      <>
+      <div className="flex flex-col w-full">
         <div className="flex items-center justify-center gap-4 w-full h-28 rounded bg-primary-blur">
           <span className="font-bold text-2xl text-black">
             {"클래스 문의 하러 가기"}
@@ -55,7 +55,7 @@ export default function SectionContent({ id, data }: Props) {
             ))}
           </Accordion>
         </div>
-      </>
+      </div>
     );
   } else {
     return (
