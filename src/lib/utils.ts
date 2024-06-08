@@ -60,5 +60,5 @@ export const formatDateToLocaleString = (date: Date) => {
 };
 
 export const formatTimeToLocaleString = (time: Date) => {
-  return `${time.getHours()}:${time.getMinutes()}`;
+  return `${time.getHours().toString().padStart(2, "0")}:${time.getMinutes().toString().padStart(2, "0")}`;
 };

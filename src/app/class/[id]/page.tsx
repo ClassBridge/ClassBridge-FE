@@ -27,6 +27,11 @@ interface Props {
 export default function ClassDetailPage({ params }: Props) {
   //   const { data } = useClassData(params.id);
 
+  const openReservationModal = () => {
+    const modal = document.getElementById("reservation-modal");
+    modal?.classList.remove("hidden");
+  };
+
   return (
     <>
       <ClassDetailBreadcrumb
@@ -43,7 +48,7 @@ export default function ClassDetailPage({ params }: Props) {
           data={mockClassSectionData[i]}
         />
       ))}
-      <BottomActionBar price={40000} />
+      <BottomActionBar price={40000} onClick={openReservationModal} />
       <ShareModal />
       <ReservationModal
         data={mockLessonData}

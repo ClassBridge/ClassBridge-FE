@@ -5,9 +5,11 @@ export interface CheckoutClassDetail {
   title: string;
   tutor: string;
   address: string;
+  duration: number;
+  image?: string;
 }
 
-interface Checkout extends CheckoutClassDetail {
+export interface Checkout extends CheckoutClassDetail {
   lessonId: number;
   date: string;
   time: string;
