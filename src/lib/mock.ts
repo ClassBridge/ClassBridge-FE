@@ -1,8 +1,13 @@
 import type { ClassCardContent } from "@/components/common/ClassCard";
-import type { ClassImage } from "@/components/classDetail/ClassDetailCarousel";
-import type { ClassSummaryData } from "@/components/classDetail/ClassDetailSummary";
-import { ClassSectionData } from "@/components/classDetail/ClassDetailSection";
-import { ReviewData } from "@/components/common/ReviewCard";
+import type { ClassImage } from "@/components/classDetail/carousel/Carousel";
+import type { ClassSummaryData } from "@/components/classDetail/summary/Summary";
+import type { ClassSectionData } from "@/components/classDetail/section/Section";
+import type { ReviewData } from "@/components/common/ReviewCard";
+import type { LessonData } from "@/components/classDetail/reservation/Modal";
+import type { CheckoutClassDetail } from "@/state/checkout";
+import ClassImage1 from "@/assets/mock/class1.jpg";
+import ClassImage2 from "@/assets/mock/class2.jpg";
+import ClassImage3 from "@/assets/mock/class3.jpg";
 
 export const mockClassCardContent: ClassCardContent = {
   title: "초보도 가능한 즐거운 쿠킹 클래스",
@@ -19,17 +24,17 @@ export const mockClassImages: ClassImage[] = [
   {
     id: 39399,
     name: "image-1",
-    url: "https://source.unsplash.com/1000x600/?travel",
+    url: ClassImage1.src,
   },
   {
     id: 392399,
     name: "image-2",
-    url: "https://source.unsplash.com/600x400/?food",
+    url: ClassImage2.src,
   },
   {
     id: 3923899,
     name: "image-3",
-    url: "https://source.unsplash.com/600x800/?work",
+    url: ClassImage3.src,
   },
 ];
 
@@ -126,3 +131,29 @@ export const mockReviewData: ReviewData[] = [
     ],
   },
 ];
+
+export const mockLessonData: LessonData[] = [
+  {
+    id: 1,
+    date: new Date(2024, 5, 7),
+    time: new Date(2024, 5, 7, 11, 30),
+    maxParticipant: 5,
+    currentParticipant: 1,
+  },
+  {
+    id: 2,
+    date: new Date(2024, 5, 7),
+    time: new Date(2024, 5, 7, 16, 50),
+    maxParticipant: 5,
+    currentParticipant: 4,
+  },
+];
+
+export const mockCheckoutData: CheckoutClassDetail = {
+  classId: 1,
+  title: mockClassSummaryData.title,
+  tutor: mockClassSectionData[1].title!,
+  address: mockClassSummaryData.address,
+  duration: mockClassSummaryData.duration,
+  image: mockClassImages[0].url,
+};

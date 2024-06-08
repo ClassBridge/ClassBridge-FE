@@ -22,7 +22,7 @@ export default function RootLayout({
       <Providers>
         <body className="w-screen min-h-screen font-pretendard bg-white antialiased overflow-x-hidden">
           <Header />
-          <main className="relative top-20 flex flex-col items-center w-screen max-w-5xl h-full mx-auto">
+          <main className="relative top-20 flex flex-col items-center w-screen max-w-5xl h-full mx-auto pb-20">
             {children}
           </main>
           <LogInModal />
