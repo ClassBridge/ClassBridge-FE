@@ -1,10 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useSetRecoilState } from "recoil";
+import { type CheckoutClassDetail, checkoutState } from "@/state/checkout";
+
 import Backdrop from "@/components/modal/Backdrop";
 import { Calendar } from "@/components/ui/calendar";
 import { Minus, Plus } from "lucide-react";
-import { cn, formatDateToLocaleString } from "@/lib/utils";
+import {
+  cn,
+  formatDateToLocaleString,
+  formatTimeToLocaleString,
+} from "@/lib/utils";
 
 export interface LessonData {
   id: number;
@@ -17,11 +25,16 @@ export interface LessonData {
 interface Props {
   data: LessonData[];
   price: number;
+  checkoutData: CheckoutClassDetail;
 }
 
 const MIN_PARTICIPANT = 1;
 
-export default function ReservationModal({ data, price }: Props) {
+export default function ReservationModal({ data, price, checkoutData }: Props) {
+  const pathname = usePathname();
+  const { push } = useRouter();
+  const setCheckout = useSetRecoilState(checkoutState);
+
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [availableTime, setAvailableTime] = useState<Date[] | null>(null);
   const [selectedTime, setSelectedTime] = useState<Date | null>(null);
@@ -69,7 +82,20 @@ export default function ReservationModal({ data, price }: Props) {
     setSelectedPerson(MIN_PARTICIPANT);
   }, [data, selectedTime]);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    if (!selectedLesson || !selectedDate || !selectedTime || !selectedPerson) {
+      return;
+    }
+    setCheckout({
+      lessonId: selectedLesson,
+      date: formatDateToLocaleString(selectedDate),
+      time: formatTimeToLocaleString(selectedTime),
+      person: selectedPerson,
+      price: selectedPerson * price,
+      ...checkoutData,
+    });
+    push(`${pathname}/checkout`);
+  };
 
   return (
     <div id="reservation-modal" className="hidden modal">
@@ -110,7 +136,7 @@ export default function ReservationModal({ data, price }: Props) {
                     )}
                     onClick={() => setSelectedTime(time)}
                   >
-                    {`${time.getHours()}:${time.getMinutes()}`}
+                    {formatTimeToLocaleString(time)}
                   </button>
                 ))}
               </div>

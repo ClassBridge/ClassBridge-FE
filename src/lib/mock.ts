@@ -4,6 +4,7 @@ import type { ClassSummaryData } from "@/components/classDetail/summary/Summary"
 import type { ClassSectionData } from "@/components/classDetail/section/Section";
 import type { ReviewData } from "@/components/common/ReviewCard";
 import type { LessonData } from "@/components/classDetail/reservation/Modal";
+import { CheckoutClassDetail } from "@/state/checkout";
 
 export const mockClassCardContent: ClassCardContent = {
   title: "초보도 가능한 즐거운 쿠킹 클래스",
@@ -144,3 +145,10 @@ export const mockLessonData: LessonData[] = [
     currentParticipant: 4,
   },
 ];
+
+export const mockCheckoutData: CheckoutClassDetail = {
+  classId: 1,
+  title: mockClassSummaryData.title,
+  tutor: mockClassSectionData[1].title!,
+  address: mockClassSummaryData.address,
+};

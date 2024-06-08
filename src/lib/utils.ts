@@ -58,3 +58,7 @@ export const formatDateToString = (date: Date) => {
 export const formatDateToLocaleString = (date: Date) => {
   return `${date.getFullYear()}년 ${(date.getMonth() + 1).toString().padStart(2, "0")}월 ${date.getDate().toString().padStart(2, "0")}일`;
 };
+
+export const formatTimeToLocaleString = (time: Date) => {
+  return `${time.getHours()}:${time.getMinutes()}`;
+};

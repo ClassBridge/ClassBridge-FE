@@ -12,6 +12,7 @@ import ReservationModal from "@/components/classDetail/reservation/Modal";
 
 import { TABS } from "@/constants/classDetailTabs";
 import {
+  mockCheckoutData,
   mockClassImages,
   mockClassSectionData,
   mockClassSummaryData,
@@ -44,7 +45,11 @@ export default function ClassDetailPage({ params }: Props) {
       ))}
       <BottomActionBar price={40000} />
       <ShareModal />
-      <ReservationModal data={mockLessonData} price={40000} />
+      <ReservationModal
+        data={mockLessonData}
+        price={40000}
+        checkoutData={mockCheckoutData}
+      />
     </>
   );
 }
