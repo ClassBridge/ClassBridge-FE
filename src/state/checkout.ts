@@ -5,6 +5,7 @@ export interface CheckoutClassDetail {
   title: string;
   tutor: string;
   address: string;
+  duration: number;
   image?: string;
 }
 

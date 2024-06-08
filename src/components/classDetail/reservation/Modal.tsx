@@ -86,14 +86,19 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
     if (!selectedLesson || !selectedDate || !selectedTime || !selectedPerson) {
       return;
     }
+
+    const endTime = new Date(selectedTime);
+    endTime.setMinutes(endTime.getMinutes() + checkoutData.duration);
+
     setCheckout({
       lessonId: selectedLesson,
       date: formatDateToLocaleString(selectedDate),
-      time: formatTimeToLocaleString(selectedTime),
+      time: `${formatTimeToLocaleString(selectedTime)} - ${formatTimeToLocaleString(endTime)}`,
       person: selectedPerson,
       price: selectedPerson * price,
       ...checkoutData,
     });
+
     push(`${pathname}/checkout`);
   };
 

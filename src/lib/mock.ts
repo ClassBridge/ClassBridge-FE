@@ -26,12 +26,12 @@ export const mockClassImages: ClassImage[] = [
   {
     id: 392399,
     name: "image-2",
-    url: "https://source.unsplash.com/600x400/?travel",
+    url: "https://source.unsplash.com/600x400/?food",
   },
   {
     id: 3923899,
     name: "image-3",
-    url: "https://source.unsplash.com/600x800/?travel",
+    url: "https://source.unsplash.com/600x800/?work",
   },
 ];
 
@@ -151,5 +151,6 @@ export const mockCheckoutData: CheckoutClassDetail = {
   title: mockClassSummaryData.title,
   tutor: mockClassSectionData[1].title!,
   address: mockClassSummaryData.address,
+  duration: mockClassSummaryData.duration,
   image: mockClassImages[0].url,
 };
