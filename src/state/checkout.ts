@@ -9,7 +9,7 @@ export interface CheckoutClassDetail {
   image?: string;
 }
 
-interface Checkout extends CheckoutClassDetail {
+export interface Checkout extends CheckoutClassDetail {
   lessonId: number;
   date: string;
   time: string;
