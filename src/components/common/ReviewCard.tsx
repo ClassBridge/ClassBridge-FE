@@ -36,7 +36,7 @@ export default function ReviewCard({ data, showClassInfo = false }: Props) {
       <div className={cn("flex gap-5", isOpen && "flex-col")}>
         <div className="overflow-hidden">
           <div className="flex gap-4 mb-4">
-            <StarRating size={20} initialValue={data.rating} />
+            <StarRating size={20} value={data.rating} />
             <span className="font-normal text-sm text-black">
               {data.username}
             </span>
