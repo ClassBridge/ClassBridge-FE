@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { checkoutState } from "@/state/checkout";
 import BottomActionBar from "@/components/classDetail/reservation/BottomActionBar";
@@ -16,7 +18,19 @@ export default function CheckoutPage() {
       <div className="space-y-7 w-full px-32">
         <h3 className="font-medium text-xl text-black">{"구매할 클래스"}</h3>
         <div className="flex gap-12">
-          <div className="min-w-[300px] h-[200px] rounded bg-gray-light"></div>
+          <Link href={`/class/${checkout.classId}`}>
+            <div className="relative min-w-[300px] h-[200px] rounded bg-gray-light">
+              {checkout.image && (
+                <Image
+                  src={checkout.image}
+                  alt={checkout.title}
+                  priority
+                  fill={true}
+                  className="object-cover rounded"
+                />
+              )}
+            </div>
+          </Link>
           <div className="space-y-4 w-full py-4">
             <h4 className="font-bold text-base text-black">{checkout.title}</h4>
             <div className="space-y-2.5 font-normal text-sm text-black">
