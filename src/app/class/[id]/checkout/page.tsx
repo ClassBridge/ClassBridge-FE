@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { checkoutState } from "@/state/checkout";
 import { alertState } from "@/state/alert";
@@ -11,15 +11,20 @@ import RefundPolicy from "@/components/classDetail/checkout/RefundPolicy";
 import BottomActionBar from "@/components/classDetail/reservation/BottomActionBar";
 
 export default function CheckoutPage() {
-  const pathname = usePathname();
-  const { replace } = useRouter();
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const { replace, back } = useRouter();
   const checkout = useRecoilValue(checkoutState);
   const setAlert = useSetRecoilState(alertState);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
+  useEffect(() => setIsMounted(true), []);
+
+  if (!isMounted) {
+    return;
+  }
+
   if (!checkout.classId) {
-    const prev = pathname.replace("checkout", "");
-    return replace(prev);
+    return back();
   }
 
   const openAlert = () => {
