@@ -26,9 +26,9 @@ export default function Button({
         type === "sm"
           ? "font-medium text-sm min-w-max py-2 px-4"
           : type === "md"
-            ? "font-medium text-base min-w-max h-10"
+            ? ""
             : "h-[60px] font-bold text-lg",
-        className,
+        className
       )}
       onClick={onClick}
     >
