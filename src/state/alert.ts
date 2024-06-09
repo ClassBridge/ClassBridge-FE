@@ -1,6 +1,12 @@
 import { RecoilState, atom } from "recoil";
 
-export const alertState: RecoilState<string> = atom({
+interface Alert {
+  content: string;
+  title?: string;
+  type?: "info" | "success";
+}
+
+export const alertState: RecoilState<Alert> = atom({
   key: "alert",
-  default: "",
+  default: {} as Alert,
 });
