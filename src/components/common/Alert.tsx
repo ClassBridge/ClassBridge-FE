@@ -1,13 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
-
-import Backdrop from "@/components/common/Backdrop";
-import Button from "@/components/common/Button";
-import InfoIcon from "@/assets/icons/info.svg";
-import SuccessIcon from "@/assets/icons/success.svg";
+import Button from "./Button";
 
 export default function Alert() {
   const alert = useRecoilValue(alertState);
@@ -15,37 +10,22 @@ export default function Alert() {
 
   return (
     <>
-      {alert.content && (
-        <Backdrop
-          className="flex flex-col items-center gap-6 w-[350px] p-8"
-          onClick={closeAlert}
-        >
-          <Image
-            src={alert.type === "success" ? SuccessIcon : InfoIcon}
-            alt={alert.type === "success" ? "Success" : "Info"}
-            width={40}
-            height={40}
-            priority
+      {alert && (
+        <div className="fixed bottom-2/4 right-2/4 translate-x-2/4 translate-y-2/4 z-50 flex flex-col gap-4 py-4 px-5 rounded border border-gray-light bg-white">
+          <h3 className="font-bold text-lg">{"알림"}</h3>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: alert,
+            }}
           />
-          <div className="space-y-3">
-            <h3 className="text-center font-medium text-xl text-black">
-              {alert.title ? alert.title : "알림"}
-            </h3>
-            <p
-              className="text-center font-normal text-sm"
-              dangerouslySetInnerHTML={{
-                __html: alert.content,
-              }}
-            />
-          </div>
           <Button
             text="닫기"
-            type="md"
+            type="sm"
             primary
-            className="w-[70px]"
+            className="self-end w-12"
             onClick={closeAlert}
           />
-        </Backdrop>
+        </div>
       )}
     </>
   );

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import Backdrop from "@/components/common/Backdrop";
+import Backdrop from "./Backdrop";
 import SearchIcon from "@/assets/icons/search.svg";
+import { useEffect, useState } from "react";
 
 export default function SearchModal() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -18,7 +18,8 @@ export default function SearchModal() {
 
   return (
     <div id="search-modal" className="hidden modal">
-      <Backdrop className="top-0 flex flex-col gap-5 w-[460px] h-[272px] p-2.5">
+      <Backdrop />
+      <div className="fixed top-0 right-2/4 translate-x-2/4 translate-y-2/4 z-50 flex flex-col gap-5 w-[460px] h-[272px] p-2.5 rounded bg-white">
         <div className="flex items-center h-10 pl-3.5 rounded border border-black text-black">
           <Image src={SearchIcon} alt="Search" width={20} height={20} />
           <input
@@ -30,7 +31,7 @@ export default function SearchModal() {
             onChange={handleChange}
           />
         </div>
-      </Backdrop>
+      </div>
     </div>
   );
 }
