@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { type CheckoutClassDetail, checkoutState } from "@/state/checkout";
 
-import Backdrop from "@/components/modal/Backdrop";
+import Backdrop from "@/components/common/Backdrop";
 import { Calendar } from "@/components/ui/calendar";
 import { Minus, Plus } from "lucide-react";
 import {
@@ -104,8 +104,7 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
 
   return (
     <div id="reservation-modal" className="hidden modal">
-      <Backdrop />
-      <div className="fixed bottom-2/4 right-2/4 translate-x-2/4 translate-y-2/4 z-50 flex gap-10 p-12 rounded bg-white">
+      <Backdrop className="flex gap-10 p-12">
         <div className="space-y-3">
           <div className="flex items-center gap-5">
             <h3 className="font-bold text-base text-black">{"날짜 선택"}</h3>
@@ -196,7 +195,7 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
             {"예약하기"}
           </button>
         </div>
-      </div>
+      </Backdrop>
     </div>
   );
 }
