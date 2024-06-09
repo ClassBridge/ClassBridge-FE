@@ -28,7 +28,7 @@ export default function CheckoutPage() {
   }
 
   const openAlert = () => {
-    setAlert("결제 진행 동의에 체크해 주세요.");
+    setAlert({ content: "결제 진행 동의에 체크해 주세요." });
   };
 
   const handlePayment = () => {

@@ -125,12 +125,13 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
 
   const onSubmit = (data: SignUpInfoFormData) => {
     if (!isUsernameChecked) {
-      return setAlert("유저이름 중복확인을 완료해 주세요.");
+      return setAlert({ content: "유저이름 중복확인을 완료해 주세요." });
     }
     if (!isValidUsername) {
-      return setAlert(
-        "이미 있는 유저이름입니다.<br />사용 가능한 이름을 입력해 주세요.",
-      );
+      return setAlert({
+        content:
+          "이미 있는 유저이름입니다.<br />사용 가능한 이름을 입력해 주세요.",
+      });
     }
 
     const formData = {
