@@ -37,7 +37,7 @@ export default function MapButtons() {
           err.code === 1
             ? "위치 정보 사용 동의가 필요한 서비스입니다."
             : "위치 정보를 불러오는데 실패했습니다.<br />새로고침 후 다시 시도해 주세요.";
-        setAlert(alertMessage);
+        setAlert({ content: alertMessage });
         error = true;
       },
     );
