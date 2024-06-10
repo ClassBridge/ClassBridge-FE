@@ -16,7 +16,7 @@ import {
 
 import { signUpFormSchema } from "@/lib/formSchema";
 
-type SignUpFormData = z.infer<typeof signUpFormSchema>;
+export type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
 const signUpFormField: {
   name: "email" | "password" | "rePassword";
@@ -28,17 +28,18 @@ const signUpFormField: {
 ];
 
 interface Props {
-  toInfoPage: () => void;
+  toNextPage: () => void;
+  updateSignupData: (data: SignUpFormData) => void;
 }
 
-export default function SignUpForm({ toInfoPage }: Props) {
+export default function SignUpForm({ toNextPage, updateSignupData }: Props) {
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
   });
 
   const onSubmit = (data: SignUpFormData) => {
-    console.log(data); // TODO send data to the page.tsx (setState)
-    toInfoPage();
+    updateSignupData(data);
+    toNextPage();
   };
 
   return (

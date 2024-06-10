@@ -1,38 +1,53 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-
 import { createClient } from "@/lib/supabase/server";
 import type { LogInFormData } from "@/components/form/LogInForm";
+import type { SignUpFormData } from "@/components/form/SignUpForm";
+import type { SignUpInfoFormData } from "@/components/form/SignUpInfoForm";
 
-export async function login(data: LogInFormData) {
+export async function login(credentials: LogInFormData) {
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { data, error } = await supabase.auth.signInWithPassword(credentials);
 
   if (error) {
-    redirect("/error");
+    return { data, error };
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  return { data, error };
 }
 
-export async function signup(formData: FormData) {
+export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
   const supabase = createClient();
 
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const { error } = await supabase.auth.signUp(data);
+  const { data, error } = await supabase.auth.signUp({
+    email: credentials.email,
+    password: credentials.password,
+    options: {
+      data: {
+        username: credentials.username,
+        phoneNumber: credentials.phoneNumber,
+        gender: credentials.gender,
+        birthDate: credentials.birthDate,
+        interests: credentials.interests,
+      },
+    },
+  });
 
   if (error) {
-    redirect("/error");
+    return { data, error };
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  return { data, error };
+}
+
+export async function getUser() {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+
+  return { data, error };
 }

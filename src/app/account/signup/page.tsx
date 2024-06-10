@@ -2,9 +2,13 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signup } from "@/lib/supabase/actions/auth";
+
 import Loading from "@/app/loading";
-import SignUpForm from "@/components/form/SignUpForm";
-import SignUpInfoForm from "@/components/form/SignUpInfoForm";
+import SignUpForm, { type SignUpFormData } from "@/components/form/SignUpForm";
+import SignUpInfoForm, {
+  type SignUpInfoFormData,
+} from "@/components/form/SignUpInfoForm";
 import SocialLogIn from "@/components/common/SocialLogIn";
 import Button from "@/components/common/Button";
 
@@ -12,7 +16,12 @@ const pageType = ["auth", "info", "success"] as const;
 type PageType = (typeof pageType)[number];
 
 const PageContent = () => {
-  const { replace } = useRouter(); // TODO use useState to save user input data and send to the server at the end
+  const { replace } = useRouter();
+  const [signupData, setSignupData] = useState<Object>();
+
+  const updateSignupData = (data: SignUpFormData | SignUpInfoFormData) => {
+    setSignupData(data);
+  };
 
   const searchParams = useSearchParams();
   let initialPage: PageType = (searchParams.get("page") as PageType) || "auth";
@@ -20,14 +29,22 @@ const PageContent = () => {
     initialPage = "auth";
   }
 
-  const [currentPage, setCurrentPage] = useState<PageType>(initialPage);
+  const [currentPage, setCurrentPage] = useState<PageType | null>(initialPage);
 
-  const toInfoPage = () => {
-    setCurrentPage("info");
-  };
+  const toNextPage = async () => {
+    if (currentPage === "auth") {
+      setCurrentPage("info");
+    } else if (currentPage === "info") {
+      const result = await signup(
+        signupData as SignUpFormData & SignUpInfoFormData,
+      );
 
-  const toSuccessPage = () => {
-    setCurrentPage("success");
+      if (result.error) {
+        setCurrentPage(null);
+      } else {
+        setCurrentPage("success");
+      }
+    }
   };
 
   const AuthPage = () => {
@@ -37,7 +54,10 @@ const PageContent = () => {
           {"회원가입"}
         </h2>
         <div className="w-96">
-          <SignUpForm toInfoPage={toInfoPage} />
+          <SignUpForm
+            toNextPage={toNextPage}
+            updateSignupData={updateSignupData}
+          />
         </div>
         <SocialLogIn />
       </>
@@ -47,7 +67,10 @@ const PageContent = () => {
   const InfoPage = () => {
     return (
       <div className="w-[464px]">
-        <SignUpInfoForm toSuccessPage={toSuccessPage} />
+        <SignUpInfoForm
+          toNextPage={toNextPage}
+          updateSignupData={updateSignupData}
+        />
       </div>
     );
   };

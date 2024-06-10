@@ -33,8 +33,9 @@ export default function LogInForm() {
     resolver: zodResolver(logInFormSchema),
   });
 
-  const onSubmit = (data: LogInFormData) => {
-    login(data);
+  const onSubmit = async (data: LogInFormData) => {
+    await login(data);
+    closeModal();
   };
 
   return (
