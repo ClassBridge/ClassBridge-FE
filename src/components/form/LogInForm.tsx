@@ -17,8 +17,9 @@ import {
 
 import { logInFormSchema } from "@/lib/formSchema";
 import { closeModal } from "@/lib/utils";
+import { login } from "@/lib/supabase/actions/auth";
 
-type LogInFormData = z.infer<typeof logInFormSchema>;
+export type LogInFormData = z.infer<typeof logInFormSchema>;
 
 const logInFormField: { name: "email" | "password"; label: string }[] = [
   { name: "email", label: "이메일" },
@@ -32,8 +33,9 @@ export default function LogInForm() {
     resolver: zodResolver(logInFormSchema),
   });
 
-  const onSubmit = (data: LogInFormData) => {
-    console.log(data); // TODO send data to server
+  const onSubmit = async (data: LogInFormData) => {
+    await login(data);
+    closeModal();
   };
 
   return (

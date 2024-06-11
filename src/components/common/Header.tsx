@@ -1,12 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { getUser } from "@/lib/supabase/actions/auth";
 import { openModal } from "@/lib/utils";
-import SearchIcon from "@/assets/icons/search.svg";
 import { CATEGORY } from "@/constants/category";
 import { REGION } from "@/constants/region";
+import SearchIcon from "@/assets/icons/search.svg";
 
 interface SubMenuProps {
   menu: "category" | "region";
@@ -30,17 +32,34 @@ const SubMenu = ({ menu }: SubMenuProps) => {
   );
 };
 
-export default function Header({ auth = false }: { auth?: boolean }) {
-  // TODO get auth info
+const AuthButton = () => {
   const { push } = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const toggleMenu = (ref: React.RefObject<HTMLDivElement>) => {
-    if (!ref.current) {
-      return;
+  const getAuth = async () => {
+    const res = await getUser();
+    if (res.data.user) {
+      setIsLoggedIn(true);
     }
-    ref.current.classList.toggle("hidden");
   };
 
+  useEffect(() => {
+    getAuth();
+  }, []);
+
+  return (
+    <button
+      className="w-[100px] h-10 rounded font-bold text-white text-sm bg-primary"
+      onClick={() => {
+        !isLoggedIn ? openModal("login") : push("/my");
+      }}
+    >
+      {!isLoggedIn ? "로그인" : "마이페이지"}
+    </button>
+  );
+};
+
+export default function Header() {
   return (
     <header className="fixed top-0 inset-x-0 z-10 w-screen text-black bg-white/80 backdrop-blur">
       <nav className="flex items-center justify-center gap-5 w-screen max-w-screen-lg h-20 mx-auto">
@@ -69,14 +88,7 @@ export default function Header({ auth = false }: { auth?: boolean }) {
         >
           <Image src={SearchIcon} alt="Search" width={20} height={20} />
         </button>
-        <button
-          className="w-[100px] h-10 rounded font-bold text-white text-sm bg-primary"
-          onClick={() => {
-            !auth ? openModal("login") : push("/my");
-          }}
-        >
-          {!auth ? "로그인" : "마이페이지"}
-        </button>
+        <AuthButton />
       </nav>
     </header>
   );
