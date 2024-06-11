@@ -28,9 +28,9 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
     options: {
       data: {
         username: credentials.username,
-        phoneNumber: credentials.phoneNumber,
+        phone_number: credentials.phoneNumber,
         gender: credentials.gender,
-        birthDate: credentials.birthDate,
+        birthdate: credentials.birthDate,
         interests: credentials.interests,
       },
     },
@@ -38,6 +38,22 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
 
   if (error) {
     return { data, error };
+  }
+
+  if (credentials.profilePicture && data.user) {
+    const file = credentials.profilePicture;
+    const filePath = `${data.user.id}-${Math.random()}.${file.name.split(".").pop()}`;
+
+    const { error } = await supabase.storage
+      .from("profile")
+      .upload(filePath, file);
+
+    if (!error) {
+      await supabase
+        .from("users")
+        .update({ profile_url: filePath })
+        .eq("id", data.user.id);
+    }
   }
 
   revalidatePath("/", "layout");
