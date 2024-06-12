@@ -13,19 +13,17 @@ import ReservationModal from "@/components/classDetail/reservation/Modal";
 import { TABS } from "@/constants/classDetailTabs";
 import {
   mockCheckoutData,
-  mockClassImages,
   mockClassSectionData,
-  mockClassSummaryData,
   mockLessonData,
 } from "@/lib/mock";
-import { useClassData } from "@/hooks/useClassData";
+import { useClassData } from "@/hooks/classData";
 
 interface Props {
   params: { id: string };
 }
 
 export default function ClassDetailPage({ params }: Props) {
-  //   const { data } = useClassData(params.id);
+  const { data: classData } = useClassData(params.id);
 
   const openReservationModal = () => {
     const modal = document.getElementById("reservation-modal");
@@ -34,27 +32,41 @@ export default function ClassDetailPage({ params }: Props) {
 
   return (
     <>
-      <ClassDetailBreadcrumb
-        location="서울"
-        category={{ id: 1, name: "피트니스" }}
-      />
-      <ClassDetailCarousel images={mockClassImages} />
-      <ClassDetailSummary data={mockClassSummaryData} />
-      <ClassDetailTab />
-      {TABS.map((tab, i) => (
-        <ClassDetailSection
-          key={tab.id}
-          tab={tab}
-          data={mockClassSectionData[i]}
-        />
-      ))}
-      <BottomActionBar price={40000} onClick={openReservationModal} />
-      <ShareModal />
-      <ReservationModal
-        data={mockLessonData}
-        price={40000}
-        checkoutData={mockCheckoutData}
-      />
+      {classData && (
+        <>
+          <ClassDetailBreadcrumb
+            location={classData.address1}
+            category={classData.category}
+          />
+          {classData.image_urls && (
+            <ClassDetailCarousel image_urls={classData.image_urls} />
+          )}
+          <ClassDetailSummary
+            data={{
+              ...classData,
+              status: new Date(classData.end_date) > new Date() ? 0 : 2,
+            }}
+          />
+          <ClassDetailTab />
+          {TABS.map((tab, i) => (
+            <ClassDetailSection
+              key={tab.id}
+              tab={tab}
+              data={mockClassSectionData[i]}
+            />
+          ))}
+          <BottomActionBar
+            price={classData.price}
+            onClick={openReservationModal}
+          />
+          <ShareModal />
+          <ReservationModal
+            price={classData.price}
+            data={mockLessonData}
+            checkoutData={mockCheckoutData}
+          />
+        </>
+      )}
     </>
   );
 }

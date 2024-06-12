@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getClassList } from "@/lib/supabase/actions/class";
+import { getClass, getClassList } from "@/lib/supabase/actions/class";
 import type { ClassOrder } from "@/lib/supabase/actions/class";
-import type { Enums } from "@/lib/supabase/types";
+import type { Enums, Tables } from "@/lib/supabase/types";
 
 export const useClassListData = (
   sort: ClassOrder,
@@ -10,8 +10,16 @@ export const useClassListData = (
   city?: Enums<"city">,
 ) => {
   return useQuery({
-    queryKey: ["class", sort, category, city, limit],
+    queryKey: ["class-list", sort, category, city, limit],
     queryFn: () =>
       getClassList(sort, limit, category, city).then((data) => data.data),
+  });
+};
+
+export const useClassData = (id: string) => {
+  return useQuery({
+    queryKey: ["class", id],
+    queryFn: () =>
+      getClass(id).then((data) => data.data as unknown as Tables<"class">),
   });
 };

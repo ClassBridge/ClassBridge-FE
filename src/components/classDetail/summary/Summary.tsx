@@ -18,11 +18,11 @@ const classStatus = {
 type ClassStatus = keyof typeof classStatus;
 
 export interface ClassSummaryData {
-  title: string;
+  name: string;
   status: ClassStatus;
-  rateAvg: number;
-  reviewCnt: number;
-  likeCnt: number;
+  rating_avg: number | null;
+  review_cnt: number | null;
+  like_cnt: number | null;
   duration: number;
   address: string;
   parking: boolean;
@@ -70,16 +70,16 @@ export default function ClassDetailSummary({
   const featureList: Item[] = [
     {
       icon: <Image src={StarSolidIcon} alt="Rating" width={24} height={24} />,
-      text: data.rateAvg,
+      text: data.rating_avg || 0,
       onClick: toReviewTab,
     },
     {
-      text: `리뷰(${data.reviewCnt})`,
+      text: `리뷰(${data.review_cnt})`,
       onClick: toReviewTab,
     },
     {
       icon: <LikeButton size={24} />,
-      text: data.likeCnt,
+      text: data.like_cnt || 0,
     },
     {
       icon: <Image src={ShareIcon} alt="Share" width={24} height={24} />,
@@ -103,7 +103,7 @@ export default function ClassDetailSummary({
         >
           {classStatus[data.status]}
         </div>
-        <h2 className="font-bold text-2xl text-black">{data.title}</h2>
+        <h2 className="font-bold text-2xl text-black">{data.name}</h2>
       </div>
       <div className="flex justify-center gap-5 w-full">
         {infoList.map((item) => (

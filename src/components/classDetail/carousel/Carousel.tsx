@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   AutoplayCarousel,
   CarouselContent,
@@ -6,18 +5,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-export interface ClassImage {
-  id: number;
-  name: string;
-  url: string;
-}
+import CarouselImage from "./CarouselImage";
 
 interface Props {
-  images: ClassImage[];
+  image_urls: string[];
 }
 
-export default function ClassDetailCarousel({ images }: Props) {
+export default function ClassDetailCarousel({ image_urls }: Props) {
   return (
     <AutoplayCarousel
       opts={{ loop: true }}
@@ -25,17 +19,10 @@ export default function ClassDetailCarousel({ images }: Props) {
       className="max-w-2xl mb-3"
     >
       <CarouselContent>
-        {images.map((image) => (
-          <CarouselItem key={image.id} className="flex justify-center">
+        {image_urls.map((url, i) => (
+          <CarouselItem key={i} className="flex justify-center">
             <div className="relative w-[620px] h-[360px]">
-              <Image
-                src={image.url}
-                alt={image.name}
-                priority
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
-                className="object-contain"
-              />
+              <CarouselImage bucket={"class"} path={url} alt={`image-${i}`} />
             </div>
           </CarouselItem>
         ))}

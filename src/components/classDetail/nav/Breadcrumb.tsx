@@ -2,7 +2,7 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 
 interface Props {
   location: string;
-  category: { id: number; name: string };
+  category: string;
 }
 
 export default function ClassDetailBreadcrumb({ location, category }: Props) {
@@ -10,8 +10,8 @@ export default function ClassDetailBreadcrumb({ location, category }: Props) {
     { name: "홈", href: { pathname: "/" } },
     { name: location, href: { pathname: "/", query: { location } } },
     {
-      name: category.name,
-      href: { pathname: "/", query: { category: category.id } },
+      name: category,
+      href: { pathname: "/", query: { category: category } },
     },
   ];
 
