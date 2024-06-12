@@ -1,18 +1,21 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Database } from "@/lib/supabase/types";
+import type { Enums } from "@/lib/supabase/types";
 
 const CLASS_TABLE = "class";
-type ClassOrder = "like" | "review" | "date";
+export type ClassOrder = "like" | "review" | "date";
 
 export async function getClassList(
   order: ClassOrder = "like",
-  category?: Database["public"]["Enums"]["category"],
-  city?: Database["public"]["Enums"]["city"],
+  category?: Enums<"category">,
+  city?: Enums<"city">,
 ) {
   const supabase = createClient();
-  let supabaseClassList;
+  let classListQuery;
+
+  const selectColumns =
+    "id, name, category, tutor(name), address1, address2, price, duration, rating_avg, review_cnt, image_urls";
 
   const sortOrder =
     order === "like"
@@ -24,19 +27,19 @@ export async function getClassList(
   if (sortOrder === "end_date") {
     const now = new Date();
     const currentDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-    supabaseClassList = supabase
+    classListQuery = supabase
       .from(CLASS_TABLE)
-      .select("*")
+      .select(selectColumns)
       .gte(sortOrder, currentDate)
       .order(sortOrder, { ascending: true });
   } else {
-    supabaseClassList = supabase
+    classListQuery = supabase
       .from(CLASS_TABLE)
-      .select("*")
+      .select(selectColumns)
       .order(sortOrder, { ascending: false });
   }
 
-  const { data, error } = await supabaseClassList;
+  const { data, error } = await classListQuery;
 
   return { data, error };
 }

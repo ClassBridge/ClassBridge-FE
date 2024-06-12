@@ -2,28 +2,31 @@ import Link from "next/link";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
 import { cn } from "@/lib/utils";
-import { type Category, CATEGORY } from "@/constants/category";
+import { CATEGORY } from "@/constants/category";
+import type { Enums } from "@/lib/supabase/types";
 
-export interface ClassCardContent {
-  imgSrc?: string;
-  title: string;
-  category: Category;
-  tutor: string;
-  place: string;
+export interface ClassCard {
+  id: string;
+  name: string;
+  category: Enums<"category">;
+  tutor: { name: string };
+  address1: Enums<"city">;
+  address2: string;
   price: number;
-  rating?: number;
-  reviewCnt?: number;
   duration: number;
+  rating_avg?: number;
+  review_cnt?: number;
+  image_urls?: string[];
 }
 
 interface Props {
   size: "small" | "large";
-  content: ClassCardContent;
+  content: ClassCard;
 }
 
-export default function ClassCard({ size, content }: Props) {
+export function ClassCard({ size, content }: Props) {
   return (
-    <Link href={"/class/1"}>
+    <Link href={`/class/${content.id}`}>
       <div className="group relative w-fit h-fit text-black">
         <div
           className={cn(
@@ -34,15 +37,16 @@ export default function ClassCard({ size, content }: Props) {
           <div
             className={cn(
               "relative w-full rounded-t group-hover:h-full group-hover:bg-primary-blur transition-all duration-500",
-              !content.imgSrc && "flex items-center justify-center bg-black/20",
+              !content.image_urls &&
+                "flex items-center justify-center bg-black/20",
               size === "small" ? "h-[146px]" : "h-[168px]",
             )}
           >
             <LikeButton size={26} card />
-            {content.imgSrc ? (
+            {content.image_urls ? (
               <Image
-                src={content.imgSrc}
-                alt={content.title}
+                src={content.image_urls[0]}
+                alt={content.name}
                 fill={true}
                 objectFit="cover"
                 className="transform group-hover:scale-105 transition-transform duration-500"
@@ -60,7 +64,7 @@ export default function ClassCard({ size, content }: Props) {
             size === "small" ? "w-60 h-[134px]" : "w-[300px] h-[152px]",
           )}
         >
-          <h3 className="font-medium text-base truncate">{content.title}</h3>
+          <h3 className="font-medium text-base truncate">{content.name}</h3>
           <div className="flex items-center font-normal text-xs">
             <>
               <span className="group-hover:hidden">
@@ -68,13 +72,13 @@ export default function ClassCard({ size, content }: Props) {
               </span>
               <span className="hidden group-hover:inline">
                 <span className="text-point-star">{"★"}</span>
-                {`${content.rating || 0}(${content.reviewCnt || 0})`}
+                {`${content.rating_avg || 0}(${content.review_cnt || 0})`}
               </span>
             </>
             <span className="h-4 mx-3 border-l border-gray-light"></span>
             <>
               <span className="truncate group-hover:hidden">
-                {content.tutor}
+                {content.tutor.name}
               </span>
               <span className="hidden group-hover:inline">
                 {`⏰ ${content.duration}분`}
@@ -82,7 +86,7 @@ export default function ClassCard({ size, content }: Props) {
             </>
           </div>
           <span className="font-normal text-xs truncate group-hover:hidden">
-            {content.place}
+            {`${content.address1} ${content.address2}`}
           </span>
           <span className="self-end font-medium text-base group-hover:hidden">{`₩ ${content.price.toLocaleString()}`}</span>
         </div>
