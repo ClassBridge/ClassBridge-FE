@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
+import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
 import { cn } from "@/lib/utils";
 import { CATEGORY } from "@/constants/category";
 import type { Enums } from "@/lib/supabase/types";
+import { CLASS_BUCKET } from "@/constants/supabase";
 
 export interface ClassCard {
   id: string;
@@ -25,6 +27,10 @@ interface Props {
 }
 
 export function ClassCard({ size, content }: Props) {
+  const url =
+    content.image_urls?.[0] &&
+    getFilePublicUrl(CLASS_BUCKET, content.id, content.image_urls[0]);
+
   return (
     <Link href={`/class/${content.id}`}>
       <div className="group relative w-fit h-fit text-black">
@@ -45,7 +51,7 @@ export function ClassCard({ size, content }: Props) {
             <LikeButton size={26} card />
             {content.image_urls ? (
               <Image
-                src={content.image_urls[0]}
+                src={url!}
                 alt={content.name}
                 fill={true}
                 objectFit="cover"

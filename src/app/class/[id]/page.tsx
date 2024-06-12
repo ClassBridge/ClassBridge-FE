@@ -39,7 +39,10 @@ export default function ClassDetailPage({ params }: Props) {
             category={classData.category}
           />
           {classData.image_urls && (
-            <ClassDetailCarousel image_urls={classData.image_urls} />
+            <ClassDetailCarousel
+              id={classData.id}
+              image_urls={classData.image_urls}
+            />
           )}
           <ClassDetailSummary
             data={{

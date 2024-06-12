@@ -1,14 +1,16 @@
 import Image from "next/image";
 import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
+import type { Buckets } from "@/constants/supabase";
 
 interface Props {
-  bucket: string;
+  bucket: Buckets;
+  folder: string;
   path: string;
   alt: string;
 }
 
-export default function CarouselImage({ bucket, path, alt }: Props) {
-  const url = getFilePublicUrl(bucket, path);
+export default function CarouselImage({ bucket, folder, path, alt }: Props) {
+  const url = getFilePublicUrl(bucket, folder, path);
 
   return (
     <Image

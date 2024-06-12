@@ -2,8 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { Enums } from "@/lib/supabase/types";
+import { CLASS_TABLE } from "@/constants/supabase";
 
-const CLASS_TABLE = "class";
 export type ClassOrder = "like" | "review" | "date";
 
 export async function getClassList(
