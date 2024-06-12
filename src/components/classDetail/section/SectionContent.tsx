@@ -60,8 +60,7 @@ export default function SectionContent({ id, data }: Props) {
   } else {
     return (
       <div className="w-full pl-3">
-        {data.tag &&
-          data.tag.map((tag) => <TagChip key={tag.tagId} tag={tag} />)}
+        {data.tag && data.tag.map((tag) => <TagChip key={tag} tag={tag} />)}
         {data.title && (
           <div className="font-bold text-base text-black">{data.title}</div>
         )}

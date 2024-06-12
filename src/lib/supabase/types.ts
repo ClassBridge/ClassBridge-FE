@@ -20,7 +20,8 @@ export type Database = {
           description: string | null;
           duration: number;
           end_date: string;
-          faqs: string[] | null;
+          faq_answers: string | null;
+          faq_questions: string[] | null;
           id: string;
           image_urls: string[] | null;
           like_cnt: number | null;
@@ -44,7 +45,8 @@ export type Database = {
           description?: string | null;
           duration: number;
           end_date: string;
-          faqs?: string[] | null;
+          faq_answers?: string | null;
+          faq_questions?: string[] | null;
           id?: string;
           image_urls?: string[] | null;
           like_cnt?: number | null;
@@ -68,7 +70,8 @@ export type Database = {
           description?: string | null;
           duration?: number;
           end_date?: string;
-          faqs?: string[] | null;
+          faq_answers?: string | null;
+          faq_questions?: string[] | null;
           id?: string;
           image_urls?: string[] | null;
           like_cnt?: number | null;
@@ -127,7 +130,7 @@ export type Database = {
           },
         ];
       };
-      like: {
+      likes: {
         Row: {
           class_id: string;
           created_at: string;

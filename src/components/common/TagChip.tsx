@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 interface Props {
-  tag: { tagId: number; name: string };
+  tag: string;
 }
 
 export default function TagChip({ tag }: Props) {
@@ -9,13 +9,10 @@ export default function TagChip({ tag }: Props) {
     <Link
       href={{
         pathname: "/",
-        query: { keyword: tag.name },
+        query: { keyword: tag },
       }}
     >
-      <span
-        key={tag.tagId}
-        className="mr-2 py-[5px] px-[15px] rounded-full font-bold text-sm text-black bg-primary-blur"
-      >{`# ${tag.name}`}</span>
+      <span className="mr-2 py-[5px] px-[15px] rounded-full font-bold text-sm text-black bg-primary-blur">{`# ${tag}`}</span>
     </Link>
   );
 }
