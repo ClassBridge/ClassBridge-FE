@@ -8,6 +8,7 @@ export type ClassOrder = "like" | "review" | "date";
 
 export async function getClassList(
   order: ClassOrder = "like",
+  limit?: number,
   category?: Enums<"category">,
   city?: Enums<"city">,
 ) {
@@ -37,6 +38,10 @@ export async function getClassList(
       .from(CLASS_TABLE)
       .select(selectColumns)
       .order(sortOrder, { ascending: false });
+  }
+
+  if (limit) {
+    classListQuery = classListQuery.limit(limit);
   }
 
   const { data, error } = await classListQuery;

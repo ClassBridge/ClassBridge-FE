@@ -1,21 +1,12 @@
-import ClassCard from "@/components/common/ClassCard";
-import { mockClassCardContent } from "@/lib/mock";
 import {
   AutoplayCarousel,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import RecommendationContent from "./RecommendationContent";
 
 export default function Recommendation() {
-  const recommendations = [
-    mockClassCardContent,
-    mockClassCardContent,
-    mockClassCardContent,
-    mockClassCardContent,
-    mockClassCardContent,
-  ]; // TODO add <Link> around each CarouselItem
   return (
     <AutoplayCarousel
       opts={{ loop: true }}
@@ -23,11 +14,7 @@ export default function Recommendation() {
       className="max-w-3xl my-4"
     >
       <CarouselContent>
-        {recommendations.map((content) => (
-          <CarouselItem key={content.title} className="basis-1/3">
-            <ClassCard size="small" content={content} />
-          </CarouselItem>
-        ))}
+        <RecommendationContent />
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
