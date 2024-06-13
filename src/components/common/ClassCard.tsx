@@ -37,12 +37,14 @@ export function ClassCard({ size, content }: Props) {
         <div
           className={cn(
             "flex flex-col rounded border border-gray-light bg-white transition-all duration-500",
-            size === "small" ? "w-60 h-[280px]" : "w-[300px] h-80",
+            size === "small"
+              ? "w-60 h-[280px]"
+              : "w-[300px] h-80 group-hover:scale-105",
           )}
         >
           <div
             className={cn(
-              "relative w-full rounded-t group-hover:h-full group-hover:bg-primary-blur transition-all duration-500",
+              "relative w-full group-hover:h-full rounded-t group-hover:rounded group-hover:bg-primary-blur transition-all duration-500",
               !content.image_urls &&
                 "flex items-center justify-center bg-black/20",
               size === "small" ? "h-[146px]" : "h-[168px]",
@@ -55,7 +57,7 @@ export function ClassCard({ size, content }: Props) {
                 alt={content.name}
                 fill={true}
                 objectFit="cover"
-                className="transform group-hover:scale-105 transition-transform duration-500"
+                className="rounded-t group-hover:rounded transform transition-transform duration-500"
               />
             ) : (
               <span className="font-bold text-base text-white tracking-widest">
@@ -66,8 +68,10 @@ export function ClassCard({ size, content }: Props) {
         </div>
         <div
           className={cn(
-            "absolute bottom-0 flex flex-col justify-between py-4 px-[18px] group-hover:h-24 group-hover:py-6 transition-all duration-500",
-            size === "small" ? "w-60 h-[134px]" : "w-[300px] h-[152px]",
+            "absolute bottom-0 flex flex-col justify-between py-4 px-[18px] group-hover:h-20 group-hover:bg-white-blur group-hover:backdrop-blur transition-all duration-500",
+            size === "small"
+              ? "w-60 h-[134px] rounded-b"
+              : "w-[300px] h-[152px]",
           )}
         >
           <h3 className="font-medium text-base truncate">{content.name}</h3>
