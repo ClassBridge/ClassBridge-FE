@@ -22,7 +22,7 @@ export default function SortSelect({ setSort }: Props) {
     <Select
       required
       name="sort-class"
-      defaultValue="like-descending"
+      defaultValue="like"
       onValueChange={handleSortChange}
     >
       <SelectTrigger className="w-40 h-[34px] rounded border-black text-black !ring-0">

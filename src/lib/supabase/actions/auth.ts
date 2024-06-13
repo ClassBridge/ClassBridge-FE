@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { LogInFormData } from "@/components/form/LogInForm";
 import type { SignUpFormData } from "@/components/form/SignUpForm";
 import type { SignUpInfoFormData } from "@/components/form/SignUpInfoForm";
+import { USER_TABLE, PROFILE_BUCKET } from "@/constants/supabase";
 
 export async function login(credentials: LogInFormData) {
   const supabase = createClient();
@@ -42,15 +43,15 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
 
   if (credentials.profilePicture && data.user) {
     const file = credentials.profilePicture;
-    const filePath = `${data.user.id}-${Math.random()}.${file.name.split(".").pop()}`;
+    const filePath = `${data.user.id}/profile.${file.name.split(".").pop()}`;
 
     const { error } = await supabase.storage
-      .from("profile")
+      .from(PROFILE_BUCKET)
       .upload(filePath, file);
 
     if (!error) {
       await supabase
-        .from("users")
+        .from(USER_TABLE)
         .update({ profile_url: filePath })
         .eq("id", data.user.id);
     }
