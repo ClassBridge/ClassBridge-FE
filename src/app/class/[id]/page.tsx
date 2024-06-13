@@ -1,5 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useClassData } from "@/hooks/classData";
+import { useTutorData } from "@/hooks/tutorData";
+import { useLessonListData } from "@/hooks/lessonData";
+import { TABS } from "@/constants/classDetailTabs";
+
 import ClassDetailBreadcrumb from "@/components/classDetail/nav/Breadcrumb";
 import ClassDetailCarousel from "@/components/classDetail/carousel/Carousel";
 import ClassDetailSummary from "@/components/classDetail/summary/Summary";
@@ -10,20 +16,16 @@ import BottomActionBar from "@/components/classDetail/reservation/BottomActionBa
 import ShareModal from "@/components/classDetail/share/Modal";
 import ReservationModal from "@/components/classDetail/reservation/Modal";
 
-import { TABS } from "@/constants/classDetailTabs";
-import { mockCheckoutData, mockLessonData } from "@/lib/mock";
-import { useClassData } from "@/hooks/classData";
-import { useTutorData } from "@/hooks/tutorData";
-import { useEffect, useState } from "react";
-
 interface Props {
   params: { id: string };
 }
 
 export default function ClassDetailPage({ params }: Props) {
   const [tutorId, setTutorId] = useState<string>("");
+
   const { data: classData } = useClassData(params.id);
   const { data: tutorData } = useTutorData(tutorId);
+  const { data: lessonListData } = useLessonListData(params.id);
 
   useEffect(() => {
     if (classData) {
@@ -38,7 +40,7 @@ export default function ClassDetailPage({ params }: Props) {
 
   return (
     <>
-      {classData && (
+      {classData?.id && (
         <>
           <ClassDetailBreadcrumb
             location={classData.address1}
@@ -87,11 +89,16 @@ export default function ClassDetailPage({ params }: Props) {
             onClick={openReservationModal}
           />
           <ShareModal />
-          <ReservationModal
-            price={classData.price}
-            data={mockLessonData}
-            checkoutData={mockCheckoutData}
-          />
+          {lessonListData && (
+            <ReservationModal
+              data={lessonListData}
+              classData={{
+                id: classData.id,
+                maxParticipant: classData.personnel,
+                price: classData.price,
+              }}
+            />
+          )}
         </>
       )}
     </>

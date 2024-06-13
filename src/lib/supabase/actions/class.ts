@@ -59,3 +59,16 @@ export async function getClass(classId: string) {
 
   return { data, error };
 }
+
+export async function getClassSummary(classId: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from(CLASS_TABLE)
+    .select(
+      "id, name, category, tutor(name), address, price, duration, image_urls",
+    )
+    .eq("id", classId);
+
+  return { data, error };
+}

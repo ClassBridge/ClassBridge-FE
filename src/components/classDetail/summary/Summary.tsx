@@ -49,7 +49,7 @@ export default function ClassDetailSummary({
       icon: <Image src={ClockIcon} alt="Duration" width={24} height={24} />,
       text:
         `${Math.trunc(data.duration / 60)}시간` +
-        (data.duration % 60 !== 0 && ` ${data.duration % 60}분`),
+        (data.duration % 60 !== 0 ? ` ${data.duration % 60}분` : ""),
     },
     {
       icon: <Image src={LocationIcon} alt="Location" width={24} height={24} />,

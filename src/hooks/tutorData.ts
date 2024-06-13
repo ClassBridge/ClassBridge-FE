@@ -6,6 +6,6 @@ export const useTutorData = (id: string) => {
   return useQuery({
     queryKey: ["tutor", id],
     queryFn: () =>
-      getTutor(id).then((data) => data.data as unknown as Tables<"tutor">),
+      getTutor(id).then((data) => data.data?.[0] as unknown as Tables<"tutor">),
   });
 };

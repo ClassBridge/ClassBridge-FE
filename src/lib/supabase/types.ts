@@ -20,7 +20,7 @@ export type Database = {
           description: string | null;
           duration: number;
           end_date: string;
-          faq_answers: string | null;
+          faq_answers: string[] | null;
           faq_questions: string[] | null;
           id: string;
           image_urls: string[] | null;
@@ -45,7 +45,7 @@ export type Database = {
           description?: string | null;
           duration: number;
           end_date: string;
-          faq_answers?: string | null;
+          faq_answers?: string[] | null;
           faq_questions?: string[] | null;
           id?: string;
           image_urls?: string[] | null;
@@ -70,7 +70,7 @@ export type Database = {
           description?: string | null;
           duration?: number;
           end_date?: string;
-          faq_answers?: string | null;
+          faq_answers?: string[] | null;
           faq_questions?: string[] | null;
           id?: string;
           image_urls?: string[] | null;
@@ -97,7 +97,7 @@ export type Database = {
       };
       lesson: {
         Row: {
-          class_id: string | null;
+          class_id: string;
           created_at: string;
           date: string;
           id: string;
@@ -105,7 +105,7 @@ export type Database = {
           time: string;
         };
         Insert: {
-          class_id?: string | null;
+          class_id: string;
           created_at?: string;
           date: string;
           id?: string;
@@ -113,7 +113,7 @@ export type Database = {
           time: string;
         };
         Update: {
-          class_id?: string | null;
+          class_id?: string;
           created_at?: string;
           date?: string;
           id?: string;
@@ -159,6 +159,48 @@ export type Database = {
           },
           {
             foreignKeyName: "like_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reservation: {
+        Row: {
+          created_at: string;
+          id: string;
+          lesson_id: string;
+          quantity: number;
+          status: Database["public"]["Enums"]["reservation_status"];
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          lesson_id: string;
+          quantity: number;
+          status?: Database["public"]["Enums"]["reservation_status"];
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          lesson_id?: string;
+          quantity?: number;
+          status?: Database["public"]["Enums"]["reservation_status"];
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reservation_lesson_id_fkey";
+            columns: ["lesson_id"];
+            isOneToOne: false;
+            referencedRelation: "lesson";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reservation_user_id_fkey";
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "user";
@@ -316,6 +358,7 @@ export type Database = {
         | "제주도"
         | "세종";
       gender: "male" | "female";
+      reservation_status: "pending" | "canceled" | "success" | "error";
     };
     CompositeTypes: {
       [_ in never]: never;
