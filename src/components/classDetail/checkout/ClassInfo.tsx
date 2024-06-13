@@ -1,22 +1,43 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { Checkout } from "@/state/checkout";
+import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
+import { CLASS_BUCKET } from "@/constants/supabase";
+import {
+  formatDateToLocaleString,
+  formatTimeToLocaleString,
+} from "@/lib/utils";
 
 interface Props {
-  checkout: Checkout;
+  data: {
+    time: string;
+    quantity: number;
+  };
+  classData: {
+    id: string;
+    name: string;
+    image_urls: string[];
+    tutor: { name: string };
+    address: string;
+    duration: number;
+    price: number;
+  };
 }
 
-export default function ClassInfo({ checkout }: Props) {
+export default function ClassInfo({ data, classData }: Props) {
+  const url =
+    classData.image_urls?.[0] &&
+    getFilePublicUrl(CLASS_BUCKET, classData.id, classData.image_urls[0]);
+
   return (
     <div className="space-y-7 w-full px-32">
       <h3 className="font-bold text-xl text-black">{"구매할 클래스"}</h3>
       <div className="flex gap-12">
-        <Link href={`/class/${checkout.classId}`}>
+        <Link href={`/class/${classData.id}`}>
           <div className="relative min-w-[300px] h-[200px] rounded bg-gray-light">
-            {checkout.image && (
+            {classData.image_urls[0] && (
               <Image
-                src={checkout.image}
-                alt={checkout.title}
+                src={url}
+                alt={classData.name}
                 priority
                 fill={true}
                 sizes="(max-width: 400px) 100vw, (max-width: 600px) 75vw, (max-width: 1200px) 50vw, 25vw"
@@ -26,21 +47,21 @@ export default function ClassInfo({ checkout }: Props) {
           </div>
         </Link>
         <div className="space-y-4 w-full py-4">
-          <h4 className="font-bold text-base text-black">{checkout.title}</h4>
+          <h4 className="font-bold text-base text-black">{classData.name}</h4>
           <div className="space-y-2 font-normal text-sm text-black">
-            <span className="block">{checkout.tutor}</span>
-            <span className="block">{checkout.address}</span>
+            <span className="block">{classData.tutor.name}</span>
+            <span className="block">{classData.address}</span>
             <div>
               <span className="pr-2.5 border-r border-gray-light">
-                {checkout.date}
+                {formatDateToLocaleString(new Date(data.time))}
               </span>
               <span className="px-2.5 border-r border-gray-light">
-                {checkout.time}
+                {`${formatTimeToLocaleString(new Date(data.time))} - ${formatTimeToLocaleString(new Date(new Date(data.time).getMinutes() + classData.duration))}`}
               </span>
-              <span className="pl-2.5">{`${checkout.person}인`}</span>
+              <span className="pl-2.5">{`${data.quantity}인`}</span>
             </div>
           </div>
-          <span className="block w-full text-end font-bold text-base text-black">{`${checkout.price.toLocaleString()}원`}</span>
+          <span className="block w-full text-end font-bold text-base text-black">{`${classData.price.toLocaleString()}원`}</span>
         </div>
       </div>
     </div>

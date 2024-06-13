@@ -2,38 +2,34 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useSetRecoilState } from "recoil";
-import { type CheckoutClassDetail, checkoutState } from "@/state/checkout";
-
-import Backdrop from "@/components/common/Backdrop";
-import { Calendar } from "@/components/ui/calendar";
-import { Minus, Plus } from "lucide-react";
 import {
   cn,
   formatDateToLocaleString,
   formatTimeToLocaleString,
 } from "@/lib/utils";
+import { makeReservation } from "@/lib/supabase/actions/reservation";
+import { useUserId } from "@/hooks/userData";
+import type { Tables } from "@/lib/supabase/types";
 
-export interface LessonData {
-  id: number;
-  date: Date;
-  time: Date;
-  maxParticipant: number;
-  currentParticipant: number;
-}
+import Backdrop from "@/components/common/Backdrop";
+import { Calendar } from "@/components/ui/calendar";
+import { Minus, Plus } from "lucide-react";
 
 interface Props {
-  data: LessonData[];
-  price: number;
-  checkoutData: CheckoutClassDetail;
+  data: Tables<"lesson">[];
+  classData: {
+    id: string;
+    maxParticipant: number;
+    price: number;
+  };
 }
 
 const MIN_PARTICIPANT = 1;
 
-export default function ReservationModal({ data, price, checkoutData }: Props) {
+export default function ReservationModal({ data, classData }: Props) {
   const pathname = usePathname();
   const { push } = useRouter();
-  const setCheckout = useSetRecoilState(checkoutState);
+  const { data: userId } = useUserId();
 
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [availableTime, setAvailableTime] = useState<Date[] | null>(null);
@@ -41,7 +37,7 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
   const [availablePerson, setAvailablePerson] =
     useState<number>(MIN_PARTICIPANT);
   const [selectedPerson, setSelectedPerson] = useState<number>(MIN_PARTICIPANT);
-  const [selectedLesson, setSelectedLesson] = useState<number | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
 
   useEffect(() => {
     if (!selectedDate) {
@@ -51,8 +47,9 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
       setSelectedLesson(null);
       return;
     }
+
     const filteredData = data.filter(
-      (data) => data.date.getTime() === selectedDate.getTime(),
+      (data) => new Date(data.date).setHours(0) === selectedDate.getTime(),
     );
 
     if (filteredData.length < 1) {
@@ -60,7 +57,7 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
       setSelectedTime(null);
       return;
     }
-    const filteredTime = filteredData.map((data) => data.time);
+    const filteredTime = filteredData.map((data) => new Date(data.time));
     setAvailableTime(filteredTime);
   }, [data, selectedDate]);
 
@@ -72,34 +69,33 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
       return;
     }
     const selectedLesson = data.filter(
-      (data) => data.time.getTime() === selectedTime.getTime(),
+      (data) => new Date(data.time).getTime() === selectedTime.getTime(),
     );
 
     setSelectedLesson(selectedLesson[0].id);
     setAvailablePerson(
-      selectedLesson[0].maxParticipant - selectedLesson[0].currentParticipant,
+      classData.maxParticipant - (selectedLesson[0].participants?.length || 0),
     );
     setSelectedPerson(MIN_PARTICIPANT);
-  }, [data, selectedTime]);
+  }, [classData.maxParticipant, data, selectedTime]);
 
-  const handleSubmit = () => {
-    if (!selectedLesson || !selectedDate || !selectedTime || !selectedPerson) {
+  const handleSubmit = async () => {
+    if (!userId) {
+      return;
+    }
+    if (!selectedLesson || !selectedPerson) {
       return;
     }
 
-    const endTime = new Date(selectedTime);
-    endTime.setMinutes(endTime.getMinutes() + checkoutData.duration);
-
-    setCheckout({
-      lessonId: selectedLesson,
-      date: formatDateToLocaleString(selectedDate),
-      time: `${formatTimeToLocaleString(selectedTime)} - ${formatTimeToLocaleString(endTime)}`,
-      person: selectedPerson,
-      price: selectedPerson * price,
-      ...checkoutData,
+    const { data, error } = await makeReservation({
+      user_id: userId,
+      lesson_id: selectedLesson,
+      quantity: selectedPerson,
     });
 
-    push(`${pathname}/checkout`);
+    if (data.id) {
+      return push(`${pathname}/checkout/${data.id}`);
+    }
   };
 
   return (
@@ -175,7 +171,7 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
                     <Plus size={16} stroke="white" strokeWidth={2.5} />
                   </button>
                 </div>
-                <span className="font-normal text-sm text-black">{`1인 ${price.toLocaleString()}원`}</span>
+                <span className="font-normal text-sm text-black">{`1인 ${classData.price.toLocaleString()}원`}</span>
               </div>
             ) : (
               <span className="font-normal text-base text-black-blur">
@@ -185,7 +181,7 @@ export default function ReservationModal({ data, price, checkoutData }: Props) {
           </div>
           <div className="flex justify-between pt-3 pb-4 px-2 border-b border-gray-light">
             <span>{"예약 금액"}</span>
-            <span>{`${(price * selectedPerson).toLocaleString()}원`}</span>
+            <span>{`${(classData.price * selectedPerson).toLocaleString()}원`}</span>
           </div>
           <button
             className="self-end w-28 h-10 rounded font-bold text-base text-white bg-primary disabled:bg-gray"

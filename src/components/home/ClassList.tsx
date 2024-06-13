@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useClassListData } from "@/hooks/classData";
 import SortSelect from "./SortSelect";
-import ClassCard from "@/components/common/ClassCard";
+import { ClassCard } from "@/components/common/ClassCard";
 import Maps from "./Maps";
 import MapButtons from "./MapButtons";
-import { mockClassCardContent } from "@/lib/mock";
 import type { Sort } from "@/constants/sort";
 
 export default function ClassList() {
-  const [sort, setSort] = useState<Sort>("like-descending");
-  // TODO handle search & setState markers
+  const [sort, setSort] = useState<Sort>("like");
+  const { data: classList } = useClassListData(sort);
+
   return (
     <>
       <Maps />
@@ -21,9 +22,14 @@ export default function ClassList() {
         </div>
       </div>
       <section className="grid grid-cols-3 gap-x-5 gap-y-7 mb-10">
-        {Array.from({ length: 18 }).map((_, i) => (
-          <ClassCard key={i} size="large" content={mockClassCardContent} />
-        ))}
+        {classList &&
+          classList.map((item) => (
+            <ClassCard
+              key={item.id}
+              size="large"
+              content={item as unknown as ClassCard}
+            />
+          ))}
       </section>
     </>
   );

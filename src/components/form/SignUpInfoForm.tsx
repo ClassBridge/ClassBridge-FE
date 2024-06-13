@@ -22,7 +22,7 @@ import {
 import Button from "../common/Button";
 import ProfilePicture from "../common/ProfilePicture";
 
-type SignUpInfoFormData = z.infer<typeof signUpInfoFormSchema>;
+export type SignUpInfoFormData = z.infer<typeof signUpInfoFormSchema>;
 
 const signUpInfoFormField: {
   value:
@@ -77,10 +77,14 @@ const interests: { value: Interest; label: string }[] = [
 ];
 
 interface Props {
-  toSuccessPage: () => void;
+  toNextPage: () => void;
+  updateSignupData: (data: SignUpInfoFormData) => void;
 }
 
-export default function SignUpInfoForm({ toSuccessPage }: Props) {
+export default function SignUpInfoForm({
+  toNextPage,
+  updateSignupData,
+}: Props) {
   const [isUsernameChecked, setIsUsernameChecked] = useState<boolean>(false);
   const [isValidUsername, setIsValidUsername] = useState<boolean>(false);
 
@@ -134,15 +138,15 @@ export default function SignUpInfoForm({ toSuccessPage }: Props) {
       });
     }
 
-    const formData = {
+    const formData: SignUpInfoFormData = {
       ...data,
       gender: selectedGender,
       interests: selectedInterest,
       profilePicture: image,
     };
-    console.log(formData);
-    // TODO  send data to the page.tsx (setState)
-    toSuccessPage();
+
+    updateSignupData(formData);
+    toNextPage();
   };
 
   return (

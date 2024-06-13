@@ -2,10 +2,10 @@ import SectionContent from "@/components/classDetail/section/SectionContent";
 import type { Tab } from "@/constants/classDetailTabs";
 
 export interface ClassSectionData {
-  content?: string;
-  title?: string;
-  tag?: { tagId: number; name: string }[];
-  faq?: { title: string; content: string }[];
+  content?: string | null;
+  title?: string | null;
+  tag?: string[] | null;
+  faq?: { title: string; content: string }[] | null;
 }
 
 interface Props {
