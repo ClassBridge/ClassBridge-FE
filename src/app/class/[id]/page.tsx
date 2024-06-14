@@ -6,15 +6,15 @@ import { useTutorData } from "@/hooks/tutorData";
 import { useLessonListData } from "@/hooks/lessonData";
 import { TABS } from "@/constants/classDetailTabs";
 
-import ClassDetailBreadcrumb from "@/components/classDetail/nav/Breadcrumb";
-import ClassDetailCarousel from "@/components/classDetail/carousel/Carousel";
-import ClassDetailSummary from "@/components/classDetail/summary/Summary";
-import ClassDetailTab from "@/components/classDetail/nav/Tab";
-import ClassDetailSection from "@/components/classDetail/section/Section";
+import ClassDetailBreadcrumb from "@/components/pages/class/nav/Breadcrumb";
+import ClassDetailCarousel from "@/components/pages/class/carousel/Carousel";
+import ClassDetailSummary from "@/components/pages/class/summary/Summary";
+import ClassDetailTab from "@/components/pages/class/nav/Tab";
+import ClassDetailSection from "@/components/pages/class/section/Section";
 
-import BottomActionBar from "@/components/classDetail/reservation/BottomActionBar";
-import ShareModal from "@/components/classDetail/share/Modal";
-import ReservationModal from "@/components/classDetail/reservation/Modal";
+import BottomActionBar from "@/components/pages/class/reservation/BottomActionBar";
+import ShareModal from "@/components/pages/class/share/Modal";
+import ReservationModal from "@/components/pages/class/reservation/Modal";
 
 interface Props {
   params: { id: string };

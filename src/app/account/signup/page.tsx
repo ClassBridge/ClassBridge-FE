@@ -5,10 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signup } from "@/lib/supabase/actions/auth";
 
 import Loading from "@/app/loading";
-import SignUpForm, { type SignUpFormData } from "@/components/form/SignUpForm";
+import SignUpForm, {
+  type SignUpFormData,
+} from "@/components/pages/account/SignUpForm";
 import SignUpInfoForm, {
   type SignUpInfoFormData,
-} from "@/components/form/SignUpInfoForm";
+} from "@/components/pages/account/SignUpInfoForm";
 import SocialLogIn from "@/components/common/SocialLogIn";
 import Button from "@/components/common/Button";
 

@@ -1,5 +1,5 @@
 import Backdrop from "@/components/common/Backdrop";
-import ShareCopyLink from "@/components/classDetail/share/CopyLink";
+import ShareCopyLink from "@/components/pages/class/share/CopyLink";
 
 export default function ShareModal() {
   return (

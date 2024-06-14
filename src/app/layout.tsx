@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Providers from "@/lib/providers";
-import Header from "@/components/common/Header";
-import LogInModal from "@/components/modal/LogInModal";
-import SearchModal from "@/components/modal/SearchModal";
-import "@/styles/globals.css";
 import Alert from "@/components/common/Alert";
+import Header from "@/components/common/Header";
+import LogInModal from "@/components/pages/account/LogInModal";
+import SearchModal from "@/components/pages/home/SearchModal";
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "클래스브릿지",

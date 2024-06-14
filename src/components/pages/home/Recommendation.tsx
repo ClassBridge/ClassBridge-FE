@@ -3,7 +3,7 @@ import {
   CarouselContent,
   CarouselNext,
   CarouselPrevious,
-} from "../ui/carousel";
+} from "@/components/ui/carousel";
 import RecommendationContent from "./RecommendationContent";
 
 export default function Recommendation() {

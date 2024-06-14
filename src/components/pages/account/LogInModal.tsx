@@ -1,5 +1,5 @@
 import Backdrop from "@/components/common/Backdrop";
-import LogInForm from "@/components/form/LogInForm";
+import LogInForm from "@/components/pages/account/LogInForm";
 import SocialLogIn from "@/components/common/SocialLogIn";
 
 export default function LogInModal() {

@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import type { LogInFormData } from "@/components/form/LogInForm";
-import type { SignUpFormData } from "@/components/form/SignUpForm";
-import type { SignUpInfoFormData } from "@/components/form/SignUpInfoForm";
+import type { LogInFormData } from "@/components/pages/account/LogInForm";
+import type { SignUpFormData } from "@/components/pages/account/SignUpForm";
+import type { SignUpInfoFormData } from "@/components/pages/account/SignUpInfoForm";
 import { USER_TABLE, PROFILE_BUCKET } from "@/constants/supabase";
 
 export async function login(credentials: LogInFormData) {

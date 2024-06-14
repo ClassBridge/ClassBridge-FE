@@ -19,8 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Button from "../common/Button";
-import ProfilePicture from "../common/ProfilePicture";
+import Button from "@/components/common/Button";
+import ProfilePicture from "@/components/common/ProfilePicture";
 
 export type SignUpInfoFormData = z.infer<typeof signUpInfoFormSchema>;
 
