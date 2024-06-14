@@ -61,7 +61,7 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
   return { data, error };
 }
 
-export async function getUser() {
+export async function getAuth() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.getUser();
