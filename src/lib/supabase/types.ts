@@ -296,6 +296,7 @@ export type Database = {
           gender: Database["public"]["Enums"]["gender"] | null;
           id: string;
           interests: string[] | null;
+          is_tutor: boolean;
           phone_number: string;
           profile_url: string | null;
           username: string;
@@ -306,6 +307,7 @@ export type Database = {
           gender?: Database["public"]["Enums"]["gender"] | null;
           id: string;
           interests?: string[] | null;
+          is_tutor?: boolean;
           phone_number: string;
           profile_url?: string | null;
           username: string;
@@ -316,6 +318,7 @@ export type Database = {
           gender?: Database["public"]["Enums"]["gender"] | null;
           id?: string;
           interests?: string[] | null;
+          is_tutor?: boolean;
           phone_number?: string;
           profile_url?: string | null;
           username?: string;
