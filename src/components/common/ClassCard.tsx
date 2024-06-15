@@ -56,8 +56,9 @@ export function ClassCard({ size, content }: Props) {
                 src={url!}
                 alt={content.name}
                 fill={true}
-                objectFit="cover"
-                className="rounded-t group-hover:rounded transform transition-transform duration-500"
+                sizes="(max-width: 400px) 100vw, (max-width: 800px) 50vw, 30vw"
+                className="rounded-t object-cover group-hover:rounded transform transition-transform duration-500"
+                priority
               />
             ) : (
               <span className="font-bold text-base text-white tracking-widest">
