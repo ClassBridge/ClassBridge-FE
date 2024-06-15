@@ -17,6 +17,7 @@ export const useClassListData = (
     queryKey: ["class-list", sort, category, city, limit],
     queryFn: () =>
       getClassList(sort, limit, category, city).then((data) => data.data),
+    enabled: !!sort,
   });
 };
 
@@ -25,6 +26,7 @@ export const useClassData = (id: string) => {
     queryKey: ["class", id],
     queryFn: () =>
       getClass(id).then((data) => data.data?.[0] as unknown as Tables<"class">),
+    enabled: !!id,
   });
 };
 
@@ -47,5 +49,6 @@ export const useClassSummaryData = (id: string) => {
             image_urls: string[];
           },
       ),
+    enabled: !!id,
   });
 };
