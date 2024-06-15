@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { getUser } from "@/lib/supabase/actions/auth";
+import { useUserId } from "@/hooks/userData";
 import { openModal } from "@/lib/utils";
 import { CATEGORY } from "@/constants/category";
 import { REGION } from "@/constants/region";
@@ -34,46 +33,41 @@ const SubMenu = ({ menu }: SubMenuProps) => {
 
 const AuthButton = () => {
   const { push } = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const getAuth = async () => {
-    const res = await getUser();
-    if (res.data.user) {
-      setIsLoggedIn(true);
-    }
-  };
-
-  useEffect(() => {
-    getAuth();
-  }, []);
+  const { data: userId } = useUserId();
 
   return (
     <button
       className="w-[100px] h-10 rounded font-bold text-white text-sm bg-primary"
       onClick={() => {
-        !isLoggedIn ? openModal("login") : push("/my");
+        !userId ? openModal("login") : push("/my");
       }}
     >
-      {!isLoggedIn ? "로그인" : "마이페이지"}
+      {!userId ? "로그인" : "마이페이지"}
     </button>
   );
 };
+
+export function Logo() {
+  return (
+    <Link
+      href="/"
+      className="flex items-center justify-center w-[150px] h-10 font-bold text-xl uppercase"
+    >
+      <h1>
+        <span className="text-primary">{"c"}</span>
+        {"lass "}
+        <span className="text-point">{"b"}</span>
+        {"ridge"}
+      </h1>
+    </Link>
+  );
+}
 
 export default function Header() {
   return (
     <header className="fixed top-0 inset-x-0 z-10 w-screen text-black bg-white/80 backdrop-blur">
       <nav className="flex items-center justify-center gap-5 w-screen max-w-screen-lg h-20 mx-auto">
-        <Link
-          href="/"
-          className="flex items-center justify-center w-[150px] h-10 font-bold text-xl uppercase"
-        >
-          <h1>
-            <span className="text-primary">{"c"}</span>
-            {"lass "}
-            <span className="text-point">{"b"}</span>
-            {"ridge"}
-          </h1>
-        </Link>
+        <Logo />
         <button className="w-20 h-full font-medium text-base group">
           {"카테고리"}
           <SubMenu menu="category" />

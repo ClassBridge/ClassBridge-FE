@@ -6,9 +6,9 @@ import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
 import { useReservationData } from "@/hooks/reservationData";
 
-import ClassInfo from "@/components/classDetail/checkout/ClassInfo";
-import RefundPolicy from "@/components/classDetail/checkout/RefundPolicy";
-import BottomActionBar from "@/components/classDetail/reservation/BottomActionBar";
+import ClassInfo from "@/components/pages/class/checkout/ClassInfo";
+import RefundPolicy from "@/components/pages/class/checkout/RefundPolicy";
+import BottomActionBar from "@/components/pages/class/reservation/BottomActionBar";
 import { useClassSummaryData } from "@/hooks/classData";
 
 interface Props {

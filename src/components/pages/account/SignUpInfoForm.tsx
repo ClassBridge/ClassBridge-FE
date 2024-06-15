@@ -19,8 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Button from "../common/Button";
-import ProfilePicture from "../common/ProfilePicture";
+import Button from "@/components/common/Button";
+import ProfilePicture from "@/components/common/ProfilePicture";
 
 export type SignUpInfoFormData = z.infer<typeof signUpInfoFormSchema>;
 
@@ -77,19 +77,15 @@ const interests: { value: Interest; label: string }[] = [
 ];
 
 interface Props {
-  toNextPage: () => void;
-  updateSignupData: (data: SignUpInfoFormData) => void;
+  sendSignupData: (data: SignUpInfoFormData) => void;
 }
 
-export default function SignUpInfoForm({
-  toNextPage,
-  updateSignupData,
-}: Props) {
+export default function SignUpInfoForm({ sendSignupData }: Props) {
   const [isUsernameChecked, setIsUsernameChecked] = useState<boolean>(false);
   const [isValidUsername, setIsValidUsername] = useState<boolean>(false);
 
   const [selectedGender, setSelectedGender] = useState<Gender>();
-  const [selectedInterest, setSelectedInterest] = useState<Interest[]>([]);
+  const [selectedInterest, setSelectedInterest] = useState<Interest[]>();
 
   const [preview, setPreview] = useState<string>();
   const [image, setImage] = useState<File>();
@@ -145,8 +141,7 @@ export default function SignUpInfoForm({
       profilePicture: image,
     };
 
-    updateSignupData(formData);
-    toNextPage();
+    sendSignupData(formData);
   };
 
   return (
@@ -328,18 +323,18 @@ export default function SignUpInfoForm({
                     type="button"
                     className={cn(
                       "h-14 rounded border border-gray-light transition duration-300",
-                      selectedInterest.includes(interest.value) &&
+                      selectedInterest?.includes(interest.value) &&
                         "bg-primary-blur",
                     )}
                     onClick={() => {
-                      if (selectedInterest.includes(interest.value)) {
-                        const newInterests = selectedInterest.filter(
+                      if (selectedInterest?.includes(interest.value)) {
+                        const newInterests = selectedInterest?.filter(
                           (e) => e !== interest.value,
                         );
                         setSelectedInterest(newInterests);
                       } else {
                         setSelectedInterest(
-                          selectedInterest.concat(interest.value),
+                          selectedInterest?.concat(interest.value),
                         );
                       }
                     }}

@@ -2,7 +2,7 @@
 
 import { ClassCard } from "@/components/common/ClassCard";
 import { useClassListData } from "@/hooks/classData";
-import { CarouselItem } from "../ui/carousel";
+import { CarouselItem } from "@/components/ui/carousel";
 
 export default function RecommendationContent() {
   const { data: recommendations } = useClassListData("like", 5);

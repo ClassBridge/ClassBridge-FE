@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import type { LogInFormData } from "@/components/form/LogInForm";
-import type { SignUpFormData } from "@/components/form/SignUpForm";
-import type { SignUpInfoFormData } from "@/components/form/SignUpInfoForm";
+import type { LogInFormData } from "@/components/pages/account/LogInForm";
+import type { SignUpFormData } from "@/components/pages/account/SignUpForm";
+import type { SignUpInfoFormData } from "@/components/pages/account/SignUpInfoForm";
 import { USER_TABLE, PROFILE_BUCKET } from "@/constants/supabase";
 
 export async function login(credentials: LogInFormData) {
@@ -13,7 +13,7 @@ export async function login(credentials: LogInFormData) {
   const { data, error } = await supabase.auth.signInWithPassword(credentials);
 
   if (error) {
-    return { data, error };
+    return { data, error: error.message };
   }
 
   revalidatePath("/", "layout");
@@ -38,7 +38,7 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
   });
 
   if (error) {
-    return { data, error };
+    return { data: null, error: error.message };
   }
 
   if (credentials.profilePicture && data.user) {
@@ -58,13 +58,25 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
   }
 
   revalidatePath("/", "layout");
-  return { data, error };
+  return { data: data.user, error };
 }
 
-export async function getUser() {
+export async function logout() {
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.getUser();
+  const { error } = await supabase.auth.signOut();
 
-  return { data, error };
+  if (error) {
+    return false;
+  }
+
+  return true;
+}
+
+export async function getAuth() {
+  const supabase = createClient();
+
+  const { data } = await supabase.auth.getUser();
+
+  return data.user;
 }

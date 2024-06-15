@@ -9,5 +9,6 @@ export const useLessonListData = (id: string) => {
       getLessonList(id).then(
         (data) => data.data as unknown as Tables<"lesson">[],
       ),
+    enabled: !!id,
   });
 };

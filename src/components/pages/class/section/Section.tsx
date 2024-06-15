@@ -1,4 +1,4 @@
-import SectionContent from "@/components/classDetail/section/SectionContent";
+import SectionContent from "@/components/pages/class/section/SectionContent";
 import type { Tab } from "@/constants/classDetailTabs";
 
 export interface ClassSectionData {

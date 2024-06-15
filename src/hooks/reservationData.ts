@@ -18,5 +18,6 @@ export const useReservationData = (id: string) => {
             };
           },
       ),
+    enabled: !!id,
   });
 };
