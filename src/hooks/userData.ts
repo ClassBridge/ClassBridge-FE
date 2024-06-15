@@ -6,11 +6,11 @@ import { Tables } from "@/lib/supabase/types";
 export const useUserId = () => {
   return useQuery({
     queryKey: ["auth"],
-    queryFn: () => getAuth().then((data) => data.data.user?.id),
+    queryFn: () => getAuth().then((user) => user?.id || null),
   });
 };
 
-export const useUserData = (id: string | undefined) => {
+export const useUserData = (id: string | null | undefined) => {
   return useQuery({
     queryKey: ["user", id],
     queryFn: () =>

@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { getAuth } from "@/lib/supabase/actions/auth";
+import { useUserId } from "@/hooks/userData";
 import { openModal } from "@/lib/utils";
 import { CATEGORY } from "@/constants/category";
 import { REGION } from "@/constants/region";
@@ -34,27 +33,16 @@ const SubMenu = ({ menu }: SubMenuProps) => {
 
 const AuthButton = () => {
   const { push } = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const checkAuthStatus = async () => {
-    const res = await getAuth();
-    if (res.data.user) {
-      setIsLoggedIn(true);
-    }
-  };
-
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
+  const { data: userId } = useUserId();
 
   return (
     <button
       className="w-[100px] h-10 rounded font-bold text-white text-sm bg-primary"
       onClick={() => {
-        !isLoggedIn ? openModal("login") : push("/my");
+        !userId ? openModal("login") : push("/my");
       }}
     >
-      {!isLoggedIn ? "로그인" : "마이페이지"}
+      {!userId ? "로그인" : "마이페이지"}
     </button>
   );
 };
