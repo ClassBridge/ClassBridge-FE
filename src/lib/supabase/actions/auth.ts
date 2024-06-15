@@ -61,6 +61,18 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
   return { data, error };
 }
 
+export async function logout() {
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    return false;
+  }
+
+  return true;
+}
+
 export async function getAuth() {
   const supabase = createClient();
 

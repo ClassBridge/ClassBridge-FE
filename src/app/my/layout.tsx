@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import MyPageSideBar from "@/components/pages/my/SideBar";
 
 const menus = [
   "profile",
@@ -16,6 +17,7 @@ const menus = [
 ] as const;
 
 export type Menus = (typeof menus)[number];
+export const isMenu = (id: any): id is Menus => menus.includes(id);
 
 interface Props {
   children: React.ReactNode;
@@ -37,6 +39,10 @@ export default function Layout(props: Props) {
   return (
     <div className="flex">
       <style>{`header {display: none;} main {top: 0 !important; display: block !important; padding: 0 !important}`}</style>
+      <MyPageSideBar
+        currentMenu={currentMenu}
+        setCurrentMenu={setCurrentMenu}
+      />
       {props.children}
       {menus.map((key) => {
         return currentMenu === key && props[key];
