@@ -33,7 +33,7 @@ export default function LikeButton({ size, card = false }: Props) {
         alt={isLiked ? "Liked" : "Like"}
         width={size}
         height={size}
-        className={card ? "absolute top-4 right-[18px]" : ""}
+        className={card ? "absolute top-4 right-[18px] z-10" : ""}
       />
     </div>
   );
