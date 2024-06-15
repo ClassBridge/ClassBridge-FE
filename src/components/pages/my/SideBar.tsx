@@ -10,9 +10,12 @@ import ProfilePicture from "@/components/common/ProfilePicture";
 import { isMenu, type Menus } from "@/app/my/layout";
 import { PROFILE_BUCKET } from "@/constants/supabase";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import MenuIcon from "@/assets/icons/menu";
 
 const actionMenus = ["tutorRegister", "logout"] as const;
 type ActionMenus = (typeof actionMenus)[number];
+export type MenusAll = Menus | ActionMenus;
 
 const Divider = () => {
   return <hr className="w-48 my-0.5 mx-1 border-gray-light" />;
@@ -60,7 +63,7 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   };
 
   const menuList: {
-    id: Menus | ActionMenus;
+    id: MenusAll;
     name: string;
   }[] = [
     { id: "profile", name: "나의 프로필" },
@@ -117,6 +120,7 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
                   : "hover:bg-primary-blur",
               ]}
             >
+              <MenuIcon id={menu.id} />
               {menu.name}
             </MenuItem>
           </Fragment>
