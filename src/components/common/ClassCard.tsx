@@ -56,8 +56,9 @@ export function ClassCard({ size, content }: Props) {
                 src={url!}
                 alt={content.name}
                 fill={true}
-                objectFit="cover"
-                className="rounded-t group-hover:rounded transform transition-transform duration-500"
+                sizes="(max-width: 400px) 100vw, (max-width: 800px) 50vw, 30vw"
+                className="rounded-t object-cover group-hover:rounded transform transition-transform duration-500"
+                priority
               />
             ) : (
               <span className="font-bold text-base text-white tracking-widest">
@@ -71,29 +72,24 @@ export function ClassCard({ size, content }: Props) {
             "absolute bottom-0 flex flex-col justify-between py-4 px-[18px] group-hover:h-20 group-hover:bg-white-blur group-hover:backdrop-blur transition-all duration-500",
             size === "small"
               ? "w-60 h-[134px] rounded-b"
-              : "w-[300px] h-[152px]",
+              : "w-[300px] h-[152px] rounded",
           )}
         >
           <h3 className="font-medium text-base truncate">{content.name}</h3>
           <div className="flex items-center font-normal text-xs">
-            <>
-              <span className="group-hover:hidden">
-                {CATEGORY[content.category]}
-              </span>
-              <span className="hidden group-hover:inline">
-                <span className="text-point-star">{"★"}</span>
-                {`${content.rating_avg || 0}(${content.review_cnt || 0})`}
-              </span>
-            </>
-            <span className="h-4 mx-3 border-l border-gray-light"></span>
-            <>
-              <span className="truncate group-hover:hidden">
-                {content.tutor.name}
-              </span>
-              <span className="hidden group-hover:inline">
-                {`⏰ ${content.duration}분`}
-              </span>
-            </>
+            <span className="group-hover:hidden">
+              {CATEGORY[content.category]}
+            </span>
+            <span className="hidden group-hover:inline">
+              {`⭐️ ${content.rating_avg || 0}(${content.review_cnt || 0})`}
+            </span>
+            <span className="h-4 mx-3 border-l border-gray-light group-hover:border-gray"></span>
+            <span className="truncate group-hover:hidden">
+              {content.tutor.name}
+            </span>
+            <span className="hidden group-hover:inline">
+              {`⏰ ${content.duration}분`}
+            </span>
           </div>
           <span className="font-normal text-xs truncate group-hover:hidden">
             {`${content.address1} ${content.address2}`}

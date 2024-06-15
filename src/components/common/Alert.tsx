@@ -17,7 +17,8 @@ export default function Alert() {
     <>
       {alert.content && (
         <Backdrop
-          className="flex flex-col items-center gap-6 w-[350px] p-8"
+          className="z-[100] flex flex-col items-center gap-6 w-[350px] p-8"
+          backdropClassName="z-[60]"
           onClick={closeAlert}
         >
           <Image
@@ -38,13 +39,27 @@ export default function Alert() {
               }}
             />
           </div>
-          <Button
-            text="닫기"
-            type="md"
-            primary
-            className="w-[70px]"
-            onClick={closeAlert}
-          />
+          <div className="flex items-center justify-center gap-6">
+            <Button
+              primary={!alert.button}
+              type="md"
+              className="w-[100px]"
+              text="닫기"
+              onClick={closeAlert}
+            />
+            {alert.button && (
+              <Button
+                primary
+                type="md"
+                className="w-[100px]"
+                text={alert.button.text}
+                onClick={() => {
+                  alert.button?.onClick();
+                  closeAlert();
+                }}
+              />
+            )}
+          </div>
         </Backdrop>
       )}
     </>

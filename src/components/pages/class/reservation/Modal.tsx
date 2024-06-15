@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  cn,
-  formatDateToLocaleString,
-  formatTimeToLocaleString,
-} from "@/lib/utils";
+import { useSetRecoilState } from "recoil";
+import { alertState } from "@/state/alert";
 import { makeReservation } from "@/lib/supabase/actions/reservation";
 import { useUserId } from "@/hooks/userData";
 import type { Tables } from "@/lib/supabase/types";
+import {
+  closeModal,
+  cn,
+  formatDateToLocaleString,
+  formatTimeToLocaleString,
+  openModal,
+} from "@/lib/utils";
 
 import Backdrop from "@/components/common/Backdrop";
 import { Calendar } from "@/components/ui/calendar";
@@ -30,6 +34,7 @@ export default function ReservationModal({ data, classData }: Props) {
   const pathname = usePathname();
   const { push } = useRouter();
   const { data: userId } = useUserId();
+  const setAlert = useSetRecoilState(alertState);
 
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [availableTime, setAvailableTime] = useState<Date[] | null>(null);
@@ -81,13 +86,23 @@ export default function ReservationModal({ data, classData }: Props) {
 
   const handleSubmit = async () => {
     if (!userId) {
-      return;
+      return setAlert({
+        content: "클래스를 예약하시려면 로그인해 주세요.",
+        button: {
+          text: "로그인",
+          onClick: () => {
+            closeModal();
+            openModal("login");
+          },
+        },
+      });
     }
+
     if (!selectedLesson || !selectedPerson) {
       return;
     }
 
-    const { data, error } = await makeReservation({
+    const { data } = await makeReservation({
       user_id: userId,
       lesson_id: selectedLesson,
       quantity: selectedPerson,

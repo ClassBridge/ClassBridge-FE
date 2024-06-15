@@ -7,5 +7,6 @@ export const useTutorData = (id: string) => {
     queryKey: ["tutor", id],
     queryFn: () =>
       getTutor(id).then((data) => data.data?.[0] as unknown as Tables<"tutor">),
+    enabled: !!id,
   });
 };

@@ -10,6 +10,11 @@ const MESSAGE = {
     special: "특수문자를 1개 이상 포함해야 합니다.",
   },
   passwordMismatch: "비밀번호가 일치하지 않습니다.",
+  invalidUsername: {
+    min: "유저이름은 3자 이상입니다.",
+    max: "유저이름은 10자 이하입니다.",
+    regex: "영문•한글•숫자•공백만 입력 가능합니다.",
+  },
   invalidImage: "유효한 이미지 파일이 아닙니다.",
   invalidPhone: "유효한 연락처 형식이 아닙니다.",
   invalidDate: "유효한 날짜 형식이 아닙니다.",
@@ -60,7 +65,13 @@ export const signUpFormSchema = z
   });
 
 export const signUpInfoFormSchema = z.object({
-  username: z.string({ required_error: MESSAGE.required }),
+  username: z
+    .string({ required_error: MESSAGE.required })
+    .min(3, { message: MESSAGE.invalidUsername.min })
+    .max(10, { message: MESSAGE.invalidUsername.max })
+    .regex(/^[a-zA-Z0-9가-힣\s]{3,10}$/, {
+      message: MESSAGE.invalidUsername.regex,
+    }),
   phoneNumber: z
     .string({ required_error: MESSAGE.required })
     .regex(/^\d{3}-\d{4}-\d{4}$/, { message: MESSAGE.invalidPhone }),

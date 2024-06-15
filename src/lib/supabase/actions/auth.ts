@@ -13,7 +13,7 @@ export async function login(credentials: LogInFormData) {
   const { data, error } = await supabase.auth.signInWithPassword(credentials);
 
   if (error) {
-    return { data, error };
+    return { data, error: error.message };
   }
 
   revalidatePath("/", "layout");
@@ -38,7 +38,7 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
   });
 
   if (error) {
-    return { data, error };
+    return { data: null, error: error.message };
   }
 
   if (credentials.profilePicture && data.user) {
@@ -58,7 +58,7 @@ export async function signup(credentials: SignUpFormData & SignUpInfoFormData) {
   }
 
   revalidatePath("/", "layout");
-  return { data, error };
+  return { data: data.user, error };
 }
 
 export async function logout() {
@@ -76,7 +76,7 @@ export async function logout() {
 export async function getAuth() {
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
 
-  return { data, error };
+  return data.user;
 }

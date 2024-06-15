@@ -28,18 +28,16 @@ const signUpFormField: {
 ];
 
 interface Props {
-  toNextPage: () => void;
-  updateSignupData: (data: SignUpFormData) => void;
+  sendSignupData: (data: SignUpFormData) => void;
 }
 
-export default function SignUpForm({ toNextPage, updateSignupData }: Props) {
+export default function SignUpForm({ sendSignupData }: Props) {
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
   });
 
   const onSubmit = (data: SignUpFormData) => {
-    updateSignupData(data);
-    toNextPage();
+    sendSignupData(data);
   };
 
   return (

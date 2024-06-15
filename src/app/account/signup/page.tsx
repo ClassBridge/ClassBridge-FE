@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signup } from "@/lib/supabase/actions/auth";
 
@@ -14,38 +14,50 @@ import SignUpInfoForm, {
 import SocialLogIn from "@/components/common/SocialLogIn";
 import Button from "@/components/common/Button";
 
-const pageType = ["auth", "info", "success"] as const;
+const pageType = ["auth", "info", "success", "error"] as const;
 type PageType = (typeof pageType)[number];
+const isPageType = (type: any): type is PageType => pageType.includes(type);
+
+const isSignUpFormData = (
+  data: SignUpFormData | SignUpInfoFormData,
+): data is SignUpFormData => Object.keys(data).includes("email");
 
 const PageContent = () => {
   const { replace } = useRouter();
-  const [signupData, setSignupData] = useState<Object>();
-
-  const updateSignupData = (data: SignUpFormData | SignUpInfoFormData) => {
-    setSignupData(data);
-  };
-
   const searchParams = useSearchParams();
-  let initialPage: PageType = (searchParams.get("page") as PageType) || "auth";
-  if (!pageType.includes(initialPage)) {
-    initialPage = "auth";
-  }
+  const [currentPage, setCurrentPage] = useState<PageType>();
+  const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>();
 
-  const [currentPage, setCurrentPage] = useState<PageType | null>(initialPage);
+  useEffect(() => {
+    const params = searchParams.get("page") || "auth";
 
-  const toNextPage = async () => {
+    if (isPageType(params)) {
+      setCurrentPage(params);
+    } else {
+      setCurrentPage("error");
+    }
+  }, [searchParams]);
+
+  const sendSignupData = (data: SignUpFormData | SignUpInfoFormData) => {
+    if (isSignUpFormData(data)) {
+      setSignUpFormData(data);
+    }
+
     if (currentPage === "auth") {
       setCurrentPage("info");
     } else if (currentPage === "info") {
-      const result = await signup(
-        signupData as SignUpFormData & SignUpInfoFormData,
-      );
+      handleSignUp({ ...signUpFormData, ...data } as SignUpFormData &
+        SignUpInfoFormData);
+    }
+  };
 
-      if (result.error) {
-        setCurrentPage(null);
-      } else {
-        setCurrentPage("success");
-      }
+  const handleSignUp = async (data: SignUpFormData & SignUpInfoFormData) => {
+    const result = await signup(data);
+
+    if (result.error) {
+      setCurrentPage("error");
+    } else {
+      setCurrentPage("success");
     }
   };
 
@@ -56,10 +68,7 @@ const PageContent = () => {
           {"회원가입"}
         </h2>
         <div className="w-96">
-          <SignUpForm
-            toNextPage={toNextPage}
-            updateSignupData={updateSignupData}
-          />
+          <SignUpForm sendSignupData={sendSignupData} />
         </div>
         <SocialLogIn />
       </>
@@ -69,10 +78,7 @@ const PageContent = () => {
   const InfoPage = () => {
     return (
       <div className="w-[464px]">
-        <SignUpInfoForm
-          toNextPage={toNextPage}
-          updateSignupData={updateSignupData}
-        />
+        <SignUpInfoForm sendSignupData={sendSignupData} />
       </div>
     );
   };
@@ -131,6 +137,8 @@ const PageContent = () => {
         <InfoPage />
       ) : currentPage === "success" ? (
         <SuccessPage />
+      ) : currentPage === undefined ? (
+        <Loading />
       ) : (
         <ErrorPage />
       )}

@@ -4,6 +4,7 @@ interface Alert {
   content: string;
   title?: string;
   type?: "info" | "success";
+  button?: { text: string; onClick: () => void };
 }
 
 export const alertState: RecoilState<Alert> = atom({
