@@ -114,15 +114,20 @@ export const signUpInfoFormSchema = z.object({
 });
 
 export const tutorRegisterFormSchema = z.object({
-  bank: z.string({ required_error: MESSAGE.required }),
+  bank: z.string().optional(),
   account: z
-    .number({ required_error: MESSAGE.required })
-    .int({ message: MESSAGE.invalidInt }),
+    .string({ required_error: MESSAGE.required })
+    .refine((string) => /^-?\d+$/.test(string), {
+      message: MESSAGE.invalidInt,
+    }),
   businessRegistrationNumber: z
-    .number()
-    .int({ message: MESSAGE.invalidInt })
-    .gte(1000000000, { message: MESSAGE.invalidBusinessRegistrationNumber })
-    .lte(9999999999, { message: MESSAGE.invalidBusinessRegistrationNumber })
+    .string()
+    .refine((string) => /^-?\d+$/.test(string), {
+      message: MESSAGE.invalidInt,
+    })
+    .refine((string) => string.length === 10, {
+      message: MESSAGE.invalidBusinessRegistrationNumber,
+    })
     .optional(),
   introduction: z.string().optional(),
 });
