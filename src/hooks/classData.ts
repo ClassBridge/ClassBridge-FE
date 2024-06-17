@@ -16,7 +16,7 @@ export const useClassListData = (
   return useQuery({
     queryKey: ["class-list", sort, category, city, limit],
     queryFn: () =>
-      getClassList(sort, limit, category, city).then((data) => data.data),
+      getClassList(sort, limit, category, city).then((data) => data),
     enabled: !!sort,
   });
 };
@@ -25,7 +25,7 @@ export const useClassData = (id: string) => {
   return useQuery({
     queryKey: ["class", id],
     queryFn: () =>
-      getClass(id).then((data) => data.data?.[0] as unknown as Tables<"class">),
+      getClass(id).then((data) => data.data?.[0] as Tables<"class">),
     enabled: !!id,
   });
 };
@@ -36,7 +36,7 @@ export const useClassSummaryData = (id: string) => {
     queryFn: () =>
       getClassSummary(id).then(
         (data) =>
-          data.data?.[0] as unknown as {
+          data?.[0] as {
             id: string;
             name: string;
             category: Enums<"category">;
