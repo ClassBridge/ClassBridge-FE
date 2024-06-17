@@ -260,7 +260,7 @@ export default function SignUpInfoForm({ sendSignupData }: Props) {
                       value={gender.value}
                       type="button"
                       className={cn(
-                        "w-20 h-full transition duration-300",
+                        "w-20 h-full hover:bg-primary/10 transition duration-300",
                         i === 0
                           ? "rounded-l border-r border-gray-light"
                           : "rounded-r",
@@ -322,7 +322,7 @@ export default function SignUpInfoForm({ sendSignupData }: Props) {
                     value={interest.value}
                     type="button"
                     className={cn(
-                      "h-14 rounded border border-gray-light transition duration-300",
+                      "h-14 rounded border border-gray-light hover:bg-primary/10 transition duration-300",
                       selectedInterest?.includes(interest.value) &&
                         "bg-primary-blur",
                     )}
