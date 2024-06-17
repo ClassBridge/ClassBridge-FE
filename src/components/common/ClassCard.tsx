@@ -11,7 +11,7 @@ export interface ClassCard {
   id: string;
   name: string;
   category: Enums<"category">;
-  tutor: { name: string };
+  tutor: { username: string };
   address1: Enums<"city">;
   address2: string;
   price: number;
@@ -85,7 +85,7 @@ export function ClassCard({ size, content }: Props) {
             </span>
             <span className="h-4 mx-3 border-l border-gray-light group-hover:border-gray"></span>
             <span className="truncate group-hover:hidden">
-              {content.tutor.name}
+              {content.tutor.username}
             </span>
             <span className="hidden group-hover:inline">
               {`⏰ ${content.duration}분`}

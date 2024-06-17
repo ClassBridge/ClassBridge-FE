@@ -7,10 +7,9 @@ import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
 import { logout } from "@/lib/supabase/actions/auth";
 import { Logo } from "@/components/common/Header";
 import ProfilePicture from "@/components/common/ProfilePicture";
-import { isMenu, type Menus } from "@/app/my/layout";
+import { type Menus } from "@/app/my/layout";
 import { PROFILE_BUCKET } from "@/constants/supabase";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { cn, openModal } from "@/lib/utils";
 import MenuIcon from "@/assets/icons/menu";
 
 const actionMenus = ["tutorRegister", "logout"] as const;
@@ -42,12 +41,12 @@ const MenuItem = ({ children, className, onClick }: MenuItemProps) => {
 };
 
 interface Props {
-  currentMenu: Menus;
-  setCurrentMenu: React.Dispatch<React.SetStateAction<Menus>>;
+  currentMenu: MenusAll;
+  setCurrentMenu: React.Dispatch<React.SetStateAction<MenusAll>>;
 }
 
 export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
-  const { push, replace } = useRouter();
+  const { replace } = useRouter();
   const { data: userId } = useUserId();
   const { data: userData } = useUserData(userId);
   const url =
@@ -102,10 +101,9 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
             {dividerIndex.includes(i) && <Divider />}
             <MenuItem
               onClick={() => {
-                if (isMenu(menu.id)) {
-                  setCurrentMenu(menu.id);
-                } else if (menu.id === "tutorRegister") {
-                  push("/account/tutor");
+                setCurrentMenu(menu.id);
+                if (menu.id === "tutorRegister") {
+                  openModal("tutor-register");
                 } else if (menu.id === "logout") {
                   handleLogOut();
                 }
