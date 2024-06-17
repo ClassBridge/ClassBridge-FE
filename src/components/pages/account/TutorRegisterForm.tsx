@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
-import { cn, formatDate, formatPhoneNumber } from "@/lib/utils";
 import { tutorRegisterFormSchema } from "@/lib/formSchema";
 
+import Button from "@/components/common/Button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -18,9 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Button from "@/components/common/Button";
-import ProfilePicture from "@/components/common/ProfilePicture";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -72,10 +69,6 @@ export default function TutorRegisterForm() {
   useEffect(() => {
     setIsBusinessNumberChecked(false);
   }, [businessNumber]);
-
-  useEffect(() => {
-    console.log(selectedBank);
-  }, [selectedBank]);
 
   const form = useForm<TutorRegisterFormData>({
     resolver: zodResolver(tutorRegisterFormSchema),
