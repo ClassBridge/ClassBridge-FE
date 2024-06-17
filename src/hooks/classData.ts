@@ -36,7 +36,7 @@ export const useClassSummaryData = (id: string) => {
     queryFn: () =>
       getClassSummary(id).then(
         (data) =>
-          data?.[0] as {
+          data as {
             id: string;
             name: string;
             category: Enums<"category">;

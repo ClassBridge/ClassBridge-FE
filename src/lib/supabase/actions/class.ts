@@ -123,10 +123,10 @@ export async function getClassSummary(classId: string) {
     return;
   }
 
-  const result = data.map((item) => ({
-    ...item,
+  const result = {
+    ...data[0],
     tutor: { name: tutorData[0].username },
-  }));
+  };
 
   return result;
 }
