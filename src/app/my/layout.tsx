@@ -41,7 +41,7 @@ export default function Layout(props: Props) {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <style>{`header {display: none;} main {top: 0 !important; display: block !important; padding: 0 !important}`}</style>
       <MyPageSideBar
         currentMenu={currentMenu}
