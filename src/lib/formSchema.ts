@@ -18,6 +18,8 @@ const MESSAGE = {
   invalidImage: "유효한 이미지 파일이 아닙니다.",
   invalidPhone: "유효한 연락처 형식이 아닙니다.",
   invalidDate: "유효한 날짜 형식이 아닙니다.",
+  invalidInt: "정수를 입력해 주세요.",
+  invalidBusinessRegistrationNumber: "사업자등록번호는 10자입니다.",
 };
 
 export const logInFormSchema = z.object({
@@ -109,4 +111,23 @@ export const signUpInfoFormSchema = z.object({
     )
     .optional(),
   interests: z.array(z.string()).optional(),
+});
+
+export const tutorRegisterFormSchema = z.object({
+  bank: z.string().optional(),
+  account: z
+    .string({ required_error: MESSAGE.required })
+    .refine((string) => /^-?\d+$/.test(string), {
+      message: MESSAGE.invalidInt,
+    }),
+  businessRegistrationNumber: z
+    .string()
+    .refine((string) => /^-?\d+$/.test(string), {
+      message: MESSAGE.invalidInt,
+    })
+    .refine((string) => string.length === 10, {
+      message: MESSAGE.invalidBusinessRegistrationNumber,
+    })
+    .optional(),
+  introduction: z.string().optional(),
 });

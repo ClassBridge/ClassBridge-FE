@@ -255,22 +255,28 @@ export type Database = {
       };
       tutor: {
         Row: {
+          account: string;
+          bank: Database["public"]["Enums"]["bank"];
+          business_registration_number: string | null;
           created_at: string;
           description: string | null;
           id: string;
-          name: string;
         };
         Insert: {
+          account: string;
+          bank: Database["public"]["Enums"]["bank"];
+          business_registration_number?: string | null;
           created_at?: string;
           description?: string | null;
           id?: string;
-          name: string;
         };
         Update: {
+          account?: string;
+          bank?: Database["public"]["Enums"]["bank"];
+          business_registration_number?: string | null;
           created_at?: string;
           description?: string | null;
           id?: string;
-          name?: string;
         };
         Relationships: [
           {
@@ -279,13 +285,6 @@ export type Database = {
             isOneToOne: true;
             referencedRelation: "user";
             referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "tutor_name_fkey";
-            columns: ["name"];
-            isOneToOne: true;
-            referencedRelation: "user";
-            referencedColumns: ["username"];
           },
         ];
       };
@@ -305,7 +304,7 @@ export type Database = {
           birthdate?: string | null;
           created_at?: string;
           gender?: Database["public"]["Enums"]["gender"] | null;
-          id: string;
+          id?: string;
           interests?: string[] | null;
           is_tutor?: boolean;
           phone_number: string;
@@ -341,6 +340,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
+      bank: "KB" | "SHINHAN" | "WOORI" | "HANA" | "NH" | "KAKAOBANK";
       category: "cooking" | "handmade" | "fitness" | "drawing" | "gardening";
       city:
         | "서울"

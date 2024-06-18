@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { Enums } from "@/lib/supabase/types";
-import { CLASS_TABLE } from "@/constants/supabase";
+import { CLASS_TABLE, USER_TABLE } from "@/constants/supabase";
 
 export type ClassOrder = "like" | "review" | "date";
 
@@ -15,8 +15,19 @@ export async function getClassList(
   const supabase = createClient();
   let classListQuery;
 
-  const selectColumns =
-    "id, name, category, tutor(name), address1, address2, price, duration, rating_avg, review_cnt, image_urls";
+  const selectColumns = `
+    id,
+    name,
+    category,
+    tutor_id,
+    address1,
+    address2,
+    price,
+    duration,
+    rating_avg,
+    review_cnt,
+    image_urls
+  `;
 
   const sortOrder =
     order === "like"
@@ -44,9 +55,29 @@ export async function getClassList(
     classListQuery = classListQuery.limit(limit);
   }
 
-  const { data, error } = await classListQuery;
+  const { data: classData, error } = await classListQuery;
 
-  return { data, error };
+  if (error) {
+    return;
+  }
+
+  const tutorIds = classData.map((item) => item.tutor_id);
+
+  const { data: tutorData, error: tutorError } = await supabase
+    .from(USER_TABLE)
+    .select("id, username")
+    .in("id", tutorIds);
+
+  if (tutorError) {
+    return;
+  }
+
+  const result = classData.map((classItem) => ({
+    ...classItem,
+    tutor: tutorData.find((tutor) => tutor.id === classItem.tutor_id),
+  }));
+
+  return result;
 }
 
 export async function getClass(classId: string) {
@@ -66,9 +97,36 @@ export async function getClassSummary(classId: string) {
   const { data, error } = await supabase
     .from(CLASS_TABLE)
     .select(
-      "id, name, category, tutor(name), address, price, duration, image_urls",
+      `
+		id, 
+		name, 
+		category,
+		tutor_id, 
+		address, 
+		price, 
+		duration, 
+		image_urls
+	  `,
     )
     .eq("id", classId);
 
-  return { data, error };
+  if (error) {
+    return;
+  }
+
+  const { data: tutorData, error: tutorError } = await supabase
+    .from(USER_TABLE)
+    .select("username")
+    .eq("id", data[0].tutor_id);
+
+  if (tutorError) {
+    return;
+  }
+
+  const result = {
+    ...data[0],
+    tutor: { name: tutorData[0].username },
+  };
+
+  return result;
 }

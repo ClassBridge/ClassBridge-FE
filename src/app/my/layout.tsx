@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import MyPageSideBar from "@/components/pages/my/SideBar";
+import MyPageSideBar, { type MenusAll } from "@/components/pages/my/SideBar";
+import TutorRegisterModal from "@/components/pages/account/TutorRegisterModal";
 
 const menus = [
   "profile",
@@ -34,10 +35,13 @@ interface Props {
 }
 
 export default function Layout(props: Props) {
-  const [currentMenu, setCurrentMenu] = useState<Menus>("profile");
+  const [currentMenu, setCurrentMenu] = useState<MenusAll>("profile");
+  const handleCloseTutorRegisterModal = () => {
+    setCurrentMenu("profile");
+  };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <style>{`header {display: none;} main {top: 0 !important; display: block !important; padding: 0 !important}`}</style>
       <MyPageSideBar
         currentMenu={currentMenu}
@@ -47,6 +51,7 @@ export default function Layout(props: Props) {
       {menus.map((key) => {
         return currentMenu === key && props[key];
       })}
+      <TutorRegisterModal handleCloseModal={handleCloseTutorRegisterModal} />
     </div>
   );
 }

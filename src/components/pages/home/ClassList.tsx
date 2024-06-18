@@ -24,11 +24,7 @@ export default function ClassList() {
       <section className="grid grid-cols-3 gap-x-5 gap-y-7 mb-10">
         {classList &&
           classList.map((item) => (
-            <ClassCard
-              key={item.id}
-              size="large"
-              content={item as unknown as ClassCard}
-            />
+            <ClassCard key={item.id} size="large" content={item as ClassCard} />
           ))}
       </section>
     </>
