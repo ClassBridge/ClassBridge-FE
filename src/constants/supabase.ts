@@ -3,6 +3,8 @@ export const TUTOR_TABLE = "tutor";
 export const CLASS_TABLE = "class";
 export const LESSON_TABLE = "lesson";
 export const RESERVATION_TABLE = "reservation";
+export const CHATROOM_TABLE = "chatroom";
+export const CHAT_TABLE = "chat";
 
 export const PROFILE_BUCKET = "profile";
 export const CLASS_BUCKET = "class";

@@ -9,6 +9,87 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      chat: {
+        Row: {
+          chatroom_id: string;
+          created_at: string;
+          id: string;
+          is_read: boolean;
+          user_id: string;
+        };
+        Insert: {
+          chatroom_id: string;
+          created_at?: string;
+          id?: string;
+          is_read?: boolean;
+          user_id: string;
+        };
+        Update: {
+          chatroom_id?: string;
+          created_at?: string;
+          id?: string;
+          is_read?: boolean;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "chat_chatroom_id_fkey";
+            columns: ["chatroom_id"];
+            isOneToOne: false;
+            referencedRelation: "chatroom";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "chat_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "user";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      chatroom: {
+        Row: {
+          created_at: string;
+          id: string;
+          last_activity: string;
+          unread_count: number | null;
+          user1_id: string;
+          user2_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          last_activity?: string;
+          unread_count?: number | null;
+          user1_id: string;
+          user2_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          last_activity?: string;
+          unread_count?: number | null;
+          user1_id?: string;
+          user2_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "chatroom_user1_id_fkey";
+            columns: ["user1_id"];
+            isOneToOne: false;
+            referencedRelation: "user";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "chatroom_user2_id_fkey";
+            columns: ["user2_id"];
+            isOneToOne: false;
+            referencedRelation: "user";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       class: {
         Row: {
           address: string;
