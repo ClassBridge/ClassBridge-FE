@@ -1,6 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
-import { Session } from "@supabase/supabase-js";
 import { createContext, useContext, useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
+import type { Session } from "@supabase/supabase-js";
 
 const AuthContext = createContext<Session | null>(null);
 export const useAuthContext = () => useContext(AuthContext);
@@ -12,21 +12,18 @@ interface Props {
 export default function AuthContextProvider({ children }: Props) {
   const supabase = createClient();
 
+  const [isMounted, setIsMounted] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
-        setSession(null);
-      } else if (session) {
-        setSession(session);
-      }
-    });
+    setIsMounted(true);
+  }, []);
 
-    return () => {
-      data.subscription.unsubscribe();
-    };
-  }, [supabase.auth]);
+  if (isMounted) {
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }
 
   return (
     <AuthContext.Provider value={session}>{children}</AuthContext.Provider>
