@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
 import { makeReservation } from "@/lib/supabase/actions/reservation";
-import { useUserId } from "@/hooks/userData";
 import type { Tables } from "@/lib/supabase/types";
 import {
   closeModal,
@@ -18,6 +17,7 @@ import {
 import Backdrop from "@/components/common/Backdrop";
 import { Calendar } from "@/components/ui/calendar";
 import { Minus, Plus } from "lucide-react";
+import { useAuthContext } from "@/state/auth";
 
 interface Props {
   data: Tables<"lesson">[];
@@ -33,7 +33,7 @@ const MIN_PARTICIPANT = 1;
 export default function ReservationModal({ data, classData }: Props) {
   const pathname = usePathname();
   const { push } = useRouter();
-  const { data: userId } = useUserId();
+  const authSession = useAuthContext();
   const setAlert = useSetRecoilState(alertState);
 
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -85,7 +85,7 @@ export default function ReservationModal({ data, classData }: Props) {
   }, [classData.maxParticipant, data, selectedTime]);
 
   const handleSubmit = async () => {
-    if (!userId) {
+    if (!authSession) {
       return setAlert({
         content: "클래스를 예약하시려면 로그인해 주세요.",
         button: {
@@ -103,7 +103,7 @@ export default function ReservationModal({ data, classData }: Props) {
     }
 
     const { data } = await makeReservation({
-      user_id: userId,
+      user_id: authSession.user.id,
       lesson_id: selectedLesson,
       quantity: selectedPerson,
     });

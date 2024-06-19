@@ -2,7 +2,8 @@
 
 import { Fragment } from "react";
 import { useRouter } from "next/navigation";
-import { useUserData, useUserId } from "@/hooks/userData";
+import { useAuthContext } from "@/state/auth";
+import { useUserData } from "@/hooks/userData";
 import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
 import { logout } from "@/lib/supabase/actions/auth";
 import { Logo } from "@/components/common/Header";
@@ -47,11 +48,20 @@ interface Props {
 
 export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   const { replace } = useRouter();
-  const { data: userId } = useUserId();
-  const { data: userData } = useUserData(userId);
+  const authSession = useAuthContext();
+  const { data: userData } = useUserData(authSession?.user.id);
+
+  if (!authSession) {
+    return;
+  }
+
   const url =
-    userId && userData?.profile_url
-      ? getFilePublicUrl(PROFILE_BUCKET, userId, userData.profile_url)
+    authSession.user.id && userData?.profile_url
+      ? getFilePublicUrl(
+          PROFILE_BUCKET,
+          authSession.user.id,
+          userData.profile_url,
+        )
       : "";
 
   const handleLogOut = async () => {
