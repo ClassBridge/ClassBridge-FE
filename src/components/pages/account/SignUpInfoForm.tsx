@@ -9,8 +9,8 @@ import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
 import { cn, formatDate, formatPhoneNumber } from "@/lib/utils";
 import { signUpInfoFormSchema } from "@/lib/formSchema";
+import type { Category } from "@/constants/category";
 
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -19,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import Button from "@/components/common/Button";
 import ProfilePicture from "@/components/common/ProfilePicture";
 
@@ -50,30 +51,12 @@ const genders: { value: Gender; label: string }[] = [
   { value: "female", label: "여성" },
 ];
 
-type Interest =
-  | "baking"
-  | "cooking"
-  | "candle"
-  | "yoga"
-  | "drawing"
-  | "gardening";
-
-const interests: { value: Interest; label: string }[] = [
-  { value: "baking", label: "베이킹" },
-  { value: "cooking", label: "요리" },
-  { value: "candle", label: "피트니스" },
-  { value: "yoga", label: "요가" },
+const interests: { value: Category; label: string }[] = [
+  { value: "cooking", label: "쿠킹" },
+  { value: "handmade", label: "핸드메이드" },
+  { value: "fitness", label: "피트니스" },
   { value: "drawing", label: "드로잉" },
   { value: "gardening", label: "가드닝" },
-  { value: "yoga", label: "요가" },
-  { value: "drawing", label: "드로잉" },
-  { value: "gardening", label: "가드닝" },
-  { value: "drawing", label: "드로잉" },
-  { value: "gardening", label: "가드닝" },
-  { value: "yoga", label: "요가" },
-  { value: "drawing", label: "드로잉" },
-  { value: "gardening", label: "가드닝" },
-  { value: "candle", label: "피트니스" },
 ];
 
 interface Props {
@@ -85,7 +68,7 @@ export default function SignUpInfoForm({ sendSignupData }: Props) {
   const [isValidUsername, setIsValidUsername] = useState<boolean>(false);
 
   const [selectedGender, setSelectedGender] = useState<Gender>();
-  const [selectedInterest, setSelectedInterest] = useState<Interest[]>();
+  const [selectedInterest, setSelectedInterest] = useState<Category[]>([]);
 
   const [preview, setPreview] = useState<string>();
   const [image, setImage] = useState<File>();
@@ -260,7 +243,7 @@ export default function SignUpInfoForm({ sendSignupData }: Props) {
                       value={gender.value}
                       type="button"
                       className={cn(
-                        "w-20 h-full hover:bg-primary/10 transition duration-300",
+                        "w-20 h-full transition duration-300",
                         i === 0
                           ? "rounded-l border-r border-gray-light"
                           : "rounded-r",
@@ -322,7 +305,7 @@ export default function SignUpInfoForm({ sendSignupData }: Props) {
                     value={interest.value}
                     type="button"
                     className={cn(
-                      "h-14 rounded border border-gray-light hover:bg-primary/10 transition duration-300",
+                      "h-14 rounded border border-gray-light transition duration-300",
                       selectedInterest?.includes(interest.value) &&
                         "bg-primary-blur",
                     )}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useUserId } from "@/hooks/userData";
+import { useAuthContext } from "@/state/auth";
 import { openModal } from "@/lib/utils";
 import { CATEGORY } from "@/constants/category";
 import { REGION } from "@/constants/region";
@@ -33,16 +33,16 @@ const SubMenu = ({ menu }: SubMenuProps) => {
 
 const AuthButton = () => {
   const { push } = useRouter();
-  const { data: userId } = useUserId();
+  const authSession = useAuthContext();
 
   return (
     <button
       className="w-[100px] h-10 rounded font-bold text-white text-sm bg-primary"
       onClick={() => {
-        !userId ? openModal("login") : push("/my");
+        authSession ? push("/my") : openModal("login");
       }}
     >
-      {!userId ? "로그인" : "마이페이지"}
+      {authSession ? "마이페이지" : "로그인"}
     </button>
   );
 };

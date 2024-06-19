@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { tutorRegisterFormSchema } from "@/lib/formSchema";
+import { useAuthContext } from "@/state/auth";
 import { registerTutor } from "@/lib/supabase/actions/tutor";
-import { useUserId } from "@/hooks/userData";
+import { tutorRegisterFormSchema } from "@/lib/formSchema";
 
 import Button from "@/components/common/Button";
 import { Input } from "@/components/ui/input";
@@ -64,7 +64,7 @@ const bankList: { id: Bank; name: string }[] = Object.keys(banks).map(
 
 export default function TutorRegisterForm() {
   const { refresh } = useRouter();
-  const { data: userId } = useUserId();
+  const authSession = useAuthContext();
   const [selectedBank, setSelectedBank] = useState<Bank>();
   const [businessNumber, setBusinessNumber] = useState<string>();
   const [isBusinessNumberChecked, setIsBusinessNumberChecked] = useState<
@@ -93,7 +93,7 @@ export default function TutorRegisterForm() {
   };
 
   const onSubmit = async (data: TutorRegisterFormData) => {
-    if (!userId) {
+    if (!authSession || !authSession.user.id) {
       return;
     }
 
@@ -107,7 +107,7 @@ export default function TutorRegisterForm() {
       business_registration_number: businessNumber,
     };
 
-    const success = await registerTutor(userId, tutorData);
+    const success = await registerTutor(authSession.user.id, tutorData);
 
     if (success) {
       refresh();

@@ -72,11 +72,3 @@ export async function logout() {
 
   return true;
 }
-
-export async function getAuth() {
-  const supabase = createClient();
-
-  const { data } = await supabase.auth.getUser();
-
-  return data.user;
-}
