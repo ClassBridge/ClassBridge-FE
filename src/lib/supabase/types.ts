@@ -12,6 +12,7 @@ export type Database = {
       chat: {
         Row: {
           chatroom_id: string;
+          content: string;
           created_at: string;
           id: string;
           is_read: boolean;
@@ -19,6 +20,7 @@ export type Database = {
         };
         Insert: {
           chatroom_id: string;
+          content: string;
           created_at?: string;
           id?: string;
           is_read?: boolean;
@@ -26,6 +28,7 @@ export type Database = {
         };
         Update: {
           chatroom_id?: string;
+          content?: string;
           created_at?: string;
           id?: string;
           is_read?: boolean;
