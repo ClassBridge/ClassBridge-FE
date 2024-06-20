@@ -28,7 +28,7 @@ export default function ChatPage() {
 
   return (
     <>
-      <section className="w-[300px] h-full border border-gray-light">
+      <section className="w-[300px] h-full border border-l-0 border-gray-light">
         {chatRoomListData && (
           <ChatList
             data={chatRoomListData}
@@ -37,7 +37,7 @@ export default function ChatPage() {
           />
         )}
       </section>
-      <section className="flex-1 h-full border border-gray-light">
+      <section className="flex-1 h-full border border-l-0 border-gray-light">
         {selectedChatRoom && (
           <ChatRoom
             chatroomId={selectedChatRoom}

@@ -57,7 +57,7 @@ export default function ChatList({
                 fallback={data.user?.username || ""}
                 large
               />
-              {data.unread_count && (
+              {data.unread_count > 0 && (
                 <span className="absolute top-2 left-[48px] flex items-center justify-center w-6 h-6 rounded-full font-bold text-sm text-white bg-point-like">
                   {data.unread_count}
                 </span>
