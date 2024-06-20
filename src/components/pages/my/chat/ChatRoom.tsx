@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { CHAT_TABLE } from "@/constants/supabase";
-import type { Tables, TablesInsert } from "@/lib/supabase/types";
+import type { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase/types";
 import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import Message from "@/components/pages/my/chat/Message";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
@@ -64,6 +64,24 @@ export default function ChatRoom({ chatroomId, chatroomTitle, userId }: Props) {
       channel.unsubscribe();
     };
   }, [chatroomId]);
+
+  useEffect(() => {
+    messages.forEach((message) => {
+      if (!message.is_read && message.user_id !== userId) {
+        handleMarkAsRead(message.id);
+      }
+    });
+  }, [messages, userId]);
+
+  const handleMarkAsRead = async (chatId: string) => {
+    const supabase = createClient();
+    const updatedData: TablesUpdate<"chat"> = { is_read: true };
+
+    const { error } = await supabase
+      .from(CHAT_TABLE)
+      .update(updatedData)
+      .eq("id", chatId);
+  };
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
