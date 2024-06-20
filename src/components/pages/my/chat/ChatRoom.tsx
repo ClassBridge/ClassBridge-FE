@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { CHAT_TABLE } from "@/constants/supabase";
-import type { Tables } from "@/lib/supabase/types";
+import type { Tables, TablesInsert } from "@/lib/supabase/types";
+import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import Message from "@/components/pages/my/chat/Message";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
 
@@ -16,7 +17,7 @@ interface Props {
 
 export default function ChatRoom({ chatroomId, chatroomTitle, userId }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [messages, setMessages] = useState<Tables<"chat">[]>();
+  const [messages, setMessages] = useState<Tables<"chat">[]>([]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -33,14 +34,53 @@ export default function ChatRoom({ chatroomId, chatroomTitle, userId }: Props) {
     };
 
     getChats();
+
+    const channel = supabase
+      .channel("new-chats")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: CHAT_TABLE,
+          filter: `chatroom_id=eq.${chatroomId}`,
+        },
+        (payload: RealtimePostgresChangesPayload<Tables<"chat">>) => {
+          if (payload.eventType === "INSERT") {
+            setMessages((prev) => [...prev, payload.new]);
+          } else if (payload.eventType === "UPDATE") {
+            setMessages((prev) => {
+              const changedMessage = prev.findIndex(
+                (msg) => msg.id === payload.new.id,
+              );
+              return prev.toSpliced(changedMessage, 1, payload.new);
+            });
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
   }, [chatroomId]);
 
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const supabase = createClient();
 
     if (inputRef.current) {
-      console.log(inputRef.current.value);
+      const newChatData: TablesInsert<"chat"> = {
+        chatroom_id: chatroomId,
+        user_id: userId,
+        content: inputRef.current.value,
+      };
       inputRef.current.value = "";
+
+      const { error } = await supabase.from(CHAT_TABLE).insert(newChatData);
+      if (error) {
+        console.log("채팅 전송 도중 에러가 발생했어요. 다시 시도해 주세요.");
+      }
     }
   };
 
