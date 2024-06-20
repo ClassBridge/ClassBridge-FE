@@ -60,11 +60,18 @@ export async function getUnreadCountTotal(userId: string) {
 
   const { data, error } = await supabase
     .from(CHATROOM_TABLE)
-    .select("sum(unread_count)")
-    .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
-    .single();
+    .select("unread_count")
+    .or(`user1_id.eq.${userId},user2_id.eq.${userId}`);
 
-  return { data, error };
+  if (error) {
+    return;
+  }
+
+  const total = data
+    .map((data) => data.unread_count)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  return total;
 }
 
 export async function getLatestMessage(chatroomId: string) {

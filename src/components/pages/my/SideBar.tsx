@@ -12,6 +12,7 @@ import { type Menus } from "@/app/my/layout";
 import { PROFILE_BUCKET } from "@/constants/supabase";
 import { cn, openModal } from "@/lib/utils";
 import MenuIcon from "@/assets/icons/menu";
+import { useUnreadCountData } from "@/hooks/chatData";
 
 const actionMenus = ["tutorRegister", "logout"] as const;
 type ActionMenus = (typeof actionMenus)[number];
@@ -50,6 +51,7 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   const { replace } = useRouter();
   const authSession = useAuthContext();
   const { data: userData } = useUserData(authSession?.user.id);
+  const { data: unreadCount } = useUnreadCountData(authSession?.user.id);
 
   if (!authSession) {
     return;
@@ -130,6 +132,9 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
             >
               <MenuIcon id={menu.id} />
               {menu.name}
+              {menu.id === "chat" && unreadCount > 0 && (
+                <span className="flex-1 text-right">{unreadCount}</span>
+              )}
             </MenuItem>
           </Fragment>
         ))}
