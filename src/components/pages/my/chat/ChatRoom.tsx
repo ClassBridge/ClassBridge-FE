@@ -1,13 +1,38 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
+import { CHAT_TABLE } from "@/constants/supabase";
+import type { Tables } from "@/lib/supabase/types";
 import Message from "@/components/pages/my/chat/Message";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
-import { messageData } from "@/lib/mock";
 
-export default function ChatRoom() {
+interface Props {
+  chatroomId: string;
+  userId: string;
+}
+
+export default function ChatRoom({ chatroomId, userId }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [messages, setMessages] = useState<Tables<"chat">[]>();
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    const getChats = async () => {
+      const { data } = await supabase
+        .from(CHAT_TABLE)
+        .select("*")
+        .eq("chatroom_id", chatroomId)
+        .order("created_at", { ascending: true });
+      if (data) {
+        setMessages(data);
+      }
+    };
+
+    getChats();
+  }, [chatroomId]);
 
   const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,12 +52,13 @@ export default function ChatRoom() {
           <Image src={HamburgerIcon} alt="menu" width={24} height={24} />
         </button>
       </header>
-      {messageData.map((message) => (
-        <Message key={message.id} data={message} />
-      ))}
+      {messages &&
+        messages.map((message) => (
+          <Message key={message.id} data={message} user={userId} />
+        ))}
       <form
         onSubmit={handleSendMessage}
-        className="sticky bottom-0 z-10 w-full bg-white/70 backdrop-blur-sm"
+        className="fixed bottom-0 z-10 w-fit bg-white/70 backdrop-blur-sm"
       >
         <input
           id="message"

@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { CHATROOM_TABLE, CHAT_TABLE, USER_TABLE } from "@/constants/supabase";
-import { Tables } from "../types";
+import type { Tables } from "@/lib/supabase/types";
 
 export async function getChatRooms(userId: string) {
   const supabase = createClient();
@@ -63,18 +63,6 @@ export async function getUnreadCountTotal(userId: string) {
     .select("sum(unread_count)")
     .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
     .single();
-
-  return { data, error };
-}
-
-export async function getChats(chatroomId: string) {
-  const supabase = createClient();
-
-  const { data, error } = await supabase
-    .from(CHAT_TABLE)
-    .select("*")
-    .eq("chatroom_id", chatroomId)
-    .order("created_at", { ascending: true });
 
   return { data, error };
 }

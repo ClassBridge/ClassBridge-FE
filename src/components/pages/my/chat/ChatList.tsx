@@ -3,11 +3,10 @@
 import Image from "next/image";
 import ProfilePicture from "@/components/common/ProfilePicture";
 import OutIcon from "@/assets/icons/out.svg";
-import { useChatRoomListData } from "@/hooks/chatData";
-import { useAuthContext } from "@/state/auth";
-import type { Tables } from "@/lib/supabase/types";
 import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
 import { PROFILE_BUCKET } from "@/constants/supabase";
+import type { Tables } from "@/lib/supabase/types";
+import { cn } from "@/lib/utils";
 
 export interface ChatRoomData extends Tables<"chatroom"> {
   user: {
@@ -18,21 +17,32 @@ export interface ChatRoomData extends Tables<"chatroom"> {
   message: string;
 }
 
-export default function ChatList() {
-  const authSession = useAuthContext();
-  const { data: chatRoomListData } = useChatRoomListData(authSession?.user.id);
+interface Props {
+  data: ChatRoomData[];
+  selectedChatRoom: string | null;
+  setSelectedChatRoom: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
+export default function ChatList({
+  data,
+  selectedChatRoom,
+  setSelectedChatRoom,
+}: Props) {
   return (
     <>
       <h4 className="w-full h-[50px] py-3 px-4 font-bold text-base text-black border-b border-gray-light">
         {"채팅 목록"}
       </h4>
       <ul className="w-full h-full pb-16 overflow-y-auto scroll-smooth">
-        {chatRoomListData &&
-          chatRoomListData.map((data) => (
+        {data &&
+          data.map((data) => (
             <li
               key={data.id}
-              className="relative flex items-center gap-4 px-4 w-full h-[70px] bg-white cursor-pointer hover:bg-primary-blur transition duration-300"
+              className={cn(
+                "relative flex items-center gap-4 px-4 w-full h-[70px] cursor-pointer transition duration-300",
+                selectedChatRoom === data.id ? "bg-primary-blur" : "bg-white",
+              )}
+              onClick={() => setSelectedChatRoom(data.id)}
             >
               <ProfilePicture
                 src={
