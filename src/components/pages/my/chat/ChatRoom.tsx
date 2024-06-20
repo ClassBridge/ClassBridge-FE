@@ -1,20 +1,104 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
+import { CHAT_TABLE } from "@/constants/supabase";
+import type { Tables, TablesInsert, TablesUpdate } from "@/lib/supabase/types";
+import type { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import Message from "@/components/pages/my/chat/Message";
 import HamburgerIcon from "@/assets/icons/hamburger.svg";
-import { messageData } from "@/lib/mock";
 
-export default function ChatRoom() {
+interface Props {
+  chatroomId: string;
+  chatroomTitle: string | null;
+  userId: string;
+}
+
+export default function ChatRoom({ chatroomId, chatroomTitle, userId }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [messages, setMessages] = useState<Tables<"chat">[]>([]);
 
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const supabase = createClient();
+
+    const getChats = async () => {
+      const { data } = await supabase
+        .from(CHAT_TABLE)
+        .select("*")
+        .eq("chatroom_id", chatroomId)
+        .order("created_at", { ascending: true });
+      if (data) {
+        setMessages(data);
+      }
+    };
+
+    getChats();
+
+    const channel = supabase
+      .channel("new-chats")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: CHAT_TABLE,
+          filter: `chatroom_id=eq.${chatroomId}`,
+        },
+        (payload: RealtimePostgresChangesPayload<Tables<"chat">>) => {
+          if (payload.eventType === "INSERT") {
+            setMessages((prev) => [...prev, payload.new]);
+          } else if (payload.eventType === "UPDATE") {
+            setMessages((prev) => {
+              const changedMessage = prev.findIndex(
+                (msg) => msg.id === payload.new.id,
+              );
+              return prev.toSpliced(changedMessage, 1, payload.new);
+            });
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [chatroomId]);
+
+  useEffect(() => {
+    messages.forEach((message) => {
+      if (!message.is_read && message.user_id !== userId) {
+        handleMarkAsRead(message.id);
+      }
+    });
+  }, [messages, userId]);
+
+  const handleMarkAsRead = async (chatId: string) => {
+    const supabase = createClient();
+    const updatedData: TablesUpdate<"chat"> = { is_read: true };
+
+    const { error } = await supabase
+      .from(CHAT_TABLE)
+      .update(updatedData)
+      .eq("id", chatId);
+  };
+
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const supabase = createClient();
 
     if (inputRef.current) {
-      console.log(inputRef.current.value);
+      const newChatData: TablesInsert<"chat"> = {
+        chatroom_id: chatroomId,
+        user_id: userId,
+        content: inputRef.current.value,
+      };
       inputRef.current.value = "";
+
+      const { error } = await supabase.from(CHAT_TABLE).insert(newChatData);
+      if (error) {
+        console.log("채팅 전송 도중 에러가 발생했어요. 다시 시도해 주세요.");
+      }
     }
   };
 
@@ -22,17 +106,18 @@ export default function ChatRoom() {
     <div className="relative w-full h-full overflow-y-auto scroll-smooth">
       <header className="sticky top-0 z-10 flex items-center w-full h-[50px] px-2 font-bold text-base text-black bg-white/70 backdrop-blur-sm">
         <div className="size-12"></div>
-        <span className="flex-1 text-center">{"username"}</span>
+        <span className="flex-1 text-center">{chatroomTitle || "채팅방"}</span>
         <button className="p-3">
           <Image src={HamburgerIcon} alt="menu" width={24} height={24} />
         </button>
       </header>
-      {messageData.map((message) => (
-        <Message key={message.id} data={message} />
-      ))}
+      {messages &&
+        messages.map((message) => (
+          <Message key={message.id} data={message} user={userId} />
+        ))}
       <form
         onSubmit={handleSendMessage}
-        className="sticky bottom-0 z-10 w-full bg-white/70 backdrop-blur-sm"
+        className="fixed bottom-0 z-10 w-fit bg-white/70 backdrop-blur-sm"
       >
         <input
           id="message"
