@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChatList from "@/components/pages/my/chat/ChatList";
 import ChatRoom from "@/components/pages/my/chat/ChatRoom";
 import { useAuthContext } from "@/state/auth";
@@ -13,13 +13,6 @@ export default function ChatPage() {
   const [selectedChatRoomTitle, setSelectedChatRoomTitle] = useState<
     string | null
   >(null);
-
-  useEffect(() => {
-    if (chatRoomListData) {
-      setSelectedChatRoom(chatRoomListData[0].id);
-      setSelectedChatRoomTitle(chatRoomListData[0].user.username);
-    }
-  }, [chatRoomListData]);
 
   const handleChangeChatRoom = (id: string, title: string) => {
     setSelectedChatRoom(id);

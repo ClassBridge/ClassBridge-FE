@@ -40,7 +40,9 @@ export default function ChatList({
               key={data.id}
               className={cn(
                 "relative flex items-center gap-4 px-4 w-full h-[70px] cursor-pointer transition duration-300",
-                selectedChatRoom === data.id ? "bg-primary-blur" : "bg-white",
+                selectedChatRoom === data.id
+                  ? "bg-primary-blur"
+                  : "bg-white hover:bg-primary-blur",
               )}
               onClick={() => handleChangeChatRoom(data.id, data.user.username)}
             >
