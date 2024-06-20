@@ -34,21 +34,23 @@ export async function getChatRooms(userId: string) {
     return;
   }
 
-  const result = chatroomData.map(async (data: Tables<"chatroom">) => {
-    const { content }: Tables<"chat"> = await getLatestMessage(data.id);
+  const result = await Promise.all(
+    chatroomData.map(async (data: Tables<"chatroom">) => {
+      const { content }: Tables<"chat"> = await getLatestMessage(data.id);
 
-    return {
-      ...data,
-      user: userData.find((user) => {
-        if (data.user1_id === userId) {
-          return data.user2_id === user.id;
-        } else {
-          return data.user1_id === user.id;
-        }
-      }),
-      message: content,
-    };
-  });
+      return {
+        ...data,
+        user: userData.find((user) => {
+          if (data.user1_id === userId) {
+            return data.user2_id === user.id;
+          } else {
+            return data.user1_id === user.id;
+          }
+        }),
+        message: content,
+      };
+    }),
+  );
 
   return result;
 }

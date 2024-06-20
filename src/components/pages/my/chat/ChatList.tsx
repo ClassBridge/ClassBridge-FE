@@ -32,7 +32,7 @@ export default function ChatList() {
           chatRoomListData.map((data) => (
             <li
               key={data.id}
-              className="flex items-center gap-4 px-4 w-full h-[70px] bg-white cursor-pointer hover:bg-primary-blur transition duration-300"
+              className="relative flex items-center gap-4 px-4 w-full h-[70px] bg-white cursor-pointer hover:bg-primary-blur transition duration-300"
             >
               <ProfilePicture
                 src={
@@ -47,11 +47,18 @@ export default function ChatList() {
                 fallback={data.user?.username || ""}
                 large
               />
+              {data.unread_count && (
+                <span className="absolute top-2 left-[48px] flex items-center justify-center w-6 h-6 rounded-full font-bold text-sm text-white bg-point-like">
+                  {data.unread_count}
+                </span>
+              )}
               <div className="space-y-1 w-40">
                 <h5 className="font-medium text-base text-black">
                   {data.user?.username}
                 </h5>
-                <p className="truncate font-normal text-xs text-black">{}</p>
+                <p className="truncate font-normal text-xs text-black">
+                  {data.message}
+                </p>
               </div>
               <Image src={OutIcon} alt="나가기" width={24} height={24} />
             </li>
