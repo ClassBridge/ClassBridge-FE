@@ -56,7 +56,7 @@ export type Database = {
           created_at: string;
           id: string;
           last_activity: string;
-          unread_count: number | null;
+          unread_count: number;
           user1_id: string;
           user2_id: string;
         };
@@ -64,7 +64,7 @@ export type Database = {
           created_at?: string;
           id?: string;
           last_activity?: string;
-          unread_count?: number | null;
+          unread_count?: number;
           user1_id: string;
           user2_id: string;
         };
@@ -72,7 +72,7 @@ export type Database = {
           created_at?: string;
           id?: string;
           last_activity?: string;
-          unread_count?: number | null;
+          unread_count?: number;
           user1_id?: string;
           user2_id?: string;
         };

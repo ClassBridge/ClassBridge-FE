@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { CHATROOM_TABLE, CHAT_TABLE, USER_TABLE } from "@/constants/supabase";
-import { Tables } from "../types";
+import type { Tables } from "@/lib/supabase/types";
 
 export async function getChatRooms(userId: string) {
   const supabase = createClient();
@@ -34,21 +34,23 @@ export async function getChatRooms(userId: string) {
     return;
   }
 
-  const result = chatroomData.map(async (data: Tables<"chatroom">) => {
-    const { content }: Tables<"chat"> = await getLatestMessage(data.id);
+  const result = await Promise.all(
+    chatroomData.map(async (data: Tables<"chatroom">) => {
+      const { content }: Tables<"chat"> = await getLatestMessage(data.id);
 
-    return {
-      ...data,
-      user: userData.find((user) => {
-        if (data.user1_id === userId) {
-          return data.user2_id === user.id;
-        } else {
-          return data.user1_id === user.id;
-        }
-      }),
-      message: content,
-    };
-  });
+      return {
+        ...data,
+        user: userData.find((user) => {
+          if (data.user1_id === userId) {
+            return data.user2_id === user.id;
+          } else {
+            return data.user1_id === user.id;
+          }
+        }),
+        message: content,
+      };
+    }),
+  );
 
   return result;
 }
@@ -58,23 +60,18 @@ export async function getUnreadCountTotal(userId: string) {
 
   const { data, error } = await supabase
     .from(CHATROOM_TABLE)
-    .select("sum(unread_count)")
-    .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
-    .single();
+    .select("unread_count")
+    .or(`user1_id.eq.${userId},user2_id.eq.${userId}`);
 
-  return { data, error };
-}
+  if (error) {
+    return;
+  }
 
-export async function getChats(chatroomId: string) {
-  const supabase = createClient();
+  const total = data
+    .map((data) => data.unread_count)
+    .reduce((acc, cur) => acc + cur, 0);
 
-  const { data, error } = await supabase
-    .from(CHAT_TABLE)
-    .select("*")
-    .eq("chatroom_id", chatroomId)
-    .order("created_at", { ascending: true });
-
-  return { data, error };
+  return total;
 }
 
 export async function getLatestMessage(chatroomId: string) {
