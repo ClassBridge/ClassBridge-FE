@@ -10,12 +10,21 @@ export default function ChatPage() {
   const authSession = useAuthContext();
   const { data: chatRoomListData } = useChatRoomListData(authSession?.user.id);
   const [selectedChatRoom, setSelectedChatRoom] = useState<string | null>(null);
+  const [selectedChatRoomTitle, setSelectedChatRoomTitle] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     if (chatRoomListData) {
       setSelectedChatRoom(chatRoomListData[0].id);
+      setSelectedChatRoomTitle(chatRoomListData[0].user.username);
     }
   }, [chatRoomListData]);
+
+  const handleChangeChatRoom = (id: string, title: string) => {
+    setSelectedChatRoom(id);
+    setSelectedChatRoomTitle(title);
+  };
 
   return (
     <>
@@ -24,7 +33,7 @@ export default function ChatPage() {
           <ChatList
             data={chatRoomListData}
             selectedChatRoom={selectedChatRoom}
-            setSelectedChatRoom={setSelectedChatRoom}
+            handleChangeChatRoom={handleChangeChatRoom}
           />
         )}
       </section>
@@ -32,6 +41,7 @@ export default function ChatPage() {
         {selectedChatRoom && (
           <ChatRoom
             chatroomId={selectedChatRoom}
+            chatroomTitle={selectedChatRoomTitle}
             userId={authSession!.user.id}
           />
         )}

@@ -20,13 +20,13 @@ export interface ChatRoomData extends Tables<"chatroom"> {
 interface Props {
   data: ChatRoomData[];
   selectedChatRoom: string | null;
-  setSelectedChatRoom: React.Dispatch<React.SetStateAction<string | null>>;
+  handleChangeChatRoom: (id: string, title: string) => void;
 }
 
 export default function ChatList({
   data,
   selectedChatRoom,
-  setSelectedChatRoom,
+  handleChangeChatRoom,
 }: Props) {
   return (
     <>
@@ -42,7 +42,7 @@ export default function ChatList({
                 "relative flex items-center gap-4 px-4 w-full h-[70px] cursor-pointer transition duration-300",
                 selectedChatRoom === data.id ? "bg-primary-blur" : "bg-white",
               )}
-              onClick={() => setSelectedChatRoom(data.id)}
+              onClick={() => handleChangeChatRoom(data.id, data.user.username)}
             >
               <ProfilePicture
                 src={

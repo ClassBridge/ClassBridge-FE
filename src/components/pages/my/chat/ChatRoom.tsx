@@ -10,10 +10,11 @@ import HamburgerIcon from "@/assets/icons/hamburger.svg";
 
 interface Props {
   chatroomId: string;
+  chatroomTitle: string | null;
   userId: string;
 }
 
-export default function ChatRoom({ chatroomId, userId }: Props) {
+export default function ChatRoom({ chatroomId, chatroomTitle, userId }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [messages, setMessages] = useState<Tables<"chat">[]>();
 
@@ -47,7 +48,7 @@ export default function ChatRoom({ chatroomId, userId }: Props) {
     <div className="relative w-full h-full overflow-y-auto scroll-smooth">
       <header className="sticky top-0 z-10 flex items-center w-full h-[50px] px-2 font-bold text-base text-black bg-white/70 backdrop-blur-sm">
         <div className="size-12"></div>
-        <span className="flex-1 text-center">{"username"}</span>
+        <span className="flex-1 text-center">{chatroomTitle || "채팅방"}</span>
         <button className="p-3">
           <Image src={HamburgerIcon} alt="menu" width={24} height={24} />
         </button>
