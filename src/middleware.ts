@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
     const newUser = request.nextUrl.searchParams.get("newUser");
 
     if (type === "login" && newUser === "true") {
-      return NextResponse.redirect(new URL("/account/signup?page=success"));
+      return NextResponse.redirect(new URL("/account/signup?page=info"));
     }
   }
 }
