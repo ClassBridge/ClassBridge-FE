@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useClassListData } from "@/hooks/classData";
 import SortSelect from "./SortSelect";
 import { ClassCard } from "@/components/common/ClassCard";
@@ -11,6 +11,15 @@ import type { Sort } from "@/constants/sort";
 export default function ClassList() {
   const [sort, setSort] = useState<Sort>("like");
   const { data: classList } = useClassListData(sort);
+  const fetchData = async () => {
+    const res = await fetch("/api/class/search");
+    const data = await res.json();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
