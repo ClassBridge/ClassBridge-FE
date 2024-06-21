@@ -12,6 +12,15 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.endsWith("/my") && isNotLoggedIn) {
     return NextResponse.redirect(new URL("/", request.url));
   }
+
+  if (request.nextUrl.pathname.startsWith("/redirect")) {
+    const type = request.nextUrl.searchParams.get("type");
+    const newUser = request.nextUrl.searchParams.get("newUser");
+
+    if (type === "login" && newUser === "true") {
+      return NextResponse.redirect(new URL("/account/signup?page=success"));
+    }
+  }
 }
 
 export const config = {
