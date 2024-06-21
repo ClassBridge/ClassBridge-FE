@@ -52,13 +52,31 @@ const PageContent = () => {
   };
 
   const handleSignUp = async (data: SignUpFormData & SignUpInfoFormData) => {
-    const result = await signup(data);
+    const response = await fetch("/api/users/auth/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        signupRequest: {
+          userDto: {
+            email: data.email,
+            password: data.password,
+            username: data.username,
+          },
+        },
+      }),
+    });
 
-    if (result.error) {
-      setCurrentPage("error");
-    } else {
-      setCurrentPage("success");
-    }
+    const result = await response.json();
+
+    console.log(result);
+
+    // -------- supabase -------- //
+    // const result = await signup(data);
+
+    // if (result.error) {
+    //   setCurrentPage("error");
+    // } else {
+    //   setCurrentPage("success");
+    // }
   };
 
   const AuthPage = () => {
