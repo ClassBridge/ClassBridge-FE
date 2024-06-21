@@ -80,12 +80,25 @@ export default function SignUpInfoForm({ sendSignupData }: Props) {
     resolver: zodResolver(signUpInfoFormSchema),
   });
 
-  const handleUsernameCheck = () => {
-    setIsUsernameChecked(true);
-    if (isUsernameChecked) {
-      setIsValidUsername(true);
+  const handleUsernameCheck = async (nickname: string) => {
+    const response = await fetch(`/api/users/auth/check-nickname/${nickname}`);
+
+    const result = await response.json();
+
+    switch (result) {
+      case 200:
+        setIsValidUsername(true);
+        break;
+      case 400:
+        setIsValidUsername(false);
+        break;
+      case 500:
+        return setAlert({
+          content: "오류가 발생했습니다. 다시 시도해 주세요.",
+        });
     }
-    // TODO check username validity API
+
+    setIsUsernameChecked(true);
   };
 
   const handleImageUpload = () => {
@@ -165,7 +178,7 @@ export default function SignUpInfoForm({ sendSignupData }: Props) {
                   text="중복확인"
                   primary
                   type="sm"
-                  onClick={handleUsernameCheck}
+                  onClick={() => handleUsernameCheck(field.value as string)}
                 />
               </div>
               <FormMessage />
