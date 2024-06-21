@@ -52,13 +52,45 @@ const PageContent = () => {
   };
 
   const handleSignUp = async (data: SignUpFormData & SignUpInfoFormData) => {
-    const result = await signup(data);
+    let body: Object = {
+      additionalInfoDto: {
+        nickname: data.username,
+        phoneNumber: data.phoneNumber,
+        gender: data.gender,
+        birthDate: data.birthDate,
+        interests: data.interests,
+      },
+    };
 
-    if (result.error) {
-      setCurrentPage("error");
-    } else {
-      setCurrentPage("success");
+    if (data.email && data.password) {
+      body = {
+        userDto: {
+          provider: "email",
+          email: data.email,
+          password: data.password,
+          authType: "EMAIL",
+        },
+        ...body,
+      };
     }
+
+    const response = await fetch("/api/users/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+
+    const result = await response.json();
+
+    console.log(result);
+
+    // -------- supabase -------- //
+    // const result = await signup(data);
+
+    // if (result.error) {
+    //   setCurrentPage("error");
+    // } else {
+    //   setCurrentPage("success");
+    // }
   };
 
   const AuthPage = () => {
