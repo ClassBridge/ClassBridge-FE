@@ -55,12 +55,18 @@ const PageContent = () => {
     const response = await fetch("/api/users/auth/signup", {
       method: "POST",
       body: JSON.stringify({
-        signupRequest: {
-          userDto: {
-            email: data.email,
-            password: data.password,
-            username: data.username,
-          },
+        userDto: {
+          provider: "email",
+          email: data.email,
+          password: data.password,
+          authType: "EMAIL",
+        },
+        additionalInfoDto: {
+          nickname: data.username,
+          phoneNumber: data.phoneNumber,
+          gender: data.gender,
+          birthDate: data.birthDate,
+          interests: data.interests,
         },
       }),
     });
