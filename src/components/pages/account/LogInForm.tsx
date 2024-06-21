@@ -34,7 +34,17 @@ export default function LogInForm() {
   });
 
   const onSubmit = async (data: LogInFormData) => {
-    await login(data);
+    const response = await fetch("/api/users/auth/signin", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    console.log(result);
+
+    // -------- supabase -------- //
+    // await login(data);
     closeModal();
   };
 
