@@ -1,8 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { signUpFormSchema } from "@/lib/formSchema";
+import { useSetRecoilState } from "recoil";
+import { alertState } from "@/state/alert";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -13,8 +17,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { signUpFormSchema } from "@/lib/formSchema";
 
 export type SignUpFormData = z.infer<typeof signUpFormSchema>;
 
@@ -32,12 +34,30 @@ interface Props {
 }
 
 export default function SignUpForm({ sendSignupData }: Props) {
+  const { refresh } = useRouter();
+  const setAlert = useSetRecoilState(alertState);
+
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
   });
 
-  const onSubmit = (data: SignUpFormData) => {
-    sendSignupData(data);
+  const onSubmit = async (data: SignUpFormData) => {
+    const response = await fetch(`/api/users/auth/check-email/${data.email}`);
+
+    const result = await response.json();
+
+    switch (result) {
+      case 200:
+        return sendSignupData(data);
+      case 400:
+        form.reset({ email: "", password: "", rePassword: "" });
+        return setAlert({ content: "이미 등록된 이메일입니다." });
+      case 500:
+        refresh();
+        return setAlert({
+          content: "오류가 발생했습니다. 다시 시도해 주세요.",
+        });
+    }
   };
 
   return (
@@ -58,7 +78,7 @@ export default function SignUpForm({ sendSignupData }: Props) {
                     autoComplete={
                       field.name === "email" ? "email" : "current-password"
                     }
-                    className="rounded border-gray-light placeholder:text-gray modal-input"
+                    className="rounded border-gray-light placeholder:text-gray"
                     {...field}
                   />
                 </FormControl>
