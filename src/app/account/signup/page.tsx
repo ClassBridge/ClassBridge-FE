@@ -52,23 +52,31 @@ const PageContent = () => {
   };
 
   const handleSignUp = async (data: SignUpFormData & SignUpInfoFormData) => {
-    const response = await fetch("/api/users/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({
+    let body: Object = {
+      additionalInfoDto: {
+        nickname: data.username,
+        phoneNumber: data.phoneNumber,
+        gender: data.gender,
+        birthDate: data.birthDate,
+        interests: data.interests,
+      },
+    };
+
+    if (data.email && data.password) {
+      body = {
         userDto: {
           provider: "email",
           email: data.email,
           password: data.password,
           authType: "EMAIL",
         },
-        additionalInfoDto: {
-          nickname: data.username,
-          phoneNumber: data.phoneNumber,
-          gender: data.gender,
-          birthDate: data.birthDate,
-          interests: data.interests,
-        },
-      }),
+        ...body,
+      };
+    }
+
+    const response = await fetch("/api/users/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(body),
     });
 
     const result = await response.json();
