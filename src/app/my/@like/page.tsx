@@ -1,3 +1,9 @@
+import NoContent from "@/components/pages/my/NoContent";
+
 export default function LikePage() {
-  return <div className="font-bold text-primary">Like</div>;
+  return (
+    <>
+      <NoContent name="찜한 클래스가" />
+    </>
+  );
 }

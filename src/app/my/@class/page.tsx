@@ -1,3 +1,9 @@
+import NoContent from "@/components/pages/my/NoContent";
+
 export default function ClassPage() {
-  return <div className="font-bold text-primary">Class</div>;
+  return (
+    <>
+      <NoContent name="예약한 클래스가" />
+    </>
+  );
 }
