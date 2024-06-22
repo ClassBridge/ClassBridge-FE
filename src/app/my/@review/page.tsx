@@ -1,3 +1,9 @@
+import NoContent from "@/components/pages/my/NoContent";
+
 export default function ReviewPage() {
-  return <div className="font-bold text-primary">Review</div>;
+  return (
+    <>
+      <NoContent name="작성한 리뷰가" />
+    </>
+  );
 }
