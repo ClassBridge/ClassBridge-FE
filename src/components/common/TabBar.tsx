@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface Props {
   tabs: {
     values: string[];
-    contents: string[];
+    contents: React.ReactNode[];
   };
 }
 
