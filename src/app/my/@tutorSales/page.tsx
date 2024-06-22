@@ -1,3 +1,9 @@
+import NoContent from "@/components/pages/my/NoContent";
+
 export default function TutorSalesPage() {
-  return <div className="font-bold text-primary">TutorSales</div>;
+  return (
+    <>
+      <NoContent name="정산 내역이" />
+    </>
+  );
 }
