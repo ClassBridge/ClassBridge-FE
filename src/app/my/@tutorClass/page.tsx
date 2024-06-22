@@ -1,3 +1,9 @@
+import NoContent from "@/components/pages/my/NoContent";
+
 export default function TutorClassPage() {
-  return <div className="font-bold text-primary">TutorClass</div>;
+  return (
+    <>
+      <NoContent name="개설한 클래스가" />
+    </>
+  );
 }
