@@ -77,6 +77,11 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   //     }
   //   };
 
+  const handleLogOut = () => {
+    authContext.setAccessToken(null);
+    replace("/");
+  };
+
   const menuList: {
     id: MenusAll;
     name: string;
@@ -121,7 +126,7 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
                 if (menu.id === "tutorRegister") {
                   openModal("tutor-register");
                 } else if (menu.id === "logout") {
-                  //   handleLogOut();
+                  handleLogOut();
                 }
               }}
               className={[
