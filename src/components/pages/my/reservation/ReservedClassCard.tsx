@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Button, { type ButtonColorScheme } from "@/components/common/Button";
 import type { ClassTabs } from "@/app/my/@class/page";
 import { ReservationListData } from "@/lib/supabase/actions/reservation";
@@ -53,12 +54,20 @@ export default function ReservedClassCard({
       </div>
       <div className="flex flex-col gap-2.5 w-[94px]">
         {["문의하기", "상세보기"].map((button, i) => (
-          <Button
+          <Link
             key={button}
-            text={button}
-            primary={i === 0}
-            colorScheme={variant.color}
-          />
+            href={
+              button === "문의하기" ? "/" : `/class/${data.lesson.class_id}`
+            }
+            className="flex"
+          >
+            <Button
+              text={button}
+              primary={i === 0}
+              colorScheme={variant.color}
+              className="flex-1"
+            />
+          </Link>
         ))}
       </div>
     </div>
