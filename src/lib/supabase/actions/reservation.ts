@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Tables, TablesInsert } from "@/lib/supabase/types";
+import type { Enums, Tables, TablesInsert } from "@/lib/supabase/types";
 import { CLASS_TABLE, RESERVATION_TABLE } from "@/constants/supabase";
 
 export async function makeReservation(
@@ -25,6 +25,7 @@ export interface ReservationData {
   user_id: string;
   lesson_id: string;
   quantity: string;
+  status: Enums<"reservation_status">;
   lesson: {
     time: string;
     class_id: string;
@@ -36,7 +37,7 @@ export async function getReservation(reservationId: string) {
 
   const { data, error } = await supabase
     .from(RESERVATION_TABLE)
-    .select("id, user_id, lesson_id, quantity, lesson(time, class_id)")
+    .select("id, user_id, lesson_id, quantity, status, lesson(time, class_id)")
     .eq("id", reservationId)
     .single();
 
@@ -55,7 +56,7 @@ export async function getReservationList(userId: string) {
 
   const { data, error } = await supabase
     .from(RESERVATION_TABLE)
-    .select("id, user_id, lesson_id, quantity, lesson(time, class_id)")
+    .select("id, user_id, lesson_id, quantity, status, lesson(time, class_id)")
     .eq("user_id", userId)
     .in("status", ["success", "canceled"]);
 
