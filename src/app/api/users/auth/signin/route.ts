@@ -4,7 +4,7 @@ export const POST = async (request: NextRequest) => {
   const data = await request.json();
 
   const response = await fetch(
-    "http://13.125.180.170:8080/api/users/auth/signin",
+    `${process.env.ALLOWED_ORIGIN}/api/users/auth/signin`,
     {
       method: "POST",
       headers: {
@@ -14,7 +14,7 @@ export const POST = async (request: NextRequest) => {
     },
   );
 
-  const res = await response.json();
+  console.log(response);
 
-  return NextResponse.json(res);
+  return NextResponse.json(response.status);
 };

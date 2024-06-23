@@ -4,20 +4,20 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
+import { useAuthContext } from "@/state/auth";
 import { makeReservation } from "@/lib/supabase/actions/reservation";
 import type { Tables } from "@/lib/supabase/types";
 import {
   closeModal,
   cn,
   formatDateToLocaleString,
-  formatTimeToLocaleString,
+  formatTimeToString,
   openModal,
 } from "@/lib/utils";
 
 import Backdrop from "@/components/common/Backdrop";
 import { Calendar } from "@/components/ui/calendar";
 import { Minus, Plus } from "lucide-react";
-import { useAuthContext } from "@/state/auth";
 
 interface Props {
   data: Tables<"lesson">[];
@@ -151,7 +151,7 @@ export default function ReservationModal({ data, classData }: Props) {
                     )}
                     onClick={() => setSelectedTime(time)}
                   >
-                    {formatTimeToLocaleString(time)}
+                    {formatTimeToString(time)}
                   </button>
                 ))}
               </div>
