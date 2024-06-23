@@ -5,6 +5,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 // const AuthContext = createContext<Session | null>(null);
 
 interface AccessToken {
+  isAuthenticated: boolean;
   accessToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -37,7 +38,9 @@ export default function AuthContextProvider({ children }: Props) {
   }, [accessToken]);
 
   return (
-    <AuthContext.Provider value={{ accessToken, setAccessToken }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated: !!accessToken, accessToken, setAccessToken }}
+    >
       {children}
     </AuthContext.Provider>
   );
