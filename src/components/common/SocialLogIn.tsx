@@ -9,11 +9,20 @@ export default function SocialLogIn() {
         <span className="font-medium text-sm text-black">{"또는"}</span>
         <span className="flex-1 border-t border-black" />
       </div>
-      <button className="flex items-center px-6 py-[9px] rounded border border-black font-medium text-base text-black bg-white">
-        <Image src={GoogleIcon} alt="Google" width={20} height={20} priority />
-        <span className="flex-1">{"Google로 시작하기"}</span>
-      </button>
+      <a
+        href={`${process.env.ALLOWED_ORIGIN}/oauth2/authorization/google`}
+        className="flex items-center justify-center py-[9px] rounded border border-black font-medium text-base text-black bg-white"
+      >
+        <Image
+          src={GoogleIcon}
+          alt="Google"
+          width={20}
+          height={20}
+          priority
+          className="mr-10"
+        />
+        <span className="mr-12">{"Google로 시작하기"}</span>
+      </a>
     </>
   );
 }
-// TODO send Google login request to the server
