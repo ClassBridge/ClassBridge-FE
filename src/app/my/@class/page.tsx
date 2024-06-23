@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/state/auth";
-import { useReservationListData } from "@/hooks/reservationData";
+// import { useReservationListData } from "@/hooks/reservationData";
 import type { ReservationListData } from "@/lib/supabase/actions/reservation";
 import { TabsContent } from "@/components/ui/tabs";
 import TabBar from "@/components/common/TabBar";
@@ -14,10 +14,11 @@ const classTabs = ["전체", "수강 완료", "예약 확정", "예약 취소"] 
 export type ClassTabs = (typeof classTabs)[number];
 
 export default function ClassPage() {
-  const authSession = useAuthContext();
-  const { data: reservationList } = useReservationListData(
-    authSession?.user.id,
-  );
+  //   const authSession = useAuthContext();
+  //   const { data: reservationList } = useReservationListData(
+  //     authSession?.user.id,
+  //   );
+  const authContext = useAuthContext();
 
   const getStatus = (reservation: ReservationListData) => {
     let status: ReservedClassCardStatus = "completed";
@@ -35,7 +36,7 @@ export default function ClassPage() {
 
   return (
     <>
-      {classTabs && reservationList ? (
+      {/* {classTabs && reservationList ? (
         <section className="flex-1 flex justify-center py-6">
           <TabBar tabs={classTabs}>
             {classTabs.map((tab, i) => (
@@ -100,9 +101,9 @@ export default function ClassPage() {
             ))}
           </TabBar>
         </section>
-      ) : (
-        <NoContent name="예약한 클래스가" />
-      )}
+      ) : ( */}
+      <NoContent name="예약한 클래스가" />
+      {/* )} */}
     </>
   );
 }

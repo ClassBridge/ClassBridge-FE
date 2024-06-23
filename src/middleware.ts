@@ -1,17 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
-import { createClient } from "@/lib/supabase/server";
+// import { updateSession } from "@/lib/supabase/middleware";
+// import { createClient } from "@/lib/supabase/server";
 
 export async function middleware(request: NextRequest) {
-  await updateSession(request);
+  //   await updateSession(request);
 
-  const supabase = createClient();
-  const session = await supabase.auth.getSession();
-  const isNotLoggedIn = !session.data.session;
+  //   const supabase = createClient();
+  //   const session = await supabase.auth.getSession();
+  //   const isNotLoggedIn = !session.data.session;
 
-  if (request.nextUrl.pathname.endsWith("/my") && isNotLoggedIn) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  //   if (request.nextUrl.pathname.endsWith("/my") && isNotLoggedIn) {
+  //     return NextResponse.redirect(new URL("/", request.url));
+  //   }
 
   if (request.nextUrl.pathname.startsWith("/redirect")) {
     const type = request.nextUrl.searchParams.get("type");

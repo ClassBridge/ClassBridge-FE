@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
 import { useAuthContext } from "@/state/auth";
-import { makeReservation } from "@/lib/supabase/actions/reservation";
+// import { makeReservation } from "@/lib/supabase/actions/reservation";
 import type { Tables } from "@/lib/supabase/types";
 import {
   closeModal,
@@ -33,7 +33,8 @@ const MIN_PARTICIPANT = 1;
 export default function ReservationModal({ data, classData }: Props) {
   const pathname = usePathname();
   const { push } = useRouter();
-  const authSession = useAuthContext();
+  //   const authSession = useAuthContext();
+  const authContext = useAuthContext();
   const setAlert = useSetRecoilState(alertState);
 
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -85,7 +86,8 @@ export default function ReservationModal({ data, classData }: Props) {
   }, [classData.maxParticipant, data, selectedTime]);
 
   const handleSubmit = async () => {
-    if (!authSession) {
+    // if (!authSession) {
+    if (!authContext || !authContext.isAuthenticated) {
       return setAlert({
         content: "클래스를 예약하시려면 로그인해 주세요.",
         button: {
@@ -102,15 +104,15 @@ export default function ReservationModal({ data, classData }: Props) {
       return;
     }
 
-    const { data } = await makeReservation({
-      user_id: authSession.user.id,
-      lesson_id: selectedLesson,
-      quantity: selectedPerson,
-    });
+    // const { data } = await makeReservation({
+    //   user_id: authSession.user.id,
+    //   lesson_id: selectedLesson,
+    //   quantity: selectedPerson,
+    // });
 
-    if (data.id) {
-      return push(`${pathname}/checkout/${data.id}`);
-    }
+    // if (data.id) {
+    //   return push(`${pathname}/checkout/${data.id}`);
+    // }
   };
 
   return (
