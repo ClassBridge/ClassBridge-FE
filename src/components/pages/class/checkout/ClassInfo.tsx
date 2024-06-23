@@ -7,7 +7,7 @@ import { formatDateToLocaleString, formatTimeToString } from "@/lib/utils";
 interface Props {
   data: {
     time: string;
-    quantity: number;
+    quantity: string;
   };
   classData: {
     id: string;
