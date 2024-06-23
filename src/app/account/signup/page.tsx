@@ -81,16 +81,20 @@ const PageContent = () => {
 
     const result = await response.json();
 
-    console.log(result);
-
     // -------- supabase -------- //
     // const result = await signup(data);
 
-    // if (result.error) {
-    //   setCurrentPage("error");
-    // } else {
-    //   setCurrentPage("success");
-    // }
+    switch (result) {
+      case 200:
+        setCurrentPage("success");
+        break;
+      case 400:
+        setCurrentPage("error");
+        break;
+      case 500:
+        setCurrentPage("error");
+        break;
+    }
   };
 
   const AuthPage = () => {
