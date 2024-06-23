@@ -6,7 +6,7 @@ import {
   formatTimeToLocaleString,
 } from "@/lib/utils";
 
-type ReservedClassCardStatus = "completed" | "success" | "canceled";
+export type ReservedClassCardStatus = "completed" | "success" | "canceled";
 
 interface Props {
   data: ReservationListData;
@@ -34,14 +34,14 @@ export default function ReservedClassCard({
 
   return (
     <div
-      className={`flex items-center justify-between p-5 rounded border border-${variant.color}`}
+      className={`flex items-center justify-between py-4 px-5 rounded border border-${variant.color}`}
     >
-      <div className="">
+      <div className="space-y-2">
         <span className={`font-bold text-base text-${variant.color}`}>
           {variant.text}
         </span>
         <h4 className="font-bold text-2xl text-black">{data.class.name}</h4>
-        <div className="flex gap-4">
+        <div className="flex gap-4 font-normal text-base text-black">
           <span>
             {formatDateToLocaleString(new Date(data.lesson.time), {
               withoutYear: true,
