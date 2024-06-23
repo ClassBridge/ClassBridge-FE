@@ -55,10 +55,37 @@ export const formatDateToString = (date: Date) => {
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
 };
 
-export const formatDateToLocaleString = (date: Date) => {
-  return `${date.getFullYear()}년 ${(date.getMonth() + 1).toString().padStart(2, "0")}월 ${date.getDate().toString().padStart(2, "0")}일`;
+export const formatDateToLocaleString = (
+  date: Date,
+  options?: { withoutYear?: boolean },
+) => {
+  const monthAndDay = `${(date.getMonth() + 1).toString().padStart(2, "0")}월 ${date.getDate().toString().padStart(2, "0")}일`;
+
+  if (options?.withoutYear) {
+    return monthAndDay;
+  }
+
+  return `${date.getFullYear()}년 ${monthAndDay}`;
+};
+
+export const formatTimeToString = (time: Date) => {
+  return `${time.getHours().toString().padStart(2, "0")}:${time.getMinutes().toString().padStart(2, "0")}`;
 };
 
 export const formatTimeToLocaleString = (time: Date) => {
-  return `${time.getHours().toString().padStart(2, "0")}:${time.getMinutes().toString().padStart(2, "0")}`;
+  let hours = time.getHours();
+  const minutes = time.getMinutes();
+  const prefix = hours > 11 ? "오후" : "오전";
+  if (hours > 12) {
+    hours = hours - 12;
+  }
+
+  const timeString = `${prefix} ${hours.toString()}시`;
+  const hasMinutes = minutes !== 0;
+
+  if (hasMinutes) {
+    return `${timeString} ${minutes.toString()}분`;
+  }
+
+  return timeString;
 };

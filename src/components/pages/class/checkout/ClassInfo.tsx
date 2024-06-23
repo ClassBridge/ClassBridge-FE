@@ -2,10 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
 import { CLASS_BUCKET } from "@/constants/supabase";
-import {
-  formatDateToLocaleString,
-  formatTimeToLocaleString,
-} from "@/lib/utils";
+import { formatDateToLocaleString, formatTimeToString } from "@/lib/utils";
 
 interface Props {
   data: {
@@ -56,7 +53,7 @@ export default function ClassInfo({ data, classData }: Props) {
                 {formatDateToLocaleString(new Date(data.time))}
               </span>
               <span className="px-2.5 border-r border-gray-light">
-                {`${formatTimeToLocaleString(new Date(data.time))} - ${formatTimeToLocaleString(new Date(new Date(data.time).getMinutes() + classData.duration))}`}
+                {`${formatTimeToString(new Date(data.time))} - ${formatTimeToString(new Date(new Date(data.time).getMinutes() + classData.duration))}`}
               </span>
               <span className="pl-2.5">{`${data.quantity}인`}</span>
             </div>
