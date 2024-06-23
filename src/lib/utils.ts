@@ -73,15 +73,18 @@ export const formatTimeToString = (time: Date) => {
 };
 
 export const formatTimeToLocaleString = (time: Date) => {
-  const hours = time.getHours();
+  let hours = time.getHours();
   const minutes = time.getMinutes();
   const prefix = hours > 11 ? "오후" : "오전";
+  if (hours > 12) {
+    hours = hours - 12;
+  }
 
-  const timeString = `${prefix} ${hours.toString().padStart(2, "0")}시`;
+  const timeString = `${prefix} ${hours.toString()}시`;
   const hasMinutes = minutes !== 0;
 
   if (hasMinutes) {
-    return `${timeString} ${minutes.toString().padStart(2, "0")}분`;
+    return `${timeString} ${minutes.toString()}분`;
   }
 
   return timeString;
