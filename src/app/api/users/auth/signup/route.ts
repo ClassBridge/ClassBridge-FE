@@ -12,14 +12,14 @@ export const POST = async (request: NextRequest) => {
   );
 
   const response = await fetch(
-    "http://13.125.180.170:8080/api/users/auth/signup",
+    `${process.env.ALLOWED_ORIGIN}/api/users/auth/signup`,
     {
       method: "POST",
       body: formData,
     },
   );
 
-  const res = await response.json();
+  console.log(response);
 
-  return NextResponse.json(res);
+  return NextResponse.json(response.status);
 };

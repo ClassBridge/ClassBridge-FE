@@ -4,6 +4,11 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { logInFormSchema } from "@/lib/formSchema";
+import { login } from "@/lib/supabase/actions/auth";
+import { useSetRecoilState } from "recoil";
+import { alertState } from "@/state/alert";
+import { closeModal } from "@/lib/utils";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -15,10 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { logInFormSchema } from "@/lib/formSchema";
-import { closeModal } from "@/lib/utils";
-import { login } from "@/lib/supabase/actions/auth";
-
 export type LogInFormData = z.infer<typeof logInFormSchema>;
 
 const logInFormField: { name: "email" | "password"; label: string }[] = [
@@ -28,24 +29,38 @@ const logInFormField: { name: "email" | "password"; label: string }[] = [
 
 export default function LogInForm() {
   const { push } = useRouter();
+  const setAlert = useSetRecoilState(alertState);
 
   const form = useForm<LogInFormData>({
     resolver: zodResolver(logInFormSchema),
   });
 
   const onSubmit = async (data: LogInFormData) => {
-    // const response = await fetch("/api/users/auth/signin", {
-    //   method: "POST",
-    //   body: JSON.stringify(data),
-    // });
+    const response = await fetch("/api/users/auth/signin", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
 
-    // const result = await response.json();
-
-    // console.log(result);
+    const result = await response.json();
 
     // -------- supabase -------- //
-    await login(data);
-    closeModal();
+    // const result = await login(data);
+
+    switch (result) {
+      case 200:
+        closeModal();
+        break;
+      case 400:
+        setAlert({
+          content: "잘못된 이메일 또는 비밀번호입니다. 다시 시도해 주세요.",
+        });
+        break;
+      case 500:
+        setAlert({
+          content: "로그인 도중 오류가 발생했습니다. 다시 시도해 주세요.",
+        });
+        break;
+    }
   };
 
   return (
