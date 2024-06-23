@@ -14,7 +14,10 @@ export const POST = async (request: NextRequest) => {
     },
   );
 
-  console.log(response);
+  const result = {
+    status: parseInt(response.status.toString()[0]),
+    token: response.headers.get("access"),
+  };
 
-  return NextResponse.json(response.status);
+  return NextResponse.json(result);
 };

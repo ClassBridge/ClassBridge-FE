@@ -41,21 +41,22 @@ export default function LogInForm() {
       body: JSON.stringify(data),
     });
 
-    const result = await response.json();
+    const { status, token } = await response.json();
 
     // -------- supabase -------- //
     // const result = await login(data);
 
-    switch (result) {
-      case 200:
+    switch (status) {
+      case 2:
         closeModal();
         break;
-      case 400:
+      case 4:
         setAlert({
           content: "잘못된 이메일 또는 비밀번호입니다. 다시 시도해 주세요.",
         });
         break;
-      case 500:
+
+      default:
         setAlert({
           content: "로그인 도중 오류가 발생했습니다. 다시 시도해 주세요.",
         });
