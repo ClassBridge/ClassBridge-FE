@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { logInFormSchema } from "@/lib/formSchema";
-import { login } from "@/lib/supabase/actions/auth";
+// import { login } from "@/lib/supabase/actions/auth";
 import { useAuthContext } from "@/state/auth";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
@@ -30,7 +30,7 @@ const logInFormField: { name: "email" | "password"; label: string }[] = [
 
 export default function LogInForm() {
   const { push } = useRouter();
-  const accessToken = useAuthContext();
+  const authContext = useAuthContext();
   const setAlert = useSetRecoilState(alertState);
 
   const form = useForm<LogInFormData>({
@@ -50,14 +50,14 @@ export default function LogInForm() {
 
     switch (status) {
       case 2:
-        if (!accessToken) {
+        if (!authContext) {
           setAlert({
             content: "로그인 도중 오류가 발생했습니다. 다시 시도해 주세요.",
           });
           break;
         }
 
-        accessToken.setAccessToken(token);
+        authContext.setAccessToken(token);
         closeModal();
         break;
       case 4:

@@ -2,8 +2,8 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signup } from "@/lib/supabase/actions/auth";
 import { useAuthContext } from "@/state/auth";
+// import { signup } from "@/lib/supabase/actions/auth";
 
 import Loading from "@/app/loading";
 import SignUpForm, {
@@ -26,7 +26,7 @@ const isSignUpFormData = (
 const PageContent = () => {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
-  const accessToken = useAuthContext();
+  const authContext = useAuthContext();
   const [currentPage, setCurrentPage] = useState<PageType>();
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>();
 
@@ -88,12 +88,12 @@ const PageContent = () => {
 
     switch (status) {
       case 2:
-        if (!accessToken) {
+        if (!authContext) {
           setCurrentPage("error");
           break;
         }
 
-        accessToken.setAccessToken(token);
+        authContext.setAccessToken(token);
         setCurrentPage("success");
         break;
 
