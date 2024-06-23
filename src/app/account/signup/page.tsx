@@ -2,7 +2,8 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signup } from "@/lib/supabase/actions/auth";
+import { useAuthContext } from "@/state/auth";
+// import { signup } from "@/lib/supabase/actions/auth";
 
 import Loading from "@/app/loading";
 import SignUpForm, {
@@ -25,6 +26,7 @@ const isSignUpFormData = (
 const PageContent = () => {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
+  const authContext = useAuthContext();
   const [currentPage, setCurrentPage] = useState<PageType>();
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>();
 
@@ -79,19 +81,23 @@ const PageContent = () => {
       body: JSON.stringify(body),
     });
 
-    const result = await response.json();
+    const { status, token } = await response.json();
 
     // -------- supabase -------- //
     // const result = await signup(data);
 
-    switch (result) {
-      case 200:
+    switch (status) {
+      case 2:
+        if (!authContext) {
+          setCurrentPage("error");
+          break;
+        }
+
+        authContext.setAccessToken(token);
         setCurrentPage("success");
         break;
-      case 400:
-        setCurrentPage("error");
-        break;
-      case 500:
+
+      default:
         setCurrentPage("error");
         break;
     }
