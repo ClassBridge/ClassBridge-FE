@@ -79,19 +79,17 @@ const PageContent = () => {
       body: JSON.stringify(body),
     });
 
-    const result = await response.json();
+    const { status, token } = await response.json();
 
     // -------- supabase -------- //
     // const result = await signup(data);
 
-    switch (result) {
-      case 200:
+    switch (status) {
+      case 2:
         setCurrentPage("success");
         break;
-      case 400:
-        setCurrentPage("error");
-        break;
-      case 500:
+
+      default:
         setCurrentPage("error");
         break;
     }
