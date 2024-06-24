@@ -67,7 +67,9 @@ export default function ReservationModal({ data, classData }: Props) {
       setSelectedTime(null);
       return;
     }
-    const filteredTime = filteredData.map((data) => new Date(data.startTime));
+    const filteredTime = filteredData.map(
+      (data) => new Date(`${data.lessonDate} ${data.startTime}`),
+    );
     // const filteredTime = filteredData.map((data) => new Date(data.time));
     setAvailableTime(filteredTime);
   }, [data, selectedDate]);
@@ -80,7 +82,9 @@ export default function ReservationModal({ data, classData }: Props) {
       return;
     }
     const selectedLesson = data.filter(
-      (data) => new Date(data.startTime).getTime() === selectedTime.getTime(),
+      (data) =>
+        new Date(`${data.lessonDate} ${data.startTime}`).getTime() ===
+        selectedTime.getTime(),
       //   (data) => new Date(data.time).getTime() === selectedTime.getTime(),
     );
 
