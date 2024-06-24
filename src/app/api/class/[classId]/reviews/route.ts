@@ -14,6 +14,7 @@ export const GET = async (request: Request, context: { params: Params }) => {
 
   const response = await fetch(
     `${process.env.ALLOWED_ORIGIN}/api/class/${context.params.classId}/reviews?${params}`,
+    { next: { revalidate: 60 } },
   );
 
   const res: ClassReviewResponse = await response.json();

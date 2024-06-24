@@ -10,7 +10,7 @@ export const GET = async (request: NextRequest) => {
 
   const response = await fetch(
     `${process.env.ALLOWED_ORIGIN}/api/class/recommend/${type}`,
-    { headers: request.headers },
+    { headers: request.headers, next: { revalidate: 3600 } },
   );
   console.log(response);
 
