@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useClassData } from "@/hooks/classData";
+import { useClassReviewListData } from "@/hooks/reviewData";
 // import { useTutorData } from "@/hooks/tutorData";
 // import { useLessonListData } from "@/hooks/lessonData";
 import { TABS } from "@/constants/classDetailTabs";
@@ -24,6 +25,7 @@ export default function ClassDetailPage({ params }: Props) {
   //   const [tutorId, setTutorId] = useState<string>("");
 
   const { data: classData } = useClassData(params.id);
+  const { data: reviewData } = useClassReviewListData(params.id);
   //   const { data: tutorData } = useTutorData(tutorId);
   //   const { data: lessonListData } = useLessonListData(params.id);
 
@@ -43,8 +45,8 @@ export default function ClassDetailPage({ params }: Props) {
       {classData && classData.code === "SUCCESS" && (
         <>
           <ClassDetailBreadcrumb
-            location={classData.data.address}
-            category={classData.data.category}
+            location={classData.data.address.split(" ")[0]}
+            category={classData.data.category.toLowerCase()}
           />
           {classData.data.imageList && (
             <ClassDetailCarousel image_urls={classData.data.imageList} />
@@ -69,7 +71,7 @@ export default function ClassDetailPage({ params }: Props) {
               tab={tab}
               data={
                 tab.id === "review"
-                  ? {}
+                  ? { review: reviewData?.data.content }
                   : tab.id === "inquiry"
                     ? {
                         faq: classData.data.faqList?.map((faq) => {
