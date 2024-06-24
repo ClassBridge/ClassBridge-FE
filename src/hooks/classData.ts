@@ -1,5 +1,6 @@
 import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 import type { ClassSearchResponse } from "@/app/api/class/search/type";
+import type { ClassDetailResponse } from "@/app/api/class/[classId]/type";
 import {
   getClass,
   getClassList,
@@ -27,13 +28,20 @@ export const useClassListData: (
   //   });
 };
 
-export const useClassData = (id: string) => {
+export const useClassData: (
+  id: string,
+) => UseQueryResult<ClassDetailResponse> = (id) => {
   return useQuery({
     queryKey: ["class", id],
-    queryFn: () =>
-      getClass(id).then((data) => data.data?.[0] as Tables<"class">),
+    queryFn: () => fetch(`/api/class/${id}`).then((res) => res.json()),
     enabled: !!id,
   });
+  //   return useQuery({
+  //     queryKey: ["class", id],
+  //     queryFn: () =>
+  //       getClass(id).then((data) => data.data?.[0] as Tables<"class">),
+  //     enabled: !!id,
+  //   });
 };
 
 export const useClassSummaryData = (id: string) => {
