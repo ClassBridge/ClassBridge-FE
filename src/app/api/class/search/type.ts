@@ -1,3 +1,5 @@
+import type { Enums } from "@/lib/supabase/types";
+
 export interface ClassSearchResponse {
   code: string;
   message: string;
@@ -12,20 +14,19 @@ export interface Data {
 export interface Content {
   classId: number;
   className: string;
-  tutorName: null | string;
-  address1: string;
+  tutorName: string;
+  address1: Enums<"city">;
   address2: string;
+  address3: string;
   lat: number;
   lng: number;
   duration: number;
   price: number;
-  personal: number;
+  totalReviews: number;
   starRate: number;
   totalWish: number;
-  imageUrl: null | string;
+  imageUrl: string | null;
   tagList: string[];
-  hasParking: boolean;
-  startDate: null | string;
   endDate: string;
   category: string;
   wish: boolean;

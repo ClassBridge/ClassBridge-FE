@@ -8,7 +8,6 @@ import Maps from "./Maps";
 import MapButtons from "./MapButtons";
 import type { Sort } from "@/constants/sort";
 import type { Category } from "@/constants/category";
-import type { Enums } from "@/lib/supabase/types";
 
 export default function ClassList() {
   const [sort, setSort] = useState<Sort>("like");
@@ -35,11 +34,12 @@ export default function ClassList() {
                 name: item.className,
                 category: item.category.toLowerCase() as Category,
                 tutor: { username: item.tutorName! },
-                address1: item.address1 as Enums<"city">,
+                address1: item.address1,
                 address2: item.address2,
                 price: item.price,
                 duration: item.duration,
                 rating_avg: item.starRate,
+                review_cnt: item.totalReviews,
                 image_urls: item.imageUrl?.startsWith("https://")
                   ? [item.imageUrl]
                   : undefined,
