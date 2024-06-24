@@ -1,4 +1,6 @@
 import { type UseQueryResult, useQuery } from "@tanstack/react-query";
+import { useAuthContext } from "@/state/auth";
+import type { ClassRecommendResponse } from "@/app/api/class/recommend/type";
 import type { ClassSearchResponse } from "@/app/api/class/search/type";
 import type { ClassDetailResponse } from "@/app/api/class/[classId]/type";
 import {
@@ -27,6 +29,27 @@ export const useClassListData: (
   //     enabled: !!sort,
   //   });
 };
+
+export const useRecommendationListData: () => UseQueryResult<ClassRecommendResponse> =
+  () => {
+    const authContext = useAuthContext();
+
+    return useQuery({
+      queryKey: [
+        "class-recommend-list",
+        authContext?.isAuthenticated,
+        authContext?.accessToken,
+      ],
+      queryFn: () => {
+        const headers = new Headers();
+        if (authContext?.accessToken) {
+          headers.append("access", authContext.accessToken);
+        }
+        fetch("/api/class/recommend", { headers }).then((res) => res.json());
+      },
+      enabled: !!authContext,
+    });
+  };
 
 export const useClassData: (
   id: string,
