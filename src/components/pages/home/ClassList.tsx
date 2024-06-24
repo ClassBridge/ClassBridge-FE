@@ -39,9 +39,17 @@ export default function ClassList() {
                 address2: item.address2,
                 price: item.price,
                 duration: item.duration,
+                rating_avg: item.starRate,
+                image_urls: item.imageUrl?.startsWith("https://")
+                  ? [item.imageUrl]
+                  : undefined,
               }}
             />
           ))}
+        {/* {classList &&
+          classList.map((item) => (
+            <ClassCard key={item.id} size="large" content={item} />
+          ))} */}
       </section>
     </>
   );
