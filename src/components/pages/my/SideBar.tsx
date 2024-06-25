@@ -78,7 +78,7 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   //   };
 
   const handleLogOut = () => {
-    authContext.setAccessToken(null);
+    authContext.logout();
     replace("/");
   };
 

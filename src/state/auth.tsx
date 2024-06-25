@@ -1,16 +1,19 @@
+"use client";
+
 import { createContext, useContext, useState, useEffect } from "react";
 // import { createClient } from "@/lib/supabase/client";
 // import type { Session } from "@supabase/supabase-js";
 
 // const AuthContext = createContext<Session | null>(null);
 
-interface AccessToken {
+interface AuthContext {
   isAuthenticated: boolean;
   accessToken: string | null;
-  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
+  login: (token: string) => void;
+  logout: () => void;
 }
 
-const AuthContext = createContext<AccessToken | null>(null);
+const AuthContext = createContext<AuthContext | null>(null);
 export const useAuthContext = () => useContext(AuthContext);
 
 interface Props {
@@ -31,15 +34,27 @@ export default function AuthContextProvider({ children }: Props) {
     if (localStorage) {
       if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
-      } else {
-        localStorage.removeItem("accessToken");
       }
     }
   }, [accessToken]);
 
+  const login = (token: string) => {
+    setAccessToken(token);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    setAccessToken(null);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated: !!accessToken, accessToken, setAccessToken }}
+      value={{
+        isAuthenticated: !!accessToken,
+        accessToken,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
