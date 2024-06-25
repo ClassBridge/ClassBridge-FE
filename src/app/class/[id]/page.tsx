@@ -45,7 +45,7 @@ export default function ClassDetailPage({ params }: Props) {
       {classData && classData.code === "SUCCESS" && (
         <>
           <ClassDetailBreadcrumb
-            location={classData.data.address.split(" ")[0]}
+            location={classData.data.address1}
             category={classData.data.category.toLowerCase()}
           />
           {classData.data.imageList && (
@@ -59,7 +59,7 @@ export default function ClassDetailPage({ params }: Props) {
               review_cnt: classData.data.totalReviews,
               like_cnt: classData.data.totalWish,
               duration: classData.data.duration,
-              address: classData.data.address,
+              address: `${classData.data.address1} ${classData.data.address2} ${classData.data.address3}`,
               parking: classData.data.hasParking,
               personnel: classData.data.personal,
             }}
