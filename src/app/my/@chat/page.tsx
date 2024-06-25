@@ -16,10 +16,10 @@ export default function ChatPage() {
     string | null
   >(null);
 
-  const handleChangeChatRoom = (id: string, title: string) => {
-    setSelectedChatRoom(id);
-    setSelectedChatRoomTitle(title);
-  };
+  //   const handleChangeChatRoom = (id: string, title: string) => {
+  //     setSelectedChatRoom(id);
+  //     setSelectedChatRoomTitle(title);
+  //   };
 
   return (
     <>
