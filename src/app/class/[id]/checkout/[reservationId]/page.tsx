@@ -9,7 +9,7 @@ import { useReservationData } from "@/hooks/reservationData";
 import ClassInfo from "@/components/pages/class/checkout/ClassInfo";
 import RefundPolicy from "@/components/pages/class/checkout/RefundPolicy";
 import BottomActionBar from "@/components/pages/class/reservation/BottomActionBar";
-import { useClassSummaryData } from "@/hooks/classData";
+// import { useClassSummaryData } from "@/hooks/classData";
 
 interface Props {
   params: { reservationId: string };
@@ -17,18 +17,18 @@ interface Props {
 
 export default function CheckoutPage({ params }: Props) {
   const [classId, setClassId] = useState<string>("");
-  const { data: reservationData } = useReservationData(params.reservationId);
-  const { data: classData } = useClassSummaryData(classId);
+  //   const { data: reservationData } = useReservationData(params.reservationId);
+  //   const { data: classData } = useClassSummaryData(classId);
 
   const { replace } = useRouter();
   const setAlert = useSetRecoilState(alertState);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (reservationData) {
-      setClassId(reservationData.lesson.class_id);
-    }
-  }, [reservationData]);
+  //   useEffect(() => {
+  //     if (reservationData) {
+  //       setClassId(reservationData.lesson.class_id);
+  //     }
+  //   }, [reservationData]);
 
   const openAlert = () => {
     setAlert({ content: "결제 진행 동의에 체크해 주세요." });
@@ -40,7 +40,7 @@ export default function CheckoutPage({ params }: Props) {
 
   return (
     <>
-      {reservationData && classData && (
+      {/* {reservationData && classData && (
         <>
           <h2 className="mt-16 font-bold text-2xl text-black">
             {"클래스 결제"}
@@ -61,7 +61,7 @@ export default function CheckoutPage({ params }: Props) {
             onCheckout
           />
         </>
-      )}
+      )} */}
     </>
   );
 }

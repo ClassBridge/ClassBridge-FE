@@ -7,7 +7,9 @@ export interface ClassDetailResponse {
 export interface Data {
   classId: number;
   className: string;
-  address: string;
+  address1: string;
+  address2: string;
+  address3: string;
   latitude: number;
   longitude: number;
   duration: number;
