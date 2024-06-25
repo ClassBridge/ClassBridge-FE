@@ -4,7 +4,7 @@ import ClassList from "@/components/pages/home/ClassList";
 export default function HomePage() {
   return (
     <>
-      <Recommendation />
+      {/* <Recommendation /> */}
       <ClassList />
     </>
   );

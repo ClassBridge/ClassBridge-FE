@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useClassData } from "@/hooks/classData";
-import { useTutorData } from "@/hooks/tutorData";
-import { useLessonListData } from "@/hooks/lessonData";
+import { useClassReviewListData } from "@/hooks/reviewData";
+// import { useTutorData } from "@/hooks/tutorData";
+// import { useLessonListData } from "@/hooks/lessonData";
 import { TABS } from "@/constants/classDetailTabs";
 
 import ClassDetailBreadcrumb from "@/components/pages/class/nav/Breadcrumb";
@@ -21,17 +22,18 @@ interface Props {
 }
 
 export default function ClassDetailPage({ params }: Props) {
-  const [tutorId, setTutorId] = useState<string>("");
+  //   const [tutorId, setTutorId] = useState<string>("");
 
   const { data: classData } = useClassData(params.id);
-  const { data: tutorData } = useTutorData(tutorId);
-  const { data: lessonListData } = useLessonListData(params.id);
+  const { data: reviewData } = useClassReviewListData(params.id);
+  //   const { data: tutorData } = useTutorData(tutorId);
+  //   const { data: lessonListData } = useLessonListData(params.id);
 
-  useEffect(() => {
-    if (classData) {
-      setTutorId(classData.tutor_id);
-    }
-  }, [classData]);
+  //   useEffect(() => {
+  //     if (classData) {
+  //       setTutorId(classData.tutor_id);
+  //     }
+  //   }, [classData]);
 
   const openReservationModal = () => {
     const modal = document.getElementById("reservation-modal");
@@ -40,7 +42,73 @@ export default function ClassDetailPage({ params }: Props) {
 
   return (
     <>
-      {classData?.id && (
+      {classData && classData.code === "SUCCESS" && (
+        <>
+          <ClassDetailBreadcrumb
+            location={classData.data.address.split(" ")[0]}
+            category={classData.data.category.toLowerCase()}
+          />
+          {classData.data.imageList && (
+            <ClassDetailCarousel image_urls={classData.data.imageList} />
+          )}
+          <ClassDetailSummary
+            data={{
+              name: classData.data.className,
+              status: 0,
+              rating_avg: classData.data.totalStarRate,
+              review_cnt: classData.data.totalReviews,
+              like_cnt: classData.data.totalWish,
+              duration: classData.data.duration,
+              address: classData.data.address,
+              parking: classData.data.hasParking,
+              personnel: classData.data.personal,
+            }}
+          />
+          <ClassDetailTab />
+          {TABS.map((tab) => (
+            <ClassDetailSection
+              key={tab.id}
+              tab={tab}
+              data={
+                tab.id === "review"
+                  ? { review: reviewData?.data.content }
+                  : tab.id === "inquiry"
+                    ? {
+                        faq: classData.data.faqList?.map((faq) => {
+                          return {
+                            title: faq.title,
+                            content: faq.content,
+                          };
+                        }),
+                      }
+                    : tab.id === "classDesc"
+                      ? {
+                          content: classData.data.introduction,
+                          tag: classData.data.tagList.map((tag) => tag.name),
+                        }
+                      : {
+                          title: classData.data.tutorName,
+                          content: classData.data.tutorIntroduction,
+                        }
+              }
+            />
+          ))}
+          <BottomActionBar
+            price={classData.data.price}
+            onClick={openReservationModal}
+          />
+          <ShareModal />
+          <ReservationModal
+            data={classData.data.lessonList}
+            classData={{
+              id: classData.data.classId.toString(),
+              maxParticipant: classData.data.personal,
+              price: classData.data.price,
+            }}
+          />
+        </>
+      )}
+      {/* {classData?.id && (
         <>
           <ClassDetailBreadcrumb
             location={classData.address1}
@@ -100,7 +168,7 @@ export default function ClassDetailPage({ params }: Props) {
             />
           )}
         </>
-      )}
+      )} */}
     </>
   );
 }
