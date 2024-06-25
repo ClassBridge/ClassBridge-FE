@@ -1,13 +1,17 @@
 "use client";
 
+import { useAuthContext } from "@/state/auth";
+import { useRecommendationListData } from "@/hooks/classData";
+import type { Enums } from "@/lib/supabase/types";
 import { ClassCard } from "@/components/common/ClassCard";
 import { CarouselItem } from "@/components/ui/carousel";
 import { Category } from "@/constants/category";
-import { useRecommendationListData } from "@/hooks/classData";
-import { Enums } from "@/lib/supabase/types";
 
 export default function RecommendationContent() {
-  const { data: recommendations } = useRecommendationListData();
+  const authContext = useAuthContext();
+  const { data: recommendations } = useRecommendationListData(
+    authContext?.accessToken,
+  );
 
   return (
     <>
@@ -20,16 +24,16 @@ export default function RecommendationContent() {
               content={{
                 id: content.classId.toString(),
                 name: content.className,
-                category: content.category.name.toLowerCase() as Category,
-                tutor: { username: content.tutor.nickname },
+                category: content.category.toLowerCase() as Category,
+                tutor: { username: content.tutorName },
                 address1: content.address1 as Enums<"city">,
                 address2: content.address2,
                 price: content.price,
                 duration: content.duration,
                 review_cnt: content.totalReviews,
                 rating_avg: content.totalStarRate,
-                image_urls: content.imageList[0].url.startsWith("https://")
-                  ? content.imageList.map((image) => image.url)
+                image_urls: content.classImageUrl
+                  ? [content.classImageUrl]
                   : undefined,
               }}
             />
