@@ -8,6 +8,8 @@ export interface ClassSectionData {
   tag?: string[];
   review?: Content[];
   faq?: { title: string; content: string }[];
+  classId?: string;
+  tutorId?: string;
 }
 
 interface Props {

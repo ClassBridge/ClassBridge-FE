@@ -142,6 +142,8 @@ export default function ClassDetailPage({ params }: Props) {
                             content: classData.faq_answers![i],
                           };
                         }),
+                        classId: classData.id,
+                        tutorId: classData.tutor_id,
                       }
                     : tab.id === "classDesc"
                       ? { content: classData.description, tag: classData.tags }
