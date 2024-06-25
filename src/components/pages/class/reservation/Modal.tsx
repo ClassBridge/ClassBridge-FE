@@ -8,6 +8,7 @@ import { useAuthContext } from "@/state/auth";
 // import { makeReservation } from "@/lib/supabase/actions/reservation";
 // import type { Tables } from "@/lib/supabase/types";
 import type { LessonList } from "@/app/api/class/[classId]/type";
+import type { CreateReservationResponse } from "@/app/api/reservations/type";
 import {
   closeModal,
   cn,
@@ -114,6 +115,28 @@ export default function ReservationModal({ data, classData }: Props) {
 
     if (!selectedLesson || !selectedPerson) {
       return;
+    }
+
+    const response = await fetch("/api/reservations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        access: authContext.accessToken!,
+      },
+      body: JSON.stringify({
+        lesson_id: parseInt(selectedLesson),
+        quantity: selectedPerson,
+      }),
+    });
+
+    const res: CreateReservationResponse = await response.json();
+
+    if (res.code === "SUCCESS") {
+      return push(`${pathname}/checkout/${res.data.reservationId}`);
+    } else {
+      return setAlert({
+        content: "오류가 발생했습니다.<br/>다시 시도해 주세요.",
+      });
     }
 
     // const { data } = await makeReservation({
