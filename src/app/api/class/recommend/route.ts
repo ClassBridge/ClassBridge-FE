@@ -12,8 +12,8 @@ export const GET = async (request: NextRequest) => {
     `${process.env.ALLOWED_ORIGIN}/api/class/recommend/${type}`,
     { headers: request.headers, next: { revalidate: 3600 } },
   );
-  console.log(response);
 
   const res: ClassRecommendResponse = await response.json();
+
   return NextResponse.json(res);
 };
