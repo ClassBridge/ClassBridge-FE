@@ -6,6 +6,8 @@ export interface ClassSectionData {
   title?: string | null;
   tag?: string[] | null;
   faq?: { title: string; content: string }[] | null;
+  classId?: string;
+  tutorId?: string;
 }
 
 interface Props {

@@ -1,7 +1,20 @@
 import type {
+  ChatRoomListResponse,
   CreateChatRoomResponse,
   JoinChatRoomResponse,
 } from "@/lib/websocket/type";
+
+export const getChatRoomList = async () => {
+  try {
+    const response = await fetch("/api/chatRooms");
+
+    const res: ChatRoomListResponse = await response.json();
+
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
 
 export const createChatRoom = async (classId: string) => {
   try {
@@ -13,7 +26,7 @@ export const createChatRoom = async (classId: string) => {
 
     return res.data.chatroomId;
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -25,7 +38,7 @@ export const joinChatRoom = async (chatRoomId: string) => {
 
     return res.data;
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -35,7 +48,7 @@ export const closeChatRoom = async (chatRoomId: string) => {
       method: "POST",
     });
   } catch (error) {
-    return error;
+    return null;
   }
 };
 
@@ -45,6 +58,6 @@ export const leaveChatRoom = async (chatRoomId: string) => {
       method: "POST",
     });
   } catch (error) {
-    return error;
+    return null;
   }
 };

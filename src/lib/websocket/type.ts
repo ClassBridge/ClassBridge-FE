@@ -1,3 +1,29 @@
+export interface ChatRoomListResponse {
+  code: string;
+  message: string;
+  data: Data;
+}
+
+interface Data {
+  userId: number;
+  chatRooms: ChatRoom[];
+}
+
+interface ChatRoom {
+  chatRoomId: number;
+  chatPartnerId: number;
+  chatPartnerNickname: string;
+  chatPartnerProfileImageUrl: string;
+  unreadCountInfo: UnreadCountInfo;
+}
+
+interface UnreadCountInfo {
+  chatRoomId: number;
+  unreadMessageCount: number;
+  latestMessage: string;
+  latestMessageTime: string;
+}
+
 export interface CreateChatRoomResponse {
   code: string;
   message: string;
