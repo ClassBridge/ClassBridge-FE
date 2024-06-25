@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import ChatIcon from "@/assets/icons/chatLarge.svg";
 import type { Tab } from "@/constants/classDetailTabs";
-import type { ClassSectionData } from "./Section";
-import { mockReviewData } from "@/lib/mock";
+import type { ClassSectionData } from "@/components/pages/class/section/Section";
 
 interface Props {
   id: Tab;
@@ -22,9 +21,24 @@ export default function SectionContent({ id, data }: Props) {
   if (id === "review") {
     return (
       <div className="space-y-2.5">
-        {mockReviewData.map((review) => (
-          <ReviewCard key={review.id} data={review} />
-        ))}
+        {data.review && data.review.length > 0
+          ? data.review.map((review) => (
+              <ReviewCard
+                key={review.reviewId}
+                data={{
+                  id: review.reviewId,
+                  classId: review.classId,
+                  lessonId: review.lessonId,
+                  userId: review.userId,
+                  username: review.userNickName,
+                  rating: review.rating,
+                  content: review.contents,
+                  createdAt: new Date(review.createdAt),
+                  images: review.reviewImageList.map((image) => image.url),
+                }}
+              />
+            ))
+          : "아직 작성된 리뷰가 없습니다."}
       </div>
     );
   } else if (id === "inquiry") {

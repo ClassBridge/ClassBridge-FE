@@ -1,11 +1,13 @@
 import SectionContent from "@/components/pages/class/section/SectionContent";
 import type { Tab } from "@/constants/classDetailTabs";
+import type { Content } from "@/app/api/class/[classId]/reviews/type";
 
 export interface ClassSectionData {
-  content?: string | null;
-  title?: string | null;
-  tag?: string[] | null;
-  faq?: { title: string; content: string }[] | null;
+  title?: string;
+  content?: string;
+  tag?: string[];
+  review?: Content[];
+  faq?: { title: string; content: string }[];
   classId?: string;
   tutorId?: string;
 }
