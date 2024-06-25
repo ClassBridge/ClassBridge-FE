@@ -57,7 +57,7 @@ export default function LogInForm() {
           break;
         }
 
-        authContext.setAccessToken(token);
+        authContext.login(token);
         closeModal();
         break;
       case 4:
