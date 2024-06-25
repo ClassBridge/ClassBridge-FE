@@ -32,7 +32,7 @@ export const createChatRoom = async (classId: string) => {
 
 export const joinChatRoom = async (chatRoomId: string) => {
   try {
-    const response = await fetch(`/api/chatRooms/${chatRoomId}/join`);
+    const response = await fetch(`/api/chatRooms/room/${chatRoomId}/join`);
 
     const res: JoinChatRoomResponse = await response.json();
 
@@ -44,7 +44,7 @@ export const joinChatRoom = async (chatRoomId: string) => {
 
 export const closeChatRoom = async (chatRoomId: string) => {
   try {
-    const response = await fetch(`/api/chatRooms/${chatRoomId}/close`, {
+    const response = await fetch(`/api/chatRooms/room/${chatRoomId}/close`, {
       method: "POST",
     });
   } catch (error) {
@@ -54,7 +54,7 @@ export const closeChatRoom = async (chatRoomId: string) => {
 
 export const leaveChatRoom = async (chatRoomId: string) => {
   try {
-    const response = await fetch(`/api/chatRooms/${chatRoomId}/leave`, {
+    const response = await fetch(`/api/chatRooms/room/${chatRoomId}/leave`, {
       method: "POST",
     });
   } catch (error) {
