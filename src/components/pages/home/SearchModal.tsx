@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Backdrop from "@/components/common/Backdrop";
 import SearchIcon from "@/assets/icons/search.svg";
+import { useSetRecoilState } from "recoil";
+import { searchState } from "@/state/search";
+import { closeModal } from "@/lib/utils";
 import type { AutoCompleteResponse } from "@/app/api/class/autoComplete/[query]/type";
 
 interface AutoCompleteItemProps {
@@ -30,6 +33,7 @@ const AutoCompleteItem = ({ term, item, onClick }: AutoCompleteItemProps) => {
 export default function SearchModal() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [autoCompleteList, setAutoCompleteList] = useState<string[]>([]);
+  const setSearchQuery = useSetRecoilState(searchState);
 
   useEffect(() => {
     const getAutoComplete = async () => {
@@ -54,8 +58,10 @@ export default function SearchModal() {
   };
 
   const handleSearch = (term: string) => {
-    console.log(term);
-    // call search api
+    closeModal();
+    setSearchQuery((prev) => {
+      return { ...prev, query: term };
+    });
   };
 
   return (

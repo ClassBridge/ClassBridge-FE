@@ -7,27 +7,49 @@ import type { ClassDetailResponse } from "@/app/api/class/[classId]/type";
 //   getClassList,
 //   getClassSummary,
 // } from "@/lib/supabase/actions/class";
-import type { ClassOrder } from "@/lib/supabase/actions/class";
-import type { Enums, Tables } from "@/lib/supabase/types";
+// import type { ClassOrder } from "@/lib/supabase/actions/class";
+// import type { Enums, Tables } from "@/lib/supabase/types";
+// import type { Sort } from "@/constants/sort";
+import type { Search } from "@/state/search";
 
 export const useClassListData: (
-  sort: ClassOrder,
-  limit?: number,
-  category?: Enums<"category">,
-  city?: Enums<"city">,
-) => UseQueryResult<ClassSearchResponse> = (sort, limit, category, city) => {
+  searchValue: Search,
+) => UseQueryResult<ClassSearchResponse> = (searchValue) => {
+  const params = new URLSearchParams();
+
+  if (searchValue.order) {
+    params.append("order", searchValue.order);
+  }
+  if (searchValue.query) {
+    params.append("query", searchValue.query);
+  }
+  if (searchValue.category) {
+    params.append("category", searchValue.category);
+  }
+  if (searchValue.location) {
+    params.append("location", searchValue.location);
+  }
+
   return useQuery({
-    queryKey: ["class-list", sort, category, city, limit],
-    queryFn: () => fetch("/api/class/search").then((res) => res.json()),
-    enabled: !!sort,
+    queryKey: ["class-list", searchValue],
+    queryFn: () =>
+      fetch(`/api/class/search?${params}`).then((res) => res.json()),
   });
-  //   return useQuery({
-  //     queryKey: ["class-list", sort, category, city, limit],
-  //     queryFn: () =>
-  //       getClassList(sort, limit, category, city).then((data) => data),
-  //     enabled: !!sort,
-  //   });
 };
+
+// export const useClassListData: (
+//   sort: ClassOrder,
+//   limit?: number,
+//   category?: Enums<"category">,
+//   city?: Enums<"city">
+// ) => UseQueryResult<ClassSearchResponse> = (sort, limit, category, city) => {
+//   return useQuery({
+//     queryKey: ["class-list", sort, category, city, limit],
+//     queryFn: () =>
+//       getClassList(sort, limit, category, city).then((data) => data),
+//     enabled: !!sort,
+//   });
+// };
 
 export const useRecommendationListData: (
   accessToken: string | null | undefined,

@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { useClassListData } from "@/hooks/classData";
 import SortSelect from "./SortSelect";
 import { ClassCard } from "@/components/common/ClassCard";
 import Maps from "./Maps";
 import MapButtons from "./MapButtons";
-import type { Sort } from "@/constants/sort";
+// import type { Sort } from "@/constants/sort";
 import type { Category } from "@/constants/category";
+import { useRecoilValue } from "recoil";
+import { searchState } from "@/state/search";
 
 export default function ClassList() {
-  const [sort, setSort] = useState<Sort>("like");
-  const { data: classList } = useClassListData(sort);
+  const searchValue = useRecoilValue(searchState);
+  const { data: classList } = useClassListData(searchValue);
 
   return (
     <>
@@ -19,7 +21,7 @@ export default function ClassList() {
       <div className="flex items-center justify-between w-[940px] py-5">
         <MapButtons />
         <div>
-          <SortSelect setSort={setSort} />
+          <SortSelect />
         </div>
       </div>
       <section className="grid grid-cols-3 gap-x-5 gap-y-7 mb-10">
