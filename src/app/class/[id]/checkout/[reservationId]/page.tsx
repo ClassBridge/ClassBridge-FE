@@ -41,8 +41,24 @@ export default function CheckoutPage({ params }: Props) {
     setAlert({ content: "결제 진행 동의에 체크해 주세요." });
   };
 
-  const handlePayment = () => {
-    replace("/");
+  const handlePayment = async () => {
+    const quantity = reservationData!.data.quantity;
+
+    const response = await fetch("/api/payments/prepare", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        access: authContext?.accessToken!,
+      },
+      body: JSON.stringify({
+        quantity: quantity,
+        total_amount: quantity * classData!.data.price,
+        reservation_id: reservationData!.data.reservationId,
+        item_name: classData!.data.className,
+      }),
+    });
+
+    const res = await response.json();
   };
 
   return (
