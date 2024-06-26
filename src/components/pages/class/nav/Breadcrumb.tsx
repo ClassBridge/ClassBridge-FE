@@ -1,18 +1,30 @@
+"use client";
+
+import { useSetRecoilState } from "recoil";
+import { searchState } from "@/state/search";
 import Breadcrumb from "@/components/common/Breadcrumb";
-import { CATEGORY, Category } from "@/constants/category";
+import { CATEGORY, type Category } from "@/constants/category";
+import type { Enums } from "@/lib/supabase/types";
 
 interface Props {
-  location: string;
-  category: string;
+  location: Enums<"city">;
+  category: Category;
 }
 
 export default function ClassDetailBreadcrumb({ location, category }: Props) {
+  const setSearch = useSetRecoilState(searchState);
+
   const list = [
-    { name: "홈", href: { pathname: "/" } },
-    { name: location, href: { pathname: "/", query: { location } } },
+    { name: "홈", href: "/", onClick: () => setSearch({}) },
     {
-      name: CATEGORY[category as Category],
-      href: { pathname: "/", query: { category: category } },
+      name: location,
+      href: "/",
+      onClick: () => setSearch({ location }),
+    },
+    {
+      name: CATEGORY[category],
+      href: "/",
+      onClick: () => setSearch({ category }),
     },
   ];
 

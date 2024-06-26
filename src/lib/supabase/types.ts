@@ -425,7 +425,7 @@ export type Database = {
     };
     Enums: {
       bank: "KB" | "SHINHAN" | "WOORI" | "HANA" | "NH" | "KAKAOBANK";
-      category: "cooking" | "handmade" | "fitness" | "drawing" | "gardening";
+      category: "COOKING" | "HANDMADE" | "FITNESS" | "DRAWING" | "GARDENING";
       city:
         | "서울"
         | "경기"

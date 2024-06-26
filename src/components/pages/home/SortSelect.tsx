@@ -7,22 +7,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSetRecoilState } from "recoil";
+import { searchState } from "@/state/search";
 import { type Sort, SORT } from "@/constants/sort";
 
-interface Props {
-  setSort: React.Dispatch<React.SetStateAction<Sort>>;
-}
+export default function SortSelect() {
+  const setSearchOrder = useSetRecoilState(searchState);
 
-export default function SortSelect({ setSort }: Props) {
   const handleSortChange = (value: Sort) => {
-    setSort(value);
+    setSearchOrder((prev) => {
+      return { ...prev, order: value };
+    });
   };
 
   return (
     <Select
       required
       name="sort-class"
-      defaultValue="like"
+      defaultValue="WISH"
       onValueChange={handleSortChange}
     >
       <SelectTrigger className="w-40 h-[34px] rounded border-black text-black !ring-0">
