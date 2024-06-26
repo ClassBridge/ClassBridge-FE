@@ -10,7 +10,7 @@ export default function SocialLogIn() {
         <span className="flex-1 border-t border-black" />
       </div>
       <a
-        href={`http://ec2-13-125-180-170.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google`}
+        href={`${process.env.NEXT_PUBLIC_ALLOWED_ORIGIN_GOOGLE}/oauth2/authorization/google`}
         className="flex items-center justify-center py-[9px] rounded border border-black font-medium text-base text-black bg-white"
       >
         <Image
