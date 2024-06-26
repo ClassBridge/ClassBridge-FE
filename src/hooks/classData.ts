@@ -13,25 +13,25 @@ import type { ClassDetailResponse } from "@/app/api/class/[classId]/type";
 import type { Search } from "@/state/search";
 
 export const useClassListData: (
-  searchValue: Search,
-) => UseQueryResult<ClassSearchResponse> = (searchValue) => {
+  search: Search,
+) => UseQueryResult<ClassSearchResponse> = (search) => {
   const params = new URLSearchParams();
 
-  if (searchValue.order) {
-    params.append("order", searchValue.order);
+  if (search.order) {
+    params.append("order", search.order);
   }
-  if (searchValue.query) {
-    params.append("query", searchValue.query);
+  if (search.query) {
+    params.append("query", search.query);
   }
-  if (searchValue.category) {
-    params.append("category", searchValue.category);
+  if (search.category) {
+    params.append("category", search.category);
   }
-  if (searchValue.location) {
-    params.append("location", searchValue.location);
+  if (search.location) {
+    params.append("location", search.location);
   }
 
   return useQuery({
-    queryKey: ["class-list", searchValue],
+    queryKey: ["class-list", search],
     queryFn: () =>
       fetch(`/api/class/search?${params}`).then((res) => res.json()),
   });
