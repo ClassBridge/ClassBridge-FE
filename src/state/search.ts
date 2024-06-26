@@ -1,13 +1,7 @@
 import { RecoilState, atom } from "recoil";
 import type { Sort } from "@/constants/sort";
 import type { Enums } from "@/lib/supabase/types";
-
-export type Category =
-  | "COOKING"
-  | "HANDMADE"
-  | "FITNESS"
-  | "DRAWING"
-  | "GARDENING";
+import type { Category } from "@/constants/category";
 
 export interface Search {
   query?: string;
