@@ -4,7 +4,7 @@ import { ClassCard } from "@/components/common/ClassCard";
 const mockData: ClassCard = {
   id: "1234",
   name: "초보도 가능한 즐거운 쿠킹 클래스",
-  category: "cooking",
+  category: "COOKING",
   tutor: { username: "브릿지셰프" },
   address1: "서울",
   address2: "브릿지구",
