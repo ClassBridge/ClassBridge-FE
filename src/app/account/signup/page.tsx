@@ -93,7 +93,7 @@ const PageContent = () => {
           break;
         }
 
-        authContext.setAccessToken(token);
+        authContext.login(token);
         setCurrentPage("success");
         break;
 

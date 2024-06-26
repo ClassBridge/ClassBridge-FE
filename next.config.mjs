@@ -14,12 +14,18 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "classbridge.s3.ap-northeast-2.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   async headers() {
     return [
       {
-        source: "/api/(.*)",
+        source: "/api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
@@ -28,11 +34,11 @@ const nextConfig = {
           },
           {
             key: "Access-Control-Allow-Methods",
-            value: "GET, POST, PUT, DELETE, OPTIONS",
+            value: "GET, POST, PATCH, PUT, DELETE, OPTIONS",
           },
           {
             key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Authorization",
+            value: "Content-Type, access",
           },
         ],
       },

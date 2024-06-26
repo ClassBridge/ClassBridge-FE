@@ -6,7 +6,9 @@ import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
 import { useAuthContext } from "@/state/auth";
 // import { makeReservation } from "@/lib/supabase/actions/reservation";
-import type { Tables } from "@/lib/supabase/types";
+// import type { Tables } from "@/lib/supabase/types";
+import type { LessonList } from "@/app/api/class/[classId]/type";
+import type { CreateReservationResponse } from "@/app/api/reservations/type";
 import {
   closeModal,
   cn,
@@ -20,7 +22,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Minus, Plus } from "lucide-react";
 
 interface Props {
-  data: Tables<"lesson">[];
+  data: LessonList[];
+  //   data: Tables<"lesson">[];
   classData: {
     id: string;
     maxParticipant: number;
@@ -55,7 +58,9 @@ export default function ReservationModal({ data, classData }: Props) {
     }
 
     const filteredData = data.filter(
-      (data) => new Date(data.date).setHours(0) === selectedDate.getTime(),
+      (data) =>
+        new Date(data.lessonDate).setHours(0) === selectedDate.getTime(),
+      //   (data) => new Date(data.date).setHours(0) === selectedDate.getTime(),
     );
 
     if (filteredData.length < 1) {
@@ -63,7 +68,10 @@ export default function ReservationModal({ data, classData }: Props) {
       setSelectedTime(null);
       return;
     }
-    const filteredTime = filteredData.map((data) => new Date(data.time));
+    const filteredTime = filteredData.map(
+      (data) => new Date(`${data.lessonDate} ${data.startTime}`),
+    );
+    // const filteredTime = filteredData.map((data) => new Date(data.time));
     setAvailableTime(filteredTime);
   }, [data, selectedDate]);
 
@@ -75,12 +83,17 @@ export default function ReservationModal({ data, classData }: Props) {
       return;
     }
     const selectedLesson = data.filter(
-      (data) => new Date(data.time).getTime() === selectedTime.getTime(),
+      (data) =>
+        new Date(`${data.lessonDate} ${data.startTime}`).getTime() ===
+        selectedTime.getTime(),
+      //   (data) => new Date(data.time).getTime() === selectedTime.getTime(),
     );
 
-    setSelectedLesson(selectedLesson[0].id);
+    setSelectedLesson(selectedLesson[0].lessonId.toString());
+    // setSelectedLesson(selectedLesson[0].id);
     setAvailablePerson(
-      classData.maxParticipant - (selectedLesson[0].participants?.length || 0),
+      classData.maxParticipant - (selectedLesson[0].participantNumber || 0),
+      //   classData.maxParticipant - (selectedLesson[0].participants?.length || 0),
     );
     setSelectedPerson(MIN_PARTICIPANT);
   }, [classData.maxParticipant, data, selectedTime]);
@@ -102,6 +115,28 @@ export default function ReservationModal({ data, classData }: Props) {
 
     if (!selectedLesson || !selectedPerson) {
       return;
+    }
+
+    const response = await fetch("/api/reservations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        access: authContext.accessToken!,
+      },
+      body: JSON.stringify({
+        lesson_id: parseInt(selectedLesson),
+        quantity: selectedPerson,
+      }),
+    });
+
+    const res: CreateReservationResponse = await response.json();
+
+    if (res.code === "SUCCESS") {
+      return push(`${pathname}/checkout/${res.data.reservationId}`);
+    } else {
+      return setAlert({
+        content: "오류가 발생했습니다.<br/>다시 시도해 주세요.",
+      });
     }
 
     // const { data } = await makeReservation({

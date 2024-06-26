@@ -111,9 +111,9 @@ export default function ClassDetailSummary({
         ))}
       </div>
       <div className="flex justify-end gap-5 w-full mt-2">
-        {featureList.map((item) => (
+        {featureList.map((item, i) => (
           <Item
-            key={item.text}
+            key={i}
             icon={item.icon}
             text={item.text}
             onClick={item.onClick}
