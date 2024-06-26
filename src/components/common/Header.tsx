@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthContext } from "@/state/auth";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { searchState } from "@/state/search";
@@ -17,6 +17,8 @@ interface SubMenuProps {
 }
 
 const SubMenu = ({ menu }: SubMenuProps) => {
+  const pathname = usePathname();
+  const { push } = useRouter();
   const setSearch = useSetRecoilState(searchState);
   const MENU = menu === "category" ? CATEGORY : REGION;
 
@@ -36,10 +38,14 @@ const SubMenu = ({ menu }: SubMenuProps) => {
         };
       });
     }
+
+    if (pathname.length > 1) {
+      push("/");
+    }
   };
 
   return (
-    <div className="hidden group-hover:block fixed top-20 inset-x-0 z-10 w-screen bg-white/95">
+    <div className="hidden group-hover:block fixed top-20 inset-x-0 z-20 w-screen bg-white/95">
       <div className="grid grid-cols-6 gap-y-4 w-screen max-w-screen-lg mx-auto p-4 pt-2">
         {Object.keys(MENU).map((key) => (
           <div
@@ -63,8 +69,8 @@ const SubMenu = ({ menu }: SubMenuProps) => {
 
 const AuthButton = () => {
   const { push } = useRouter();
-  //   const authSession = useAuthContext();
   const authContext = useAuthContext();
+  //   const authSession = useAuthContext();
 
   return (
     <button
@@ -99,7 +105,7 @@ export function Logo() {
 
 export default function Header() {
   return (
-    <header className="fixed top-0 inset-x-0 z-10 w-screen text-black bg-white/80 backdrop-blur">
+    <header className="fixed top-0 inset-x-0 z-20 w-screen text-black bg-white/80 backdrop-blur">
       <nav className="flex items-center justify-center gap-5 w-screen max-w-screen-lg h-20 mx-auto">
         <Logo />
         <button className="w-20 h-full font-medium text-base group">

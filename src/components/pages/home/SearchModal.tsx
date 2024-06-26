@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Backdrop from "@/components/common/Backdrop";
 import SearchIcon from "@/assets/icons/search.svg";
@@ -31,6 +32,8 @@ const AutoCompleteItem = ({ term, item, onClick }: AutoCompleteItemProps) => {
 };
 
 export default function SearchModal() {
+  const pathname = usePathname();
+  const { push } = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [autoCompleteList, setAutoCompleteList] = useState<string[]>([]);
   const setSearchQuery = useSetRecoilState(searchState);
@@ -59,9 +62,14 @@ export default function SearchModal() {
 
   const handleSearch = (term: string) => {
     closeModal();
+
     setSearchQuery((prev) => {
       return { ...prev, query: term };
     });
+
+    if (pathname.length > 1) {
+      push("/");
+    }
   };
 
   return (
