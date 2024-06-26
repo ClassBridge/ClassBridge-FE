@@ -1,22 +1,22 @@
 "use client";
 
-// import { useState } from "react";
-import { useClassListData } from "@/hooks/classData";
-import SortSelect from "./SortSelect";
-import { ClassCard } from "@/components/common/ClassCard";
-import Maps from "./Maps";
-import MapButtons from "./MapButtons";
-// import type { Sort } from "@/constants/sort";
-import type { Category } from "@/constants/category";
 import { useRecoilValue } from "recoil";
 import { searchState } from "@/state/search";
+import { useClassListData } from "@/hooks/classData";
+import SearchList from "@/components//pages/home/SearchList";
+import SortSelect from "@/components//pages/home/SortSelect";
+import Maps from "@/components//pages/home/Maps";
+import MapButtons from "@/components//pages/home/MapButtons";
+import { ClassCard } from "@/components/common/ClassCard";
+import type { Category } from "@/constants/category";
 
 export default function ClassList() {
-  const searchValue = useRecoilValue(searchState);
-  const { data: classList } = useClassListData(searchValue);
+  const search = useRecoilValue(searchState);
+  const { data: classList } = useClassListData(search);
 
   return (
     <>
+      <SearchList />
       <Maps />
       <div className="flex items-center justify-between w-[940px] py-5">
         <MapButtons />
@@ -34,7 +34,7 @@ export default function ClassList() {
               content={{
                 id: item.classId.toString(),
                 name: item.className,
-                category: item.category.toLowerCase() as Category,
+                category: item.category as Category,
                 tutor: { username: item.tutorName! },
                 address1: item.address1,
                 address2: item.address2,

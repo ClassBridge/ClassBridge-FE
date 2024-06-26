@@ -11,7 +11,7 @@ export default function Recommendation() {
     <AutoplayCarousel
       opts={{ loop: true }}
       delay={5000}
-      className="max-w-3xl my-4"
+      className="max-w-3xl my-4 recommendation"
     >
       <CarouselContent>
         <RecommendationContent />
