@@ -80,6 +80,8 @@ export default function ClassDetailPage({ params }: Props) {
                             content: faq.content,
                           };
                         }),
+                        classId: classData.data.classId.toString(),
+                        tutorId: classData.data.tutorId.toString(),
                       }
                     : tab.id === "classDesc"
                       ? {

@@ -1,26 +1,27 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 interface Params {
   classId: string;
 }
 
-export const POST = async (request: Request, context: { params: Params }) => {
-  const access = localStorage.getItem("accessToken");
-
-  if (!access) {
-    return;
-  }
+export const POST = async (
+  request: NextRequest,
+  context: { params: Params },
+) => {
+  const headers = request.headers;
+  console.log(headers.get("access"));
 
   const response = await fetch(
     `${process.env.ALLOWED_ORIGIN}/api/chatRooms/${context.params.classId}`,
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        access,
-      },
+      headers,
     },
   );
+  console.log(response);
 
-  return NextResponse.json(response.status);
+  const res = await response.json();
+  console.log(res);
+
+  return NextResponse.json(res);
 };

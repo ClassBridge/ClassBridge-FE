@@ -1,18 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export const GET = async (request: Request) => {
-  const access = localStorage.getItem("accessToken");
-
-  if (!access) {
-    return;
-  }
+export const GET = async (request: NextRequest) => {
+  const headers = request.headers;
 
   const response = await fetch(`${process.env.ALLOWED_ORIGIN}/api/chatRooms`, {
-    headers: {
-      "Content-Type": "application/json",
-      access,
-    },
+    headers,
   });
 
-  return NextResponse.json(response.status);
+  const res = await response.json();
+
+  return NextResponse.json(res);
 };

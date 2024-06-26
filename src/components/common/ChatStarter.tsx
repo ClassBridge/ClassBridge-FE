@@ -34,7 +34,7 @@ export default function ChatStarter({
 
     const chatroomList = await getChatRoomList();
 
-    if (chatroomList) {
+    if (chatroomList && chatroomList.chatRooms.length > 0) {
       const chatroom = chatroomList.chatRooms.find(
         (room) => room.chatPartnerId.toString() === tutorId,
       );
@@ -45,6 +45,7 @@ export default function ChatStarter({
     }
 
     const chatroomId = await createChatRoom(classId);
+
     if (chatroomId) {
       return push(`/my?page=chat&room=${chatroomId}`);
     }
