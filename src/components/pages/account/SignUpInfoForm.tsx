@@ -52,11 +52,11 @@ const genders: { value: Gender; label: string }[] = [
 ];
 
 const interests: { value: Category; label: string }[] = [
-  { value: "cooking", label: "쿠킹" },
-  { value: "handmade", label: "핸드메이드" },
-  { value: "fitness", label: "피트니스" },
-  { value: "drawing", label: "드로잉" },
-  { value: "gardening", label: "가드닝" },
+  { value: "COOKING", label: "쿠킹" },
+  { value: "HANDMADE", label: "핸드메이드" },
+  { value: "FITNESS", label: "피트니스" },
+  { value: "DRAWING", label: "드로잉" },
+  { value: "GARDENING", label: "가드닝" },
 ];
 
 interface Props {

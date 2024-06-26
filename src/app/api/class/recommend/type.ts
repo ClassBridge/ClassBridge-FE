@@ -1,3 +1,6 @@
+import type { Category } from "@/constants/category";
+import type { Enums } from "@/lib/supabase/types";
+
 export interface ClassRecommendResponse {
   code: string;
   message: string;
@@ -9,7 +12,7 @@ interface Data {
   className: string;
   tutorName: string;
   address: string;
-  address1: string;
+  address1: Enums<"city">;
   address2: string;
   address3: string;
   duration: number;
@@ -19,7 +22,7 @@ interface Data {
   introduction: string;
   startDate: string;
   endDate: string;
-  category: string;
+  category: Category;
   totalStarRate: number;
   totalReviews: number;
   totalWish: number;

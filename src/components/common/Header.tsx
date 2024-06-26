@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthContext } from "@/state/auth";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { searchState } from "@/state/search";
+import type { Enums } from "@/lib/supabase/types";
 import { openModal } from "@/lib/utils";
-import { CATEGORY } from "@/constants/category";
+import { CATEGORY, Category } from "@/constants/category";
 import { REGION } from "@/constants/region";
 import SearchIcon from "@/assets/icons/search.svg";
 
@@ -14,13 +17,46 @@ interface SubMenuProps {
 }
 
 const SubMenu = ({ menu }: SubMenuProps) => {
+  const pathname = usePathname();
+  const { push } = useRouter();
+  const setSearch = useSetRecoilState(searchState);
   const MENU = menu === "category" ? CATEGORY : REGION;
 
+  const handleSearch = (value: string) => {
+    if (menu === "category") {
+      setSearch((prev) => {
+        return {
+          ...prev,
+          category: value as Category,
+        };
+      });
+    } else {
+      setSearch((prev) => {
+        return {
+          ...prev,
+          location: value as Enums<"city">,
+        };
+      });
+    }
+
+    if (pathname.length > 1) {
+      push("/");
+    }
+  };
+
   return (
-    <div className="hidden group-hover:block fixed top-20 inset-x-0 z-10 w-screen bg-white/95">
+    <div className="hidden group-hover:block fixed top-20 inset-x-0 z-20 w-screen bg-white/95">
       <div className="grid grid-cols-6 gap-y-4 w-screen max-w-screen-lg mx-auto p-4 pt-2">
         {Object.keys(MENU).map((key) => (
-          <div key={key} className="flex items-center justify-center">
+          <div
+            key={key}
+            className="flex items-center justify-center"
+            onClick={() =>
+              handleSearch(
+                menu === "category" ? key : MENU[key as keyof typeof MENU],
+              )
+            }
+          >
             <span className="size-fit py-2 px-7 rounded font-medium text-base text-black transition duration-300 hover:bg-primary/15">
               {MENU[key as keyof typeof MENU]}
             </span>
@@ -33,8 +69,8 @@ const SubMenu = ({ menu }: SubMenuProps) => {
 
 const AuthButton = () => {
   const { push } = useRouter();
-  //   const authSession = useAuthContext();
   const authContext = useAuthContext();
+  //   const authSession = useAuthContext();
 
   return (
     <button
@@ -49,10 +85,13 @@ const AuthButton = () => {
 };
 
 export function Logo() {
+  const resetSearch = useResetRecoilState(searchState);
+
   return (
     <Link
       href="/"
       className="flex items-center justify-center w-[150px] h-10 font-bold text-xl uppercase"
+      onClick={resetSearch}
     >
       <h1>
         <span className="text-primary">{"c"}</span>
@@ -66,7 +105,7 @@ export function Logo() {
 
 export default function Header() {
   return (
-    <header className="fixed top-0 inset-x-0 z-10 w-screen text-black bg-white/80 backdrop-blur">
+    <header className="fixed top-0 inset-x-0 z-20 w-screen text-black bg-white/80 backdrop-blur">
       <nav className="flex items-center justify-center gap-5 w-screen max-w-screen-lg h-20 mx-auto">
         <Logo />
         <button className="w-20 h-full font-medium text-base group">

@@ -1,13 +1,15 @@
+"use client";
+
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import type { ParsedUrlQueryInput } from "querystring";
 import COLORS from "@/constants/colors";
+import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Props {
   list: {
     name: string;
-    href: { pathname: string; query?: ParsedUrlQueryInput };
+    href: string;
+    onClick?: () => void;
   }[];
   className?: string;
 }
@@ -23,6 +25,7 @@ export default function Breadcrumb({ list, className }: Props) {
               "font-medium text-base",
               i < list.length - 1 ? "text-black-blur" : "text-black",
             )}
+            onClick={item.onClick}
           >
             {item.name}
           </Link>

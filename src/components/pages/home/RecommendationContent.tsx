@@ -2,10 +2,8 @@
 
 import { useAuthContext } from "@/state/auth";
 import { useRecommendationListData } from "@/hooks/classData";
-import type { Enums } from "@/lib/supabase/types";
 import { ClassCard } from "@/components/common/ClassCard";
 import { CarouselItem } from "@/components/ui/carousel";
-import { Category } from "@/constants/category";
 
 export default function RecommendationContent() {
   const authContext = useAuthContext();
@@ -24,9 +22,9 @@ export default function RecommendationContent() {
               content={{
                 id: content.classId.toString(),
                 name: content.className,
-                category: content.category.toLowerCase() as Category,
+                category: content.category,
                 tutor: { username: content.tutorName },
-                address1: content.address1 as Enums<"city">,
+                address1: content.address1,
                 address2: content.address2,
                 price: content.price,
                 duration: content.duration,
