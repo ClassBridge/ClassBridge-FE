@@ -46,7 +46,7 @@ export default function ClassDetailPage({ params }: Props) {
         <>
           <ClassDetailBreadcrumb
             location={classData.data.address1}
-            category={classData.data.category.toLowerCase()}
+            category={classData.data.category}
           />
           {classData.data.imageList && (
             <ClassDetailCarousel image_urls={classData.data.imageList} />
