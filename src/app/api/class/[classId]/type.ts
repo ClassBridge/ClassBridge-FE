@@ -1,3 +1,6 @@
+import type { Category } from "@/constants/category";
+import type { Enums } from "@/lib/supabase/types";
+
 export interface ClassDetailResponse {
   code: string;
   message: string;
@@ -7,7 +10,7 @@ export interface ClassDetailResponse {
 export interface Data {
   classId: number;
   className: string;
-  address1: string;
+  address1: Enums<"city">;
   address2: string;
   address3: string;
   latitude: number;
@@ -22,7 +25,7 @@ export interface Data {
   introduction: string;
   startDate: string;
   endDate: string;
-  category: string;
+  category: Category;
   tutorId: number;
   tutorName: string;
   tutorIntroduction: string;

@@ -8,7 +8,6 @@ import SortSelect from "@/components//pages/home/SortSelect";
 import Maps from "@/components//pages/home/Maps";
 import MapButtons from "@/components//pages/home/MapButtons";
 import { ClassCard } from "@/components/common/ClassCard";
-import type { Category } from "@/constants/category";
 
 export default function ClassList() {
   const search = useRecoilValue(searchState);
@@ -34,7 +33,7 @@ export default function ClassList() {
               content={{
                 id: item.classId.toString(),
                 name: item.className,
-                category: item.category as Category,
+                category: item.category,
                 tutor: { username: item.tutorName! },
                 address1: item.address1,
                 address2: item.address2,

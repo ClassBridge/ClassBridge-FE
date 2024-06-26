@@ -1,3 +1,4 @@
+import type { Category } from "@/constants/category";
 import type { Enums } from "@/lib/supabase/types";
 
 export interface ClassSearchResponse {
@@ -28,7 +29,7 @@ export interface Content {
   imageUrl: string | null;
   tagList: string[];
   endDate: string;
-  category: string;
+  category: Category;
   wish: boolean;
 }
 
