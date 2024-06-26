@@ -9,6 +9,7 @@ export const POST = async (
   context: { params: Params },
 ) => {
   const headers = request.headers;
+  console.log(headers.get("access"));
 
   const response = await fetch(
     `${process.env.ALLOWED_ORIGIN}/api/chatRooms/${context.params.classId}`,
@@ -17,8 +18,10 @@ export const POST = async (
       headers,
     },
   );
-  console.log(headers);
+  console.log(response);
+
   const res = await response.json();
   console.log(res);
+
   return NextResponse.json(res);
 };

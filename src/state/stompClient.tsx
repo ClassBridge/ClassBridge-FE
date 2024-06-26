@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Client, Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { useAuthContext } from "@/state/auth";
 
 interface StompClient {
   stompClient: Client | undefined;
@@ -15,27 +16,24 @@ interface Props {
 }
 
 export default function StompClientProvider({ children }: Props) {
+  const authContext = useAuthContext();
   const [stompClient, setStompClient] = useState<Client>();
 
   useEffect(() => {
-    if (localStorage) {
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
-        const socket = new SockJS(
-          `${process.env.ALLOWED_ORIGIN}/CB-websocket?access_token=${accessToken}`,
-        );
-        const stompClient = Stomp.over(socket);
+    if (authContext?.isAuthenticated) {
+      const socket = new SockJS(
+        `${process.env.NEXT_PUBLIC_ALLOWED_ORIGIN}/CB-websocket?access_token=${authContext.accessToken}`,
+      );
+      const stompClient = Stomp.over(socket);
 
-        stompClient.activate();
-        stompClient.onConnect = () => {
-          setStompClient(stompClient);
-        };
-        return;
-      }
+      stompClient.activate();
+      stompClient.onConnect = () => {
+        setStompClient(stompClient);
+      };
+    } else {
+      setStompClient(undefined);
     }
-
-    setStompClient(undefined);
-  }, []);
+  }, [authContext]);
 
   useEffect(() => {
     if (!stompClient) {
