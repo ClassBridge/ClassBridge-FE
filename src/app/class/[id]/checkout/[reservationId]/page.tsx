@@ -43,10 +43,11 @@ export default function CheckoutPage({ params }: Props) {
     setAlert({ content: "결제 진행 동의에 체크해 주세요." });
   };
 
-  const saveCheckoutData = () => {
+  const handlePayment = async () => {
     if (!classData || !reservationData) {
       return;
     }
+
     setCheckout({
       className: classData.data.className,
       tutorName: classData.data.tutorName,
@@ -56,10 +57,8 @@ export default function CheckoutPage({ params }: Props) {
       time: `${reservationData.data.lesson.startTime.slice(0, 5)} - ${reservationData.data.lesson.endTime.slice(0, 5)}`,
       price: classData.data.price * reservationData.data.quantity,
     });
-  };
 
-  const handlePayment = async () => {
-    const quantity = reservationData!.data.quantity;
+    const quantity = reservationData.data.quantity;
 
     const response = await fetch("/api/payments/prepare", {
       method: "POST",
@@ -69,15 +68,14 @@ export default function CheckoutPage({ params }: Props) {
       },
       body: JSON.stringify({
         quantity: quantity,
-        total_amount: quantity * classData!.data.price,
-        reservation_id: reservationData!.data.reservationId,
-        item_name: classData!.data.className,
+        total_amount: quantity * classData.data.price,
+        reservation_id: reservationData.data.reservationId,
+        item_name: classData.data.className,
       }),
     });
 
     const res: string = await response.json();
 
-    saveCheckoutData();
     replace(res);
   };
 

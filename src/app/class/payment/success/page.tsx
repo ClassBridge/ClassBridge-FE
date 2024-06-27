@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { checkoutState } from "@/state/checkout";
 import Button from "@/components/common/Button";
 import { formatDateToLocaleString } from "@/lib/utils";
@@ -10,13 +9,6 @@ import { formatDateToLocaleString } from "@/lib/utils";
 export default function PaymentSuccessPage() {
   const { replace } = useRouter();
   const data = useRecoilValue(checkoutState);
-  const reset = useResetRecoilState(checkoutState);
-
-  useEffect(() => {
-    return () => {
-      reset();
-    };
-  }, [reset]);
 
   return (
     <>
