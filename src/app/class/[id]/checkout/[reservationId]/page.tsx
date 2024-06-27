@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/state/auth";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
-import { checkoutState } from "@/state/checkout";
 import { useClassData } from "@/hooks/classData";
 import { useReservationData } from "@/hooks/reservationData";
 
@@ -27,7 +26,6 @@ export default function CheckoutPage({ params }: Props) {
     params.reservationId,
     authContext?.accessToken,
   );
-  const setCheckout = useSetRecoilState(checkoutState);
 
   const { replace } = useRouter();
   const setAlert = useSetRecoilState(alertState);
@@ -47,16 +45,6 @@ export default function CheckoutPage({ params }: Props) {
     if (!classData || !reservationData) {
       return;
     }
-
-    setCheckout({
-      className: classData.data.className,
-      tutorName: classData.data.tutorName,
-      address: `${classData.data.address1} ${classData.data.address2} ${classData.data.address3}`,
-      quantity: reservationData.data.quantity,
-      date: reservationData.data.lesson.lessonDate,
-      time: `${reservationData.data.lesson.startTime.slice(0, 5)} - ${reservationData.data.lesson.endTime.slice(0, 5)}`,
-      price: classData.data.price * reservationData.data.quantity,
-    });
 
     const quantity = reservationData.data.quantity;
 
