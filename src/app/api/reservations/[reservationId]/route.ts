@@ -15,8 +15,8 @@ export const GET = async (
     `${process.env.ALLOWED_ORIGIN}/api/reservations/${context.params.reservationId}`,
     { cache: "no-store", headers },
   );
-  console.log(response);
+
   const res: ReservationDetailResponse = await response.json();
-  console.log(res);
+
   return NextResponse.json(res);
 };

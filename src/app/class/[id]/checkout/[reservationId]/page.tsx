@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/state/auth";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
 import { useClassData } from "@/hooks/classData";
@@ -10,7 +11,6 @@ import { useReservationData } from "@/hooks/reservationData";
 import ClassInfo from "@/components/pages/class/checkout/ClassInfo";
 import RefundPolicy from "@/components/pages/class/checkout/RefundPolicy";
 import BottomActionBar from "@/components/pages/class/reservation/BottomActionBar";
-import { useAuthContext } from "@/state/auth";
 // import { useClassSummaryData } from "@/hooks/classData";
 
 interface Props {
@@ -58,7 +58,9 @@ export default function CheckoutPage({ params }: Props) {
       }),
     });
 
-    const res = await response.json();
+    const res: string = await response.json();
+
+    replace(res);
   };
 
   return (
