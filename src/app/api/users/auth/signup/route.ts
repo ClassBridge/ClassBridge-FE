@@ -16,13 +16,11 @@ export const POST = async (request: NextRequest) => {
     {
       method: "POST",
       body: formData,
+      credentials: "include",
     },
   );
 
-  const result = {
-    status: parseInt(response.status.toString()[0]),
-    token: response.headers.get("access"),
-  };
+  const token = response.headers.get("access");
 
-  return NextResponse.json(result);
+  return NextResponse.json(token);
 };

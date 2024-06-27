@@ -9,13 +9,13 @@ interface Data {
   email: string;
   userName: string;
   nickname: string;
-  gender: string;
-  birthDate: string;
+  gender: string | null;
+  birthDate: string | null;
   phone: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   interests: string[];
-  selfIntroduction: string;
-  businessRegistration: string;
-  bankName: string;
-  accountNumber: string;
+  selfIntroduction: string | null;
+  businessRegistration: string | null;
+  bankName: string | null;
+  accountNumber: string | null;
 }

@@ -112,12 +112,12 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
       </div>
       <div className="flex items-center gap-2 my-2 mx-3">
         <ProfilePicture
-          src={userData?.data.profileImageUrl}
-          fallback={userData?.data.userName || ""}
+          src={userData?.data.profileImageUrl || ""}
+          fallback={userData?.data.nickname || ""}
           large
         />
         <span className="font-bold text-sm text-white">
-          {userData?.data.userName}
+          {userData?.data.nickname}
         </span>
         {/* <ProfilePicture src={url} fallback={userData?.username || ""} large />
         <span className="font-bold text-sm text-white">
@@ -139,6 +139,10 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
                 }
               }}
               className={[
+                userData?.data.bankName && i === userMenuIndex ? "hidden" : "",
+                !userData?.data.bankName && tutorMenuIndex.includes(i)
+                  ? "hidden"
+                  : "",
                 // userData?.is_tutor && i === userMenuIndex ? "hidden" : "",
                 // !userData?.is_tutor && tutorMenuIndex.includes(i)
                 //   ? "hidden"
