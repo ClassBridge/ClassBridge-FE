@@ -7,7 +7,7 @@ interface Params {
 
 export const GET = async (request: Request, context: { params: Params }) => {
   const params = new URLSearchParams({
-    page: "1",
+    page: "0",
     size: "1",
     sort: "createdAt",
   }).toString();
