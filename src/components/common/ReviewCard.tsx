@@ -33,7 +33,13 @@ export default function ReviewCard({ data, showClassInfo = false }: Props) {
       )}
     >
       {showClassInfo && <div></div>}
-      <div className={cn("flex gap-5", isOpen && "flex-col")}>
+      <div
+        className={cn(
+          "flex justify-between gap-5 cursor-pointer",
+          isOpen && "flex-col",
+        )}
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
         <div className="overflow-hidden">
           <div className="flex gap-4 mb-4">
             <StarRating size={20} value={data.rating} />
@@ -49,16 +55,12 @@ export default function ReviewCard({ data, showClassInfo = false }: Props) {
               "min-h-11 font-normal text-sm text-black cursor-pointer",
               isOpen ? "whitespace-pre-wrap" : "truncate",
             )}
-            onClick={() => setIsOpen((prev) => !prev)}
           >
             {data.content}
           </p>
         </div>
         {data.images && (
-          <div
-            className="flex cursor-pointer"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
+          <div className="flex">
             {data.images.map((image, i) => (
               <div
                 key={i}
