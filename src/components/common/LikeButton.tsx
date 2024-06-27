@@ -5,32 +5,97 @@ import Image from "next/image";
 import HeartOutlineIcon from "@/assets/icons/heartOutline.svg";
 import HeartOutlineBlackIcon from "@/assets/icons/heartOutlineBlack.svg";
 import HeartSolidIcon from "@/assets/icons/heartSolid.svg";
+import { useAuthContext } from "@/state/auth";
+import { useSetRecoilState } from "recoil";
+import { alertState } from "@/state/alert";
 
 interface Props {
   size: number;
   card?: boolean;
+  isLiked?: boolean;
+  classId?: string;
 }
 
-export default function LikeButton({ size, card = false }: Props) {
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  // TODO get classId from ClassCard, auth info from React custom hook; get isLiked value from the server, send value changes to the server
+export default function LikeButton({
+  size,
+  card = false,
+  isLiked = false,
+  classId = "",
+}: Props) {
+  const authContext = useAuthContext();
+  const setAlert = useSetRecoilState(alertState);
+  const [liked, setLiked] = useState<boolean>(isLiked);
+
+  const getHeaders = () => {
+    if (authContext && authContext.accessToken) {
+      const headers = {
+        access: authContext.accessToken,
+      };
+
+      return headers;
+    }
+    return null;
+  };
+
+  const getBody = () => {
+    return JSON.stringify({
+      classId,
+    });
+  };
+
+  const handleUnlike = async () => {
+    const headers = getHeaders();
+    if (!headers) {
+      return setAlert({ content: "로그인이 필요합니다." });
+    }
+
+    await fetch("/api/users/wish", {
+      method: "DELETE",
+      headers,
+      body: getBody(),
+    });
+  };
+
+  const handleLike = async () => {
+    const headers = getHeaders();
+    if (!headers) {
+      return setAlert({ content: "로그인이 필요합니다." });
+    }
+
+    await fetch("/api/users/wish", {
+      method: "POST",
+      headers,
+      body: getBody(),
+    });
+  };
+
+  const handleClick = () => {
+    if (liked) {
+      handleUnlike();
+    } else {
+      handleLike();
+    }
+
+    setLiked(!liked);
+  };
+
   return (
     <div
       className="cursor-pointer"
       onClick={(e) => {
         e.preventDefault();
-        setIsLiked(!isLiked);
+        handleClick();
       }}
     >
       <Image
         src={
-          isLiked
+          liked
             ? HeartSolidIcon
             : card
               ? HeartOutlineIcon
               : HeartOutlineBlackIcon
         }
-        alt={isLiked ? "Liked" : "Like"}
+        alt={liked ? "Liked" : "Like"}
         width={size}
         height={size}
         className={card ? "absolute top-4 right-[18px] z-10" : ""}

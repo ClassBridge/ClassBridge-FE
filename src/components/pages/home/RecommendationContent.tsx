@@ -33,6 +33,7 @@ export default function RecommendationContent() {
                 image_urls: content.classImageUrl
                   ? [content.classImageUrl]
                   : undefined,
+                isLiked: content.wish,
               }}
             />
           </CarouselItem>

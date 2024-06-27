@@ -21,7 +21,7 @@ export default function CheckoutPage({ params }: Props) {
   //   const [classId, setClassId] = useState<string>("");
   //   const { data: classData } = useClassSummaryData(classId);
   const authContext = useAuthContext();
-  const { data: classData } = useClassData(params.id);
+  const { data: classData } = useClassData(params.id, authContext?.accessToken);
   const { data: reservationData } = useReservationData(
     params.reservationId,
     authContext?.accessToken,
