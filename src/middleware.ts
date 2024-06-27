@@ -16,10 +16,17 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/redirect")) {
     const type = request.nextUrl.searchParams.get("type");
     const newUser = request.nextUrl.searchParams.get("newUser");
+    const success = request.nextUrl.searchParams.get("success");
 
     if (type === "login" && newUser === "true") {
       return NextResponse.redirect(
         new URL("/account/signup?page=info", request.url),
+      );
+    }
+
+    if (type === "payment" && success === "true") {
+      return NextResponse.redirect(
+        new URL("/class/payment/success", request.url),
       );
     }
   }
