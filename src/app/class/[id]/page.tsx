@@ -55,6 +55,7 @@ export default function ClassDetailPage({ params }: Props) {
           )}
           <ClassDetailSummary
             data={{
+              id: classData.data.classId.toString(),
               name: classData.data.className,
               status: 0,
               rating_avg: classData.data.totalStarRate,

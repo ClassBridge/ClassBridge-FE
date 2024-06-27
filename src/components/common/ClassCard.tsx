@@ -51,7 +51,12 @@ export function ClassCard({ size, content }: Props) {
               size === "small" ? "h-[146px]" : "h-[168px]",
             )}
           >
-            <LikeButton card size={26} isLiked={content.isLiked} />
+            <LikeButton
+              card
+              size={26}
+              isLiked={content.isLiked}
+              classId={content.id}
+            />
             {content.image_urls ? (
               <Image
                 src={content.image_urls[0]}
