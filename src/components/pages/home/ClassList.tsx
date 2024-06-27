@@ -2,6 +2,7 @@
 
 import { useRecoilValue } from "recoil";
 import { searchState } from "@/state/search";
+import { useAuthContext } from "@/state/auth";
 import { useClassListData } from "@/hooks/classData";
 import SearchList from "@/components//pages/home/SearchList";
 import SortSelect from "@/components//pages/home/SortSelect";
@@ -11,7 +12,11 @@ import { ClassCard } from "@/components/common/ClassCard";
 
 export default function ClassList() {
   const search = useRecoilValue(searchState);
-  const { data: classList } = useClassListData(search);
+  const authContext = useAuthContext();
+  const { data: classList } = useClassListData(
+    search,
+    authContext?.accessToken,
+  );
 
   return (
     <>
@@ -44,6 +49,7 @@ export default function ClassList() {
                 image_urls: item.imageUrl?.startsWith("https://")
                   ? [item.imageUrl]
                   : undefined,
+                isLiked: item.wish,
               }}
             />
           ))}

@@ -18,11 +18,13 @@ const classStatus = {
 type ClassStatus = keyof typeof classStatus;
 
 export interface ClassSummaryData {
+  id: string;
   name: string;
   status: ClassStatus;
   rating_avg: number | null;
   review_cnt: number | null;
   like_cnt: number | null;
+  isLiked: boolean;
   duration: number;
   address: string;
   parking: boolean;
@@ -78,7 +80,7 @@ export default function ClassDetailSummary({
       onClick: toReviewTab,
     },
     {
-      icon: <LikeButton size={24} />,
+      icon: <LikeButton size={24} isLiked={data.isLiked} classId={data.id} />,
       text: data.like_cnt || 0,
     },
     {

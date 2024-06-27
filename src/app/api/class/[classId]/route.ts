@@ -6,9 +6,11 @@ interface Params {
 }
 
 export const GET = async (request: Request, context: { params: Params }) => {
+  const headers = request.headers;
+
   const response = await fetch(
     `${process.env.ALLOWED_ORIGIN}/api/class/${context.params.classId}`,
-    { next: { revalidate: 60 } },
+    { next: { revalidate: 60 }, headers },
   );
 
   const res: ClassDetailResponse = await response.json();

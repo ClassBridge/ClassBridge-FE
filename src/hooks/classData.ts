@@ -14,7 +14,13 @@ import type { Search } from "@/state/search";
 
 export const useClassListData: (
   search: Search,
-) => UseQueryResult<ClassSearchResponse> = (search) => {
+  accessToken: string | null | undefined,
+) => UseQueryResult<ClassSearchResponse> = (search, accessToken) => {
+  let headers: HeadersInit | undefined;
+  if (accessToken) {
+    headers = { access: accessToken };
+  }
+
   const params = new URLSearchParams();
 
   if (search.order) {
@@ -33,7 +39,9 @@ export const useClassListData: (
   return useQuery({
     queryKey: ["class-list", search],
     queryFn: () =>
-      fetch(`/api/class/search?${params}`).then((res) => res.json()),
+      fetch(`/api/class/search?${params}`, { headers }).then((res) =>
+        res.json(),
+      ),
   });
 };
 
@@ -68,10 +76,17 @@ export const useRecommendationListData: (
 
 export const useClassData: (
   id: string,
-) => UseQueryResult<ClassDetailResponse> = (id) => {
+  accessToken: string | null | undefined,
+) => UseQueryResult<ClassDetailResponse> = (id, accessToken) => {
+  let headers: HeadersInit | undefined;
+  if (accessToken) {
+    headers = { access: accessToken };
+  }
+
   return useQuery({
     queryKey: ["class", id],
-    queryFn: () => fetch(`/api/class/${id}`).then((res) => res.json()),
+    queryFn: () =>
+      fetch(`/api/class/${id}`, { headers }).then((res) => res.json()),
     enabled: !!id,
   });
   //   return useQuery({

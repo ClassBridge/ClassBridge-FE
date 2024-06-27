@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuthContext } from "@/state/auth";
 import { useClassData } from "@/hooks/classData";
 import { useClassReviewListData } from "@/hooks/reviewData";
 // import { useTutorData } from "@/hooks/tutorData";
@@ -24,7 +25,8 @@ interface Props {
 export default function ClassDetailPage({ params }: Props) {
   //   const [tutorId, setTutorId] = useState<string>("");
 
-  const { data: classData } = useClassData(params.id);
+  const authContext = useAuthContext();
+  const { data: classData } = useClassData(params.id, authContext?.accessToken);
   const { data: reviewData } = useClassReviewListData(params.id);
   //   const { data: tutorData } = useTutorData(tutorId);
   //   const { data: lessonListData } = useLessonListData(params.id);
@@ -53,11 +55,13 @@ export default function ClassDetailPage({ params }: Props) {
           )}
           <ClassDetailSummary
             data={{
+              id: classData.data.classId.toString(),
               name: classData.data.className,
               status: 0,
               rating_avg: classData.data.totalStarRate,
               review_cnt: classData.data.totalReviews,
               like_cnt: classData.data.totalWish,
+              isLiked: classData.data.isWish,
               duration: classData.data.duration,
               address: `${classData.data.address1} ${classData.data.address2} ${classData.data.address3}`,
               parking: classData.data.hasParking,
