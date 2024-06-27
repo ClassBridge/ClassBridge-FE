@@ -3,7 +3,7 @@
 import { Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/state/auth";
-// import { useUserData } from "@/hooks/userData";
+import { useUserData } from "@/hooks/userData";
 // import { useUnreadCountData } from "@/hooks/chatData";
 // import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
 // import { logout } from "@/lib/supabase/actions/auth";
@@ -49,9 +49,10 @@ interface Props {
 
 export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   const { replace } = useRouter();
-  //   const authSession = useAuthContext();
   const authContext = useAuthContext();
-  //   const { data: userData } = useUserData(authSession?.user.id);
+  const { data: userData } = useUserData(authContext?.accessToken);
+  //   const authSession = useAuthContext();
+  // const { data: userData } = useUserData(authSession?.user.id);
   //   const { data: unreadCount } = useUnreadCountData(authSession?.user.id);
 
   //   if (!authSession) {
@@ -110,6 +111,14 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
         <Logo />
       </div>
       <div className="flex items-center gap-2 my-2 mx-3">
+        <ProfilePicture
+          src={userData?.data.profileImageUrl}
+          fallback={userData?.data.userName || ""}
+          large
+        />
+        <span className="font-bold text-sm text-white">
+          {userData?.data.userName}
+        </span>
         {/* <ProfilePicture src={url} fallback={userData?.username || ""} large />
         <span className="font-bold text-sm text-white">
           {userData?.username}
