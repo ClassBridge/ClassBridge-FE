@@ -23,6 +23,7 @@ export interface ClassSummaryData {
   rating_avg: number | null;
   review_cnt: number | null;
   like_cnt: number | null;
+  isLiked: boolean;
   duration: number;
   address: string;
   parking: boolean;
@@ -78,7 +79,7 @@ export default function ClassDetailSummary({
       onClick: toReviewTab,
     },
     {
-      icon: <LikeButton size={24} />,
+      icon: <LikeButton size={24} isLiked={data.isLiked} />,
       text: data.like_cnt || 0,
     },
     {
