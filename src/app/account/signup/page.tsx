@@ -81,26 +81,17 @@ const PageContent = () => {
       body: JSON.stringify(body),
     });
 
-    const { status, token } = await response.json();
+    const token = await response.json();
 
     // -------- supabase -------- //
     // const result = await signup(data);
 
-    switch (status) {
-      case 2:
-        if (!authContext) {
-          setCurrentPage("error");
-          break;
-        }
-
-        authContext.login(token);
-        setCurrentPage("success");
-        break;
-
-      default:
-        setCurrentPage("error");
-        break;
+    if (!authContext || !token) {
+      return setCurrentPage("error");
     }
+
+    authContext.login(token);
+    setCurrentPage("success");
   };
 
   const AuthPage = () => {
@@ -126,14 +117,12 @@ const PageContent = () => {
   };
 
   const SuccessPage = () => {
-    const username = "브릿지";
-
     return (
       <div className="w-[520px]">
         <h2 className="self-center text-center leading-loose font-medium text-2xl text-black">
           {"회원가입이 완료되었습니다."}
           <br />
-          {`${username} 님, 클래스브릿지에 오신 것을 환영합니다!`}
+          {"클래스브릿지에 오신 것을 환영합니다!"}
         </h2>
         <div className="flex gap-10 mt-20">
           <Button
