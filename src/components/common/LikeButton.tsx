@@ -29,6 +29,7 @@ export default function LikeButton({
   const getHeaders = () => {
     if (authContext && authContext.accessToken) {
       const headers = {
+        "Content-Type": "application/json",
         access: authContext.accessToken,
       };
 
@@ -39,7 +40,7 @@ export default function LikeButton({
 
   const getBody = () => {
     return JSON.stringify({
-      classId,
+      classId: parseInt(classId),
     });
   };
 
