@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { setRefreshToken } from "@/lib/token";
+import { setRefreshToken } from "@/lib/tokenServer";
 
 export const POST = async (request: NextRequest) => {
   const data = await request.json();
