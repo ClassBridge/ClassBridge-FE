@@ -11,7 +11,7 @@ import ClassInfo from "@/components/pages/class/checkout/ClassInfo";
 import RefundPolicy from "@/components/pages/class/checkout/RefundPolicy";
 import BottomActionBar from "@/components/pages/class/reservation/BottomActionBar";
 import { getAccessToken } from "@/lib/tokenClient";
-import { reissueToken } from "@/lib/tokenServer";
+import { reissueToken } from "@/lib/tokenClient";
 // import { useClassSummaryData } from "@/hooks/classData";
 
 interface Props {

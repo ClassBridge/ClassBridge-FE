@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useSetRecoilState } from "recoil";
+import { alertState } from "@/state/alert";
+import { getAccessToken, reissueToken } from "@/lib/tokenClient";
 import HeartOutlineIcon from "@/assets/icons/heartOutline.svg";
 import HeartOutlineBlackIcon from "@/assets/icons/heartOutlineBlack.svg";
 import HeartSolidIcon from "@/assets/icons/heartSolid.svg";
-import { useAuthContext } from "@/state/auth";
-import { useSetRecoilState } from "recoil";
-import { alertState } from "@/state/alert";
 
 interface Props {
   size: number;
@@ -22,15 +22,23 @@ export default function LikeButton({
   isLiked = false,
   classId = "",
 }: Props) {
-  const authContext = useAuthContext();
   const setAlert = useSetRecoilState(alertState);
   const [liked, setLiked] = useState<boolean>(isLiked);
 
-  const getHeaders = () => {
-    if (authContext && authContext.accessToken) {
+  const getHeaders = async () => {
+    const token = getAccessToken();
+
+    if (token) {
+      let accessToken = token.accessToken;
+
+      if (token.expired) {
+        const newToken = await reissueToken();
+        accessToken = newToken;
+      }
+
       const headers = {
         "Content-Type": "application/json",
-        access: authContext.accessToken,
+        access: accessToken,
       };
 
       return headers;
@@ -45,7 +53,7 @@ export default function LikeButton({
   };
 
   const handleUnlike = async () => {
-    const headers = getHeaders();
+    const headers = await getHeaders();
     if (!headers) {
       return setAlert({ content: "로그인이 필요합니다." });
     }
@@ -58,7 +66,7 @@ export default function LikeButton({
   };
 
   const handleLike = async () => {
-    const headers = getHeaders();
+    const headers = await getHeaders();
     if (!headers) {
       return setAlert({ content: "로그인이 필요합니다." });
     }

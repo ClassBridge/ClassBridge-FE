@@ -14,13 +14,3 @@ export const getRefreshToken = () => {
 export const deleteRefreshToken = () => {
   cookies().delete("refresh");
 };
-
-export const reissueToken = async () => {
-  const response = await fetch("/api/users/auth/reissue", {
-    method: "POST",
-  });
-
-  const accessToken: string = await response.json();
-
-  return accessToken;
-};

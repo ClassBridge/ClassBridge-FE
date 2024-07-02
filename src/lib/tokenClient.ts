@@ -3,11 +3,11 @@
 import { deleteRefreshToken } from "@/lib/tokenServer";
 import { jwtDecode } from "jwt-decode";
 
-export const handleLogin = (accessToken: string) => {
+export const setAccessToken = (accessToken: string) => {
   localStorage.setItem("accessToken", accessToken);
 };
 
-export const handleLogout = () => {
+export const deleteAccessToken = () => {
   localStorage.removeItem("accessToken");
   deleteRefreshToken();
 };
@@ -35,4 +35,15 @@ export const getAccessToken = () => {
   } else {
     return { accessToken, expired: String(expired) };
   }
+};
+
+export const reissueToken = async () => {
+  const response = await fetch("/api/users/auth/reissue", {
+    method: "POST",
+  });
+
+  const accessToken: string = await response.json();
+  setAccessToken(accessToken);
+
+  return accessToken;
 };
