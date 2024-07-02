@@ -81,16 +81,16 @@ const PageContent = () => {
       body: JSON.stringify(body),
     });
 
-    const token = await response.json();
+    const { accessToken } = await response.json();
 
     // -------- supabase -------- //
     // const result = await signup(data);
 
-    if (!authContext || !token) {
+    if (!authContext || !accessToken) {
       return setCurrentPage("error");
     }
 
-    authContext.login(token);
+    authContext.login(accessToken);
     setCurrentPage("success");
   };
 

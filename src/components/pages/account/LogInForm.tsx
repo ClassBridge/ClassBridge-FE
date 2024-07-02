@@ -43,7 +43,7 @@ export default function LogInForm() {
       body: JSON.stringify(data),
     });
 
-    const { status, token } = await response.json();
+    const { status, accessToken } = await response.json();
 
     // -------- supabase -------- //
     // const result = await login(data);
@@ -57,7 +57,7 @@ export default function LogInForm() {
           break;
         }
 
-        authContext.login(token);
+        authContext.login(accessToken);
         closeModal();
         break;
       case 4:

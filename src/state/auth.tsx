@@ -9,7 +9,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 interface AuthContext {
   isAuthenticated: boolean;
   accessToken: string | null;
-  login: (token: string) => void;
+  login: (accessToken: string) => void;
   logout: () => void;
 }
 
@@ -38,8 +38,8 @@ export default function AuthContextProvider({ children }: Props) {
     }
   }, [accessToken]);
 
-  const login = (token: string) => {
-    setAccessToken(token);
+  const login = (accessToken: string) => {
+    setAccessToken(accessToken);
   };
 
   const logout = () => {
