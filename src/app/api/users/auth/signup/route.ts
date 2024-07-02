@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { cookies } from "next/headers";
+import { setRefreshToken } from "@/lib/token";
 
 export const POST = async (request: NextRequest) => {
   const data = await request.json();
@@ -26,7 +26,7 @@ export const POST = async (request: NextRequest) => {
     .split(";")[0]
     .split("=")[1];
 
-  cookies().set("refresh", refreshToken, { httpOnly: true, secure: true });
+  setRefreshToken(refreshToken);
 
   const result = {
     status: parseInt(response.status.toString()[0]),

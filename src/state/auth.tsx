@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
+import { deleteRefreshToken } from "@/lib/token";
 // import { createClient } from "@/lib/supabase/client";
 // import type { Session } from "@supabase/supabase-js";
 
@@ -45,6 +46,7 @@ export default function AuthContextProvider({ children }: Props) {
   const logout = () => {
     localStorage.removeItem("accessToken");
     setAccessToken(null);
+    deleteRefreshToken();
   };
 
   return (
