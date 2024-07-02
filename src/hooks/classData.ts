@@ -11,15 +11,12 @@ import type { ClassDetailResponse } from "@/app/api/class/[classId]/type";
 // import type { Enums, Tables } from "@/lib/supabase/types";
 // import type { Sort } from "@/constants/sort";
 import type { Search } from "@/state/search";
+import { getAccessToken } from "@/lib/tokenClient";
 
 export const useClassListData: (
   search: Search,
-  accessToken: string | null | undefined,
-) => UseQueryResult<ClassSearchResponse> = (search, accessToken) => {
-  let headers: HeadersInit | undefined;
-  if (accessToken) {
-    headers = { access: accessToken };
-  }
+) => UseQueryResult<ClassSearchResponse> = (search) => {
+  const token = getAccessToken();
 
   const params = new URLSearchParams();
 
@@ -39,8 +36,8 @@ export const useClassListData: (
   return useQuery({
     queryKey: ["class-list", search],
     queryFn: () =>
-      fetch(`/api/class/search?${params}`, { headers }).then((res) =>
-        res.json(),
+      fetch(`/api/class/search?${params}`, { headers: { ...token } }).then(
+        (res) => res.json(),
       ),
   });
 };
@@ -59,34 +56,30 @@ export const useClassListData: (
 //   });
 // };
 
-export const useRecommendationListData: (
-  accessToken: string | null | undefined,
-) => UseQueryResult<ClassRecommendResponse> = (accessToken) => {
-  let headers: HeadersInit | undefined;
-  if (accessToken) {
-    headers = { access: accessToken };
-  }
-  return useQuery({
-    queryKey: ["class-recommend-list", accessToken],
-    queryFn: () =>
-      fetch("/api/class/recommend", { headers }).then((res) => res.json()),
-    enabled: typeof accessToken !== undefined,
-  });
-};
+export const useRecommendationListData: () => UseQueryResult<ClassRecommendResponse> =
+  () => {
+    const token = getAccessToken();
+
+    return useQuery({
+      queryKey: ["class-recommend-list", token?.accessToken],
+      queryFn: () =>
+        fetch("/api/class/recommend", { headers: { ...token } }).then((res) =>
+          res.json(),
+        ),
+    });
+  };
 
 export const useClassData: (
   id: string,
-  accessToken: string | null | undefined,
-) => UseQueryResult<ClassDetailResponse> = (id, accessToken) => {
-  let headers: HeadersInit | undefined;
-  if (accessToken) {
-    headers = { access: accessToken };
-  }
+) => UseQueryResult<ClassDetailResponse> = (id) => {
+  const token = getAccessToken();
 
   return useQuery({
     queryKey: ["class", id],
     queryFn: () =>
-      fetch(`/api/class/${id}`, { headers }).then((res) => res.json()),
+      fetch(`/api/class/${id}`, { headers: { ...token } }).then((res) =>
+        res.json(),
+      ),
     enabled: !!id,
   });
   //   return useQuery({

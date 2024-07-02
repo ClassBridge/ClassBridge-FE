@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
-import { useAuthContext } from "@/state/auth";
+import { getAccessToken } from "@/lib/tokenClient";
+import { reissueToken } from "@/lib/tokenServer";
 // import { makeReservation } from "@/lib/supabase/actions/reservation";
 // import type { Tables } from "@/lib/supabase/types";
 import type { LessonList } from "@/app/api/class/[classId]/type";
@@ -37,7 +38,6 @@ export default function ReservationModal({ data, classData }: Props) {
   const pathname = usePathname();
   const { push } = useRouter();
   //   const authSession = useAuthContext();
-  const authContext = useAuthContext();
   const setAlert = useSetRecoilState(alertState);
 
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -100,7 +100,25 @@ export default function ReservationModal({ data, classData }: Props) {
 
   const handleSubmit = async () => {
     // if (!authSession) {
-    if (!authContext || !authContext.isAuthenticated) {
+    //   return setAlert({
+    //     content: "클래스를 예약하시려면 로그인해 주세요.",
+    //     button: {
+    //       text: "로그인",
+    //       onClick: () => {
+    //         closeModal();
+    //         openModal("login");
+    //       },
+    //     },
+    //   });
+    // }
+
+    if (!selectedLesson || !selectedPerson) {
+      return;
+    }
+
+    const token = getAccessToken();
+
+    if (!token) {
       return setAlert({
         content: "클래스를 예약하시려면 로그인해 주세요.",
         button: {
@@ -113,15 +131,18 @@ export default function ReservationModal({ data, classData }: Props) {
       });
     }
 
-    if (!selectedLesson || !selectedPerson) {
-      return;
+    let accessToken = token.accessToken;
+
+    if (token.expired) {
+      const newToken = await reissueToken();
+      accessToken = newToken;
     }
 
     const response = await fetch("/api/reservations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        access: authContext.accessToken!,
+        access: accessToken,
       },
       body: JSON.stringify({
         lesson_id: parseInt(selectedLesson),

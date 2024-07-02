@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useAuthContext } from "@/state/auth";
 import { useUserData } from "@/hooks/userData";
 import Loading from "@/app/loading";
 import ProfilePicture from "@/components/common/ProfilePicture";
@@ -10,8 +9,7 @@ import EditIcon from "@/assets/icons/edit.svg";
 import { CATEGORY, type Category } from "@/constants/category";
 
 export default function ProfilePage() {
-  const authContext = useAuthContext();
-  const { data: userData, isLoading } = useUserData(authContext?.accessToken);
+  const { data: userData, isLoading } = useUserData();
 
   return (
     <>

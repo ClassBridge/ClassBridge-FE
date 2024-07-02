@@ -1,15 +1,11 @@
 "use client";
 
-import { useAuthContext } from "@/state/auth";
 import { useRecommendationListData } from "@/hooks/classData";
 import { ClassCard } from "@/components/common/ClassCard";
 import { CarouselItem } from "@/components/ui/carousel";
 
 export default function RecommendationContent() {
-  const authContext = useAuthContext();
-  const { data: recommendations } = useRecommendationListData(
-    authContext?.accessToken,
-  );
+  const { data: recommendations } = useRecommendationListData();
 
   return (
     <>

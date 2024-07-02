@@ -50,7 +50,7 @@ interface Props {
 export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   const { replace } = useRouter();
   const authContext = useAuthContext();
-  const { data: userData } = useUserData(authContext?.accessToken);
+  const { data: userData } = useUserData();
   //   const authSession = useAuthContext();
   // const { data: userData } = useUserData(authSession?.user.id);
   //   const { data: unreadCount } = useUnreadCountData(authSession?.user.id);

@@ -5,21 +5,23 @@ import {
   getReservationList,
 } from "@/lib/supabase/actions/reservation";
 import type { ReservationDetailResponse } from "@/app/api/reservations/[reservationId]/type";
+import { getAccessToken } from "@/lib/tokenClient";
 
 export const useReservationData: (
   id: string | undefined,
-  access: string | null | undefined,
-) => UseQueryResult<ReservationDetailResponse> = (id, access) => {
+) => UseQueryResult<ReservationDetailResponse> = (id) => {
+  const token = getAccessToken();
+
   return useQuery({
     queryKey: ["reservation", id],
     queryFn: () =>
       fetch(`/api/reservations/${id}`, {
         headers: {
           "Content-Type": "application/json",
-          access: access!,
+          ...token,
         },
       }).then((res) => res.json()),
-    enabled: !!id && !!access,
+    enabled: !!id && !!token,
   });
 };
 

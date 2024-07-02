@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/state/auth";
 import { useClassData } from "@/hooks/classData";
 import { useReservationData } from "@/hooks/reservationData";
 import Button from "@/components/common/Button";
@@ -13,12 +12,8 @@ interface Props {
 
 export default function PaymentSuccessPage({ params }: Props) {
   const { replace } = useRouter();
-  const authContext = useAuthContext();
-  const { data: classData } = useClassData(params.id, authContext?.accessToken);
-  const { data: reservationData } = useReservationData(
-    params.reservationId,
-    authContext?.accessToken,
-  );
+  const { data: classData } = useClassData(params.id);
+  const { data: reservationData } = useReservationData(params.reservationId);
 
   return (
     <>
