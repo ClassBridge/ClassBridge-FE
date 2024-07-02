@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { cookies } from "next/headers";
 
 export const POST = async (request: NextRequest) => {
   const data = await request.json();
@@ -20,7 +21,17 @@ export const POST = async (request: NextRequest) => {
     },
   );
 
-  const token = response.headers.get("access");
+  const refreshToken = response.headers
+    .getSetCookie()[0]
+    .split(";")[0]
+    .split("=")[1];
 
-  return NextResponse.json(token);
+  cookies().set("refresh", refreshToken, { httpOnly: true, secure: true });
+
+  const result = {
+    status: parseInt(response.status.toString()[0]),
+    accessToken: response.headers.get("access"),
+  };
+
+  return NextResponse.json(result);
 };
