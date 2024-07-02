@@ -1,3 +1,4 @@
+"use client";
 import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 import type { ClassRecommendResponse } from "@/app/api/class/recommend/type";
 import type { ClassSearchResponse } from "@/app/api/class/search/type";
@@ -11,13 +12,13 @@ import type { ClassDetailResponse } from "@/app/api/class/[classId]/type";
 // import type { Enums, Tables } from "@/lib/supabase/types";
 // import type { Sort } from "@/constants/sort";
 import type { Search } from "@/state/search";
-import { getAccessToken } from "@/lib/tokenClient";
+import { checkToken } from "@/lib/tokenServer";
+import { Token } from "@/lib/tokenClient";
 
 export const useClassListData: (
   search: Search,
-) => UseQueryResult<ClassSearchResponse> = (search) => {
-  const token = getAccessToken();
-
+  token: Token,
+) => UseQueryResult<ClassSearchResponse> = (search, token) => {
   const params = new URLSearchParams();
 
   if (search.order) {
@@ -56,23 +57,27 @@ export const useClassListData: (
 //   });
 // };
 
-export const useRecommendationListData: () => UseQueryResult<ClassRecommendResponse> =
-  () => {
-    const token = getAccessToken();
-
-    return useQuery({
-      queryKey: ["class-recommend-list", token?.accessToken],
-      queryFn: () =>
-        fetch("/api/class/recommend", { headers: { ...token } }).then((res) =>
-          res.json(),
-        ),
-    });
-  };
+export const useRecommendationListData: (
+  token: Token,
+) => UseQueryResult<ClassRecommendResponse> = (token) => {
+  return useQuery({
+    queryKey: ["class-recommend-list", token?.accessToken],
+    queryFn: () =>
+      fetch("/api/class/recommend", { headers: { ...token } }).then((res) =>
+        res.json(),
+      ),
+  });
+};
 
 export const useClassData: (
   id: string,
-) => UseQueryResult<ClassDetailResponse> = (id) => {
-  const token = getAccessToken();
+  access: string | null | undefined,
+) => UseQueryResult<ClassDetailResponse> = (id, access) => {
+  let token = null;
+
+  if (access) {
+    token = checkToken(access);
+  }
 
   return useQuery({
     queryKey: ["class", id],

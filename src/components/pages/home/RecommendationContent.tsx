@@ -3,9 +3,10 @@
 import { useRecommendationListData } from "@/hooks/classData";
 import { ClassCard } from "@/components/common/ClassCard";
 import { CarouselItem } from "@/components/ui/carousel";
+import { getAccessToken } from "@/lib/tokenClient";
 
 export default function RecommendationContent() {
-  const { data: recommendations } = useRecommendationListData();
+  const { data: recommendations } = useRecommendationListData(getAccessToken());
 
   return (
     <>

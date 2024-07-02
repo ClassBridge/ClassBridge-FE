@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
-import { handleLogin, handleLogout } from "@/lib/tokenClient";
+import { setAccessToken, deleteAccessToken } from "@/lib/tokenClient";
 // import { createClient } from "@/lib/supabase/client";
 // import type { Session } from "@supabase/supabase-js";
 
@@ -22,23 +22,23 @@ interface Props {
 }
 
 export default function AuthContextProvider({ children }: Props) {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     if (localStorage) {
       const token = localStorage.getItem("accessToken");
-      setAccessToken(token);
+      setToken(token);
     }
   }, []);
 
   const login = (accessToken: string) => {
     setAccessToken(accessToken);
-    handleLogin(accessToken);
+    setAccessToken(accessToken);
   };
 
   const logout = () => {
-    setAccessToken(null);
-    handleLogout();
+    setToken(null);
+    deleteAccessToken();
   };
 
   return (

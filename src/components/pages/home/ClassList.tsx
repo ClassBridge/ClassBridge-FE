@@ -8,10 +8,11 @@ import SortSelect from "@/components//pages/home/SortSelect";
 import Maps from "@/components//pages/home/Maps";
 import MapButtons from "@/components//pages/home/MapButtons";
 import { ClassCard } from "@/components/common/ClassCard";
+import { getAccessToken } from "@/lib/tokenClient";
 
 export default function ClassList() {
   const search = useRecoilValue(searchState);
-  const { data: classList } = useClassListData(search);
+  const { data: classList } = useClassListData(search, getAccessToken());
 
   return (
     <>

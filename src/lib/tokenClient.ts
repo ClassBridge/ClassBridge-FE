@@ -16,6 +16,11 @@ export const isAuthenticated = () => {
   return !!localStorage.getItem("accessToken");
 };
 
+export type Token = {
+  accessToken: string;
+  expired: string;
+} | null;
+
 export const getAccessToken = () => {
   if (!isAuthenticated()) {
     return null;
