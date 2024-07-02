@@ -53,6 +53,7 @@
     "eslint-config-next": "14.2.3",
     "eslint-plugin-storybook": "^0.8.0",
     "husky": "^8.0.0",
+    "jwt-decode": "^4.0.0",
     "lint-staged": "^15.2.5",
     "lucide-react": "^0.379.0",
     "postcss": "^8",
