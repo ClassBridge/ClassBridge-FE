@@ -69,17 +69,17 @@ const SubMenu = ({ menu }: SubMenuProps) => {
 
 const AuthButton = () => {
   const { push } = useRouter();
-  const authContext = useAuthContext();
-  //   const authSession = useAuthContext();
+  //   const authContext = useAuthContext();
+  const authSession = useAuthContext();
 
   return (
     <button
       className="w-[100px] h-10 rounded font-bold text-white text-sm bg-primary"
       onClick={() => {
-        authContext?.isAuthenticated ? push("/my") : openModal("login");
+        authSession?.user ? push("/my") : openModal("login");
       }}
     >
-      {authContext?.isAuthenticated ? "마이페이지" : "로그인"}
+      {authSession?.user ? "마이페이지" : "로그인"}
     </button>
   );
 };

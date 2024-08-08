@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthContext } from "@/state/auth";
-// import { signup } from "@/lib/supabase/actions/auth";
+import { signup } from "@/lib/supabase/actions/auth";
 
 import Loading from "@/app/loading";
 import SignUpForm, {
@@ -54,43 +54,48 @@ const PageContent = () => {
   };
 
   const handleSignUp = async (data: SignUpFormData & SignUpInfoFormData) => {
-    let body: Object = {
-      additionalInfoDto: {
-        nickname: data.username,
-        phoneNumber: data.phoneNumber,
-        gender: data.gender,
-        birthDate: data.birthDate,
-        interests: data.interests,
-      },
-    };
+    // const formData = new FormData();
 
-    if (data.email && data.password) {
-      body = {
-        userDto: {
-          provider: "email",
-          email: data.email,
-          password: data.password,
-          authType: "EMAIL",
-        },
-        ...body,
-      };
-    }
+    // let body: Object = {
+    //   additionalInfoDto: {
+    //     nickname: data.username,
+    //     phoneNumber: data.phoneNumber,
+    //     gender: data.gender,
+    //     birthDate: data.birthDate,
+    //     interests: data.interests,
+    //   },
+    // };
 
-    const response = await fetch("/api/users/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
+    // if (data.email && data.password) {
+    //   body = {
+    //     userDto: {
+    //       provider: "email",
+    //       email: data.email,
+    //       password: data.password,
+    //       authType: "EMAIL",
+    //     },
+    //     ...body,
+    //   };
+    // }
 
-    const token = await response.json();
+    // formData.append("signupRequest", new Blob([JSON.stringify(body)]));
+
+    // const response = await fetch("/api/users/auth/signup", {
+    //   method: "POST",
+    //   body: formData,
+    // });
+
+    // const token = await response.json();
 
     // -------- supabase -------- //
-    // const result = await signup(data);
+    const result = await signup(data);
 
-    if (!authContext || !token) {
+    // if (!authContext || !token) {
+    if (!result.data) {
       return setCurrentPage("error");
     }
 
-    authContext.login(token);
+    // authContext.login(token);
     setCurrentPage("success");
   };
 

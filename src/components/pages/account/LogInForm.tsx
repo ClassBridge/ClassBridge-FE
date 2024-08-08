@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { logInFormSchema } from "@/lib/formSchema";
-// import { login } from "@/lib/supabase/actions/auth";
+import { login } from "@/lib/supabase/actions/auth";
 import { useAuthContext } from "@/state/auth";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
@@ -38,40 +38,40 @@ export default function LogInForm() {
   });
 
   const onSubmit = async (data: LogInFormData) => {
-    const response = await fetch("/api/users/auth/signin", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    // const response = await fetch("/api/users/auth/signin", {
+    //   method: "POST",
+    //   body: JSON.stringify(data),
+    // });
 
-    const { status, token } = await response.json();
+    // const { status, token } = await response.json();
 
     // -------- supabase -------- //
-    // const result = await login(data);
+    const result = await login(data);
 
-    switch (status) {
-      case 2:
-        if (!authContext) {
-          setAlert({
-            content: "로그인 도중 오류가 발생했습니다. 다시 시도해 주세요.",
-          });
-          break;
-        }
+    // switch (status) {
+    //   case 2:
+    //     if (!authContext) {
+    //       setAlert({
+    //         content: "로그인 도중 오류가 발생했습니다. 다시 시도해 주세요.",
+    //       });
+    //       break;
+    //     }
 
-        authContext.login(token);
-        closeModal();
-        break;
-      case 4:
-        setAlert({
-          content: "잘못된 이메일 또는 비밀번호입니다. 다시 시도해 주세요.",
-        });
-        break;
+    //     authContext.login(token);
+    //     closeModal();
+    //     break;
+    //   case 4:
+    //     setAlert({
+    //       content: "잘못된 이메일 또는 비밀번호입니다. 다시 시도해 주세요.",
+    //     });
+    //     break;
 
-      default:
-        setAlert({
-          content: "로그인 도중 오류가 발생했습니다. 다시 시도해 주세요.",
-        });
-        break;
-    }
+    //   default:
+    //     setAlert({
+    //       content: "로그인 도중 오류가 발생했습니다. 다시 시도해 주세요.",
+    //     });
+    //     break;
+    // }
   };
 
   return (

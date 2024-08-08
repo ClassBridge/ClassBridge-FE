@@ -38,17 +38,17 @@ export default function SearchModal() {
   const [autoCompleteList, setAutoCompleteList] = useState<string[]>([]);
   const setSearchQuery = useSetRecoilState(searchState);
 
-  useEffect(() => {
-    const getAutoComplete = async () => {
-      const response = await fetch(`/api/class/autoComplete/${searchTerm}`);
-      const res: AutoCompleteResponse = await response.json();
-      if (res.code === "SUCCESS") {
-        setAutoCompleteList(res.data);
-      }
-    };
+  //   useEffect(() => {
+  //     const getAutoComplete = async () => {
+  //       const response = await fetch(`/api/class/autoComplete/${searchTerm}`);
+  //       const res: AutoCompleteResponse = await response.json();
+  //       if (res.code === "SUCCESS") {
+  //         setAutoCompleteList(res.data);
+  //       }
+  //     };
 
-    getAutoComplete();
-  }, [searchTerm]);
+  //     getAutoComplete();
+  //   }, [searchTerm]);
 
   const handleTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
