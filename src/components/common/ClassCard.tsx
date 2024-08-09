@@ -30,7 +30,7 @@ export interface ClassCard {
     | undefined;
   id: any;
   name: string;
-  category: Enums<"category">;
+  category: string;
   tutor_id: any;
   address1: Enums<"city">;
   address2: any;
@@ -83,7 +83,7 @@ export function ClassCard({ size, content }: Props) {
               />
             ) : (
               <span className="font-bold text-base text-white tracking-widest">
-                {CATEGORY[content.category.toUpperCase()]}
+                {CATEGORY[content.category.toUpperCase() as Enums<"category">]}
               </span>
             )}
           </div>
@@ -99,7 +99,7 @@ export function ClassCard({ size, content }: Props) {
           <h3 className="font-medium text-base truncate">{content.name}</h3>
           <div className="flex items-center font-normal text-xs">
             <span className="group-hover:hidden">
-              {CATEGORY[content.category.toUpperCase()]}
+              {CATEGORY[content.category.toUpperCase() as Enums<"category">]}
             </span>
             <span className="hidden group-hover:inline">
               {`⭐️ ${content.rating_avg || 0}(${content.review_cnt || 0})`}

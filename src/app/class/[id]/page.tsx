@@ -145,16 +145,19 @@ export default function ClassDetailPage({ params }: Props) {
                         faq: classData.faq_questions?.map((q, i) => {
                           return {
                             title: q,
-                            content: classData.faq_answers![i],
+                            content: classData.faq_answers![i]!,
                           };
                         }),
                         classId: classData.id,
                         tutorId: classData.tutor_id,
                       }
                     : tab.id === "classDesc"
-                      ? { content: classData.description, tag: classData.tags }
+                      ? {
+                          content: classData.description!,
+                          tag: classData.tags!,
+                        }
                       : {
-                          content: tutorData?.description,
+                          content: tutorData?.description!,
                           title: tutorData?.name,
                         }
               }

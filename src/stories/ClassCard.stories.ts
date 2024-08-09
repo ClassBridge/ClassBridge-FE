@@ -5,13 +5,15 @@ const mockData: ClassCard = {
   id: "1234",
   name: "초보도 가능한 즐거운 쿠킹 클래스",
   category: "COOKING",
-  tutor: { username: "브릿지셰프" },
+  tutor: { id: 1, username: "브릿지셰프" },
   address1: "서울",
   address2: "브릿지구",
   price: 30000,
   duration: 60,
   rating_avg: 4.8,
   review_cnt: 5,
+  tutor_id: 1,
+  image_urls: [],
 };
 
 const meta: Meta<typeof ClassCard> = {

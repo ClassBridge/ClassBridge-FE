@@ -26,56 +26,56 @@ export default function LikeButton({
   const setAlert = useSetRecoilState(alertState);
   const [liked, setLiked] = useState<boolean>(isLiked);
 
-  const getHeaders = () => {
-    if (authContext && authContext.accessToken) {
-      const headers = {
-        "Content-Type": "application/json",
-        access: authContext.accessToken,
-      };
+  //   const getHeaders = () => {
+  //     if (authContext && authContext.accessToken) {
+  //       const headers = {
+  //         "Content-Type": "application/json",
+  //         access: authContext.accessToken,
+  //       };
 
-      return headers;
-    }
-    return null;
-  };
+  //       return headers;
+  //     }
+  //     return null;
+  //   };
 
-  const getBody = () => {
-    return JSON.stringify({
-      classId: parseInt(classId),
-    });
-  };
+  //   const getBody = () => {
+  //     return JSON.stringify({
+  //       classId: parseInt(classId),
+  //     });
+  //   };
 
-  const handleUnlike = async () => {
-    const headers = getHeaders();
-    if (!headers) {
-      return setAlert({ content: "로그인이 필요합니다." });
-    }
+  //   const handleUnlike = async () => {
+  //     const headers = getHeaders();
+  //     if (!headers) {
+  //       return setAlert({ content: "로그인이 필요합니다." });
+  //     }
 
-    await fetch("/api/users/wish", {
-      method: "DELETE",
-      headers,
-      body: getBody(),
-    });
-  };
+  //     await fetch("/api/users/wish", {
+  //       method: "DELETE",
+  //       headers,
+  //       body: getBody(),
+  //     });
+  //   };
 
-  const handleLike = async () => {
-    const headers = getHeaders();
-    if (!headers) {
-      return setAlert({ content: "로그인이 필요합니다." });
-    }
+  //   const handleLike = async () => {
+  //     const headers = getHeaders();
+  //     if (!headers) {
+  //       return setAlert({ content: "로그인이 필요합니다." });
+  //     }
 
-    await fetch("/api/users/wish", {
-      method: "POST",
-      headers,
-      body: getBody(),
-    });
-  };
+  //     await fetch("/api/users/wish", {
+  //       method: "POST",
+  //       headers,
+  //       body: getBody(),
+  //     });
+  //   };
 
   const handleClick = () => {
-    if (liked) {
-      handleUnlike();
-    } else {
-      handleLike();
-    }
+    // if (liked) {
+    //   handleUnlike();
+    // } else {
+    //   handleLike();
+    // }
 
     setLiked(!liked);
   };
