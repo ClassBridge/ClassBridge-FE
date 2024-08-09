@@ -8,6 +8,7 @@ import ClockIcon from "@/assets/icons/clock.svg";
 import LocationIcon from "@/assets/icons/location.svg";
 import TruckIcon from "@/assets/icons/truck.svg";
 import PeopleIcon from "@/assets/icons/people.svg";
+import { Tables } from "@/lib/supabase/types";
 
 const classStatus = {
   0: "모집 중",
@@ -17,24 +18,24 @@ const classStatus = {
 
 type ClassStatus = keyof typeof classStatus;
 
-export interface ClassSummaryData {
-  id: string;
-  name: string;
-  status: ClassStatus;
-  rating_avg: number | null;
-  review_cnt: number | null;
-  like_cnt: number | null;
-  isLiked: boolean;
-  duration: number;
-  address: string;
-  parking: boolean;
-  personnel: number;
-}
+// export interface ClassSummaryData {
+//   id: string;
+//   name: string;
+//   status: ClassStatus;
+//   rating_avg: number | null;
+//   review_cnt: number | null;
+//   like_cnt: number | null;
+//   isLiked: boolean;
+//   duration: number;
+//   address: string;
+//   parking: boolean;
+//   personnel: number;
+// }
 
 export default function ClassDetailSummary({
   data,
 }: {
-  data: ClassSummaryData;
+  data: Tables<"class"> & { status: ClassStatus };
 }) {
   const toReviewTab = () => {
     const tab = document.getElementById("tab-review");
@@ -80,7 +81,7 @@ export default function ClassDetailSummary({
       onClick: toReviewTab,
     },
     {
-      icon: <LikeButton size={24} isLiked={data.isLiked} classId={data.id} />,
+      icon: <LikeButton size={24} isLiked={true} classId={data.id} />,
       text: data.like_cnt || 0,
     },
     {

@@ -21,11 +21,12 @@ export default function ChatStarter({
   className,
 }: Props) {
   const { push } = useRouter();
-  const authContext = useAuthContext();
+  const authSession = useAuthContext();
   const setAlert = useSetRecoilState(alertState);
 
   const handleStartChat = async () => {
-    if (!authContext || !authContext.isAuthenticated) {
+    // if (!authContext || !authContext.isAuthenticated) {
+    if (!authSession?.user) {
       return setAlert({
         content: "로그인 후에 사용하실 수 있는 기능입니다.",
         button: { text: "로그인", onClick: () => openModal("login") },

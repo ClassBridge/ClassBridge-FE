@@ -4,10 +4,10 @@ import { Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/state/auth";
 import { useUserData } from "@/hooks/userData";
-// import { useUnreadCountData } from "@/hooks/chatData";
-// import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
-// import { logout } from "@/lib/supabase/actions/auth";
-// import { PROFILE_BUCKET } from "@/constants/supabase";
+import { useUnreadCountData } from "@/hooks/chatData";
+import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
+import { logout } from "@/lib/supabase/actions/auth";
+import { PROFILE_BUCKET } from "@/constants/supabase";
 import { Logo } from "@/components/common/Header";
 import ProfilePicture from "@/components/common/ProfilePicture";
 import { type Menus } from "@/app/my/layout";
@@ -50,38 +50,38 @@ interface Props {
 export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
   const { replace } = useRouter();
   const authContext = useAuthContext();
-  const { data: userData } = useUserData(authContext?.accessToken);
-  //   const authSession = useAuthContext();
-  // const { data: userData } = useUserData(authSession?.user.id);
-  //   const { data: unreadCount } = useUnreadCountData(authSession?.user.id);
+  //   const { data: userData } = useUserData(authContext?.accessToken);
+  const authSession = useAuthContext();
+  const { data: userData } = useUserData(authSession?.user.id);
+  const { data: unreadCount } = useUnreadCountData(authSession?.user.id);
 
-  //   if (!authSession) {
-  //     return;
-  //   }
-  if (!authContext || !authContext.isAuthenticated) {
+  if (!authSession) {
     return;
   }
+  //   if (!authContext || !authContext.isAuthenticated) {
+  //     return;
+  //   }
 
-  //   const url =
-  //     authSession.user.id && userData?.profile_url
-  //       ? getFilePublicUrl(
-  //           PROFILE_BUCKET,
-  //           authSession.user.id,
-  //           userData.profile_url,
-  //         )
-  //       : "";
+  const url =
+    authSession.user.id && userData?.profile_url
+      ? getFilePublicUrl(
+          PROFILE_BUCKET,
+          authSession.user.id,
+          userData.profile_url,
+        )
+      : "";
 
-  //   const handleLogOut = async () => {
-  //     const isLoggedOut = await logout();
-  //     if (isLoggedOut) {
-  //       replace("/");
-  //     }
-  //   };
-
-  const handleLogOut = () => {
-    authContext.logout();
-    replace("/");
+  const handleLogOut = async () => {
+    const isLoggedOut = await logout();
+    if (isLoggedOut) {
+      replace("/");
+    }
   };
+
+  //   const handleLogOut = () => {
+  //     authContext.logout();
+  //     replace("/");
+  //   };
 
   const menuList: {
     id: MenusAll;
@@ -111,18 +111,18 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
         <Logo />
       </div>
       <div className="flex items-center gap-2 my-2 mx-3">
-        <ProfilePicture
+        {/* <ProfilePicture
           src={userData?.data.profileImageUrl || ""}
           fallback={userData?.data.nickname || ""}
           large
         />
         <span className="font-bold text-sm text-white">
           {userData?.data.nickname}
-        </span>
-        {/* <ProfilePicture src={url} fallback={userData?.username || ""} large />
+        </span> */}
+        <ProfilePicture src={url} fallback={userData?.username || ""} large />
         <span className="font-bold text-sm text-white">
           {userData?.username}
-        </span> */}
+        </span>
       </div>
       <Divider />
       <ul className="flex flex-col gap-0.5 mt-1">
@@ -139,14 +139,14 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
                 }
               }}
               className={[
-                userData?.data.bankName && i === userMenuIndex ? "hidden" : "",
-                !userData?.data.bankName && tutorMenuIndex.includes(i)
-                  ? "hidden"
-                  : "",
-                // userData?.is_tutor && i === userMenuIndex ? "hidden" : "",
-                // !userData?.is_tutor && tutorMenuIndex.includes(i)
+                // userData?.data.bankName && i === userMenuIndex ? "hidden" : "",
+                // !userData?.data.bankName && tutorMenuIndex.includes(i)
                 //   ? "hidden"
                 //   : "",
+                userData?.is_tutor && i === userMenuIndex ? "hidden" : "",
+                !userData?.is_tutor && tutorMenuIndex.includes(i)
+                  ? "hidden"
+                  : "",
                 currentMenu === menu.id
                   ? "text-primary bg-white"
                   : "hover:bg-primary-blur",
@@ -154,9 +154,9 @@ export default function MyPageSideBar({ currentMenu, setCurrentMenu }: Props) {
             >
               <MenuIcon id={menu.id} />
               {menu.name}
-              {/* {menu.id === "chat" && unreadCount > 0 && (
+              {menu.id === "chat" && unreadCount > 0 && (
                 <span className="flex-1 text-right">{unreadCount}</span>
-              )} */}
+              )}
             </MenuItem>
           </Fragment>
         ))}

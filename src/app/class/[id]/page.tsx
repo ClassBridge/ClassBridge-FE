@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "@/state/auth";
 import { useClassData } from "@/hooks/classData";
 import { useClassReviewListData } from "@/hooks/reviewData";
-// import { useTutorData } from "@/hooks/tutorData";
-// import { useLessonListData } from "@/hooks/lessonData";
+import { useTutorData } from "@/hooks/tutorData";
+import { useLessonListData } from "@/hooks/lessonData";
 import { TABS } from "@/constants/classDetailTabs";
 
 import ClassDetailBreadcrumb from "@/components/pages/class/nav/Breadcrumb";
@@ -23,19 +23,19 @@ interface Props {
 }
 
 export default function ClassDetailPage({ params }: Props) {
-  //   const [tutorId, setTutorId] = useState<string>("");
+  const [tutorId, setTutorId] = useState<string>("");
 
   const authContext = useAuthContext();
-  const { data: classData } = useClassData(params.id, authContext?.accessToken);
-  const { data: reviewData } = useClassReviewListData(params.id);
-  //   const { data: tutorData } = useTutorData(tutorId);
-  //   const { data: lessonListData } = useLessonListData(params.id);
+  const { data: classData } = useClassData(params.id);
+  //   const { data: reviewData } = useClassReviewListData(params.id);
+  const { data: tutorData } = useTutorData(tutorId);
+  const { data: lessonListData } = useLessonListData(params.id);
 
-  //   useEffect(() => {
-  //     if (classData) {
-  //       setTutorId(classData.tutor_id);
-  //     }
-  //   }, [classData]);
+  useEffect(() => {
+    if (classData) {
+      setTutorId(classData.tutor_id);
+    }
+  }, [classData]);
 
   const openReservationModal = () => {
     const modal = document.getElementById("reservation-modal");
@@ -44,7 +44,7 @@ export default function ClassDetailPage({ params }: Props) {
 
   return (
     <>
-      {classData && classData.code === "SUCCESS" && (
+      {/* {classData && classData.code === "SUCCESS" && (
         <>
           <ClassDetailBreadcrumb
             location={classData.data.address1}
@@ -113,8 +113,8 @@ export default function ClassDetailPage({ params }: Props) {
             }}
           />
         </>
-      )}
-      {/* {classData?.id && (
+      )} */}
+      {classData?.id && (
         <>
           <ClassDetailBreadcrumb
             location={classData.address1}
@@ -145,16 +145,19 @@ export default function ClassDetailPage({ params }: Props) {
                         faq: classData.faq_questions?.map((q, i) => {
                           return {
                             title: q,
-                            content: classData.faq_answers![i],
+                            content: classData.faq_answers![i]!,
                           };
                         }),
                         classId: classData.id,
                         tutorId: classData.tutor_id,
                       }
                     : tab.id === "classDesc"
-                      ? { content: classData.description, tag: classData.tags }
+                      ? {
+                          content: classData.description!,
+                          tag: classData.tags!,
+                        }
                       : {
-                          content: tutorData?.description,
+                          content: tutorData?.description!,
                           title: tutorData?.name,
                         }
               }
@@ -176,7 +179,7 @@ export default function ClassDetailPage({ params }: Props) {
             />
           )}
         </>
-      )} */}
+      )}
     </>
   );
 }

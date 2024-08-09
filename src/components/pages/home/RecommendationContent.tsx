@@ -7,13 +7,11 @@ import { CarouselItem } from "@/components/ui/carousel";
 
 export default function RecommendationContent() {
   const authContext = useAuthContext();
-  const { data: recommendations } = useRecommendationListData(
-    authContext?.accessToken,
-  );
+  const { data: recommendations } = useRecommendationListData();
 
   return (
     <>
-      {recommendations &&
+      {/* {recommendations &&
         recommendations.code === "SUCCESS" &&
         recommendations.data.map((content) => (
           <CarouselItem key={content.classId} className="basis-1/3">
@@ -37,13 +35,13 @@ export default function RecommendationContent() {
               }}
             />
           </CarouselItem>
-        ))}
-      {/* {recommendations &&
+        ))} */}
+      {recommendations &&
         recommendations.map((content) => (
           <CarouselItem key={content.name} className="basis-1/3">
-            <ClassCard size="small" content={content as ClassCard} />
+            <ClassCard size="small" content={content} />
           </CarouselItem>
-        ))} */}
+        ))}
     </>
   );
 }

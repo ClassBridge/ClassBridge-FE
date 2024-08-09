@@ -1,25 +1,44 @@
 import Link from "next/link";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
-// import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
-// import { CLASS_BUCKET } from "@/constants/supabase";
+import { getFilePublicUrl } from "@/lib/supabase/actions/storage";
+import { CLASS_BUCKET } from "@/constants/supabase";
 import { CATEGORY } from "@/constants/category";
 import type { Enums } from "@/lib/supabase/types";
 import { cn } from "@/lib/utils";
 
+// export interface ClassCard {
+//   id: string;
+//   name: string;
+//   category: Enums<"category">;
+//   tutor: { username: string };
+//   address1: Enums<"city">;
+//   address2: string;
+//   price: number;
+//   duration: number;
+//   rating_avg?: number;
+//   review_cnt?: number;
+//   image_urls?: string[];
+//   isLiked?: boolean;
+// }
 export interface ClassCard {
-  id: string;
+  tutor:
+    | {
+        id: any;
+        username: string;
+      }
+    | undefined;
+  id: any;
   name: string;
-  category: Enums<"category">;
-  tutor: { username: string };
+  category: string;
+  tutor_id: any;
   address1: Enums<"city">;
-  address2: string;
-  price: number;
-  duration: number;
-  rating_avg?: number;
-  review_cnt?: number;
-  image_urls?: string[];
-  isLiked?: boolean;
+  address2: any;
+  price: any;
+  duration: any;
+  rating_avg: any;
+  review_cnt: any;
+  image_urls: any;
 }
 
 interface Props {
@@ -28,9 +47,9 @@ interface Props {
 }
 
 export function ClassCard({ size, content }: Props) {
-  //   const url =
-  //     content.image_urls?.[0] &&
-  //     getFilePublicUrl(CLASS_BUCKET, content.id, content.image_urls[0]);
+  const url =
+    content.image_urls?.[0] &&
+    getFilePublicUrl(CLASS_BUCKET, content.id, content.image_urls[0]);
 
   return (
     <Link href={`/class/${content.id}`}>
@@ -51,16 +70,11 @@ export function ClassCard({ size, content }: Props) {
               size === "small" ? "h-[146px]" : "h-[168px]",
             )}
           >
-            <LikeButton
-              card
-              size={26}
-              isLiked={content.isLiked}
-              classId={content.id}
-            />
+            <LikeButton card size={26} isLiked={false} classId={content.id} />
             {content.image_urls ? (
               <Image
-                src={content.image_urls[0]}
-                // src={url!}
+                // src={content.image_urls[0]}
+                src={url!}
                 alt={content.name}
                 fill={true}
                 sizes="(max-width: 400px) 100vw, (max-width: 800px) 50vw, 30vw"
@@ -69,7 +83,7 @@ export function ClassCard({ size, content }: Props) {
               />
             ) : (
               <span className="font-bold text-base text-white tracking-widest">
-                {CATEGORY[content.category]}
+                {CATEGORY[content.category.toUpperCase() as Enums<"category">]}
               </span>
             )}
           </div>
@@ -85,14 +99,14 @@ export function ClassCard({ size, content }: Props) {
           <h3 className="font-medium text-base truncate">{content.name}</h3>
           <div className="flex items-center font-normal text-xs">
             <span className="group-hover:hidden">
-              {CATEGORY[content.category]}
+              {CATEGORY[content.category.toUpperCase() as Enums<"category">]}
             </span>
             <span className="hidden group-hover:inline">
               {`⭐️ ${content.rating_avg || 0}(${content.review_cnt || 0})`}
             </span>
             <span className="h-4 mx-3 border-l border-gray-light group-hover:border-gray"></span>
             <span className="truncate group-hover:hidden">
-              {content.tutor.username}
+              {content.tutor?.username}
             </span>
             <span className="hidden group-hover:inline">
               {`⏰ ${content.duration}분`}

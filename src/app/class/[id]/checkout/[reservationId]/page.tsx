@@ -5,27 +5,23 @@ import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/state/auth";
 import { useSetRecoilState } from "recoil";
 import { alertState } from "@/state/alert";
-import { useClassData } from "@/hooks/classData";
+import { useClassData, useClassSummaryData } from "@/hooks/classData";
 import { useReservationData } from "@/hooks/reservationData";
 
 import ClassInfo from "@/components/pages/class/checkout/ClassInfo";
 import RefundPolicy from "@/components/pages/class/checkout/RefundPolicy";
 import BottomActionBar from "@/components/pages/class/reservation/BottomActionBar";
-// import { useClassSummaryData } from "@/hooks/classData";
 
 interface Props {
   params: { id: string; reservationId: string };
 }
 
 export default function CheckoutPage({ params }: Props) {
-  //   const [classId, setClassId] = useState<string>("");
-  //   const { data: classData } = useClassSummaryData(classId);
+  const [classId, setClassId] = useState<string>("");
+  const { data: classData } = useClassSummaryData(classId);
   const authContext = useAuthContext();
-  const { data: classData } = useClassData(params.id, authContext?.accessToken);
-  const { data: reservationData } = useReservationData(
-    params.reservationId,
-    authContext?.accessToken,
-  );
+  //   const { data: classData } = useClassData(params.id);
+  const { data: reservationData } = useReservationData(params.reservationId);
 
   const { replace } = useRouter();
   const setAlert = useSetRecoilState(alertState);
@@ -46,30 +42,30 @@ export default function CheckoutPage({ params }: Props) {
       return;
     }
 
-    const quantity = reservationData.data.quantity;
+    // const quantity = reservationData.data.quantity;
 
-    const response = await fetch("/api/payments/prepare", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        access: authContext?.accessToken!,
-      },
-      body: JSON.stringify({
-        quantity: quantity,
-        total_amount: quantity * classData.data.price,
-        reservation_id: reservationData.data.reservationId,
-        item_name: classData.data.className,
-      }),
-    });
+    // const response = await fetch("/api/payments/prepare", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     access: authContext?.accessToken!,
+    //   },
+    //   body: JSON.stringify({
+    //     quantity: quantity,
+    //     total_amount: quantity * classData.data.price,
+    //     reservation_id: reservationData.data.reservationId,
+    //     item_name: classData.data.className,
+    //   }),
+    // });
 
-    const res: string = await response.json();
+    // const res: string = await response.json();
 
-    replace(res);
+    // replace(res);
   };
 
   return (
     <>
-      {reservationData && classData && (
+      {/* {reservationData && classData && (
         <>
           <h2 className="mt-16 font-bold text-2xl text-black">
             {"클래스 결제"}
@@ -94,8 +90,8 @@ export default function CheckoutPage({ params }: Props) {
             onCheckout
           />
         </>
-      )}
-      {/* {reservationData && classData && (
+      )} */}
+      {reservationData && classData && (
         <>
           <h2 className="mt-16 font-bold text-2xl text-black">
             {"클래스 결제"}
@@ -116,7 +112,7 @@ export default function CheckoutPage({ params }: Props) {
             onCheckout
           />
         </>
-      )} */}
+      )}
     </>
   );
 }

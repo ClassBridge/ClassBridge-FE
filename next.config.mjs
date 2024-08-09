@@ -14,36 +14,36 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: "classbridge.s3.ap-northeast-2.amazonaws.com",
-        port: "",
-        pathname: "/**",
-      },
+      //   {
+      //     protocol: "https",
+      //     hostname: "classbridge.s3.ap-northeast-2.amazonaws.com",
+      //     port: "",
+      //     pathname: "/**",
+      //   },
     ],
   },
-  async headers() {
-    return [
-      {
-        source: "/api/:path*",
-        headers: [
-          { key: "Access-Control-Allow-Credentials", value: "true" },
-          {
-            key: "Access-Control-Allow-Origin",
-            value: process.env.ALLOWED_ORIGIN,
-          },
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-          },
-          {
-            key: "Access-Control-Allow-Headers",
-            value: "Content-Type, access",
-          },
-        ],
-      },
-    ];
-  },
+  //   async headers() {
+  //     return [
+  //       {
+  //         source: "/api/:path*",
+  //         headers: [
+  //           { key: "Access-Control-Allow-Credentials", value: "true" },
+  //           {
+  //             key: "Access-Control-Allow-Origin",
+  //             value: process.env.ALLOWED_ORIGIN,
+  //           },
+  //           {
+  //             key: "Access-Control-Allow-Methods",
+  //             value: "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+  //           },
+  //           {
+  //             key: "Access-Control-Allow-Headers",
+  //             value: "Content-Type, access",
+  //           },
+  //         ],
+  //       },
+  //     ];
+  //   },
 };
 
 export default nextConfig;

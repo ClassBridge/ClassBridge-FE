@@ -13,10 +13,7 @@ import { ClassCard } from "@/components/common/ClassCard";
 export default function ClassList() {
   const search = useRecoilValue(searchState);
   const authContext = useAuthContext();
-  const { data: classList } = useClassListData(
-    search,
-    authContext?.accessToken,
-  );
+  const { data: classList } = useClassListData("like");
 
   return (
     <>
@@ -29,7 +26,7 @@ export default function ClassList() {
         </div>
       </div>
       <section className="grid grid-cols-3 gap-x-5 gap-y-7 mb-10">
-        {classList &&
+        {/* {classList &&
           classList.code === "SUCCESS" &&
           classList.data.content.map((item) => (
             <ClassCard
@@ -52,11 +49,11 @@ export default function ClassList() {
                 isLiked: item.wish,
               }}
             />
-          ))}
-        {/* {classList &&
+          ))} */}
+        {classList &&
           classList.map((item) => (
             <ClassCard key={item.id} size="large" content={item} />
-          ))} */}
+          ))}
       </section>
     </>
   );
